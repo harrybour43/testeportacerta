@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PORTA CERTA SP - TESTE DB (v4.7.2)</title>
+    <title>PORTA CERTA SP - TESTE DB (v4.8.0)</title>
     <style>
         * { box-sizing: border-box; }
         :root {
@@ -21,7 +21,6 @@
         .app-view.active { display: flex; }
         .container { background-color: var(--card-bg); border-radius: 12px; padding: 24px; border: 1px solid var(--border-color); }
         
-        /* HERO HEADER */
         .hero-header-main { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); }
         .hero-logo-svg { height: 45px; margin-bottom: 12px; }
         .hero-title { font-size: 2.2rem; font-weight: 800; margin: 0; }
@@ -41,16 +40,18 @@
         .info-text { font-size: 1rem; line-height: 1.4; color: var(--text-muted); margin-bottom: 10px; }
         .alert-warning { font-size: 0.95rem; padding: 12px; border-radius: 6px; color: #FF3B30; border: 1px solid #FF3B30; }
 
-        /* TREM */
-        .t-container { width: 100%; height: 85px; background: var(--train-bg); border-radius: 8px; position: relative; overflow: hidden; margin: 10px 0; border: 1px solid var(--border-color); }
-        .t-track { position: absolute; height: 2px; width: 100%; bottom: 15px; background: var(--border-color); }
-        .t-wrapper { position: absolute; display: flex; align-items: center; gap: 6px; padding: 0 10px; height: 100%; transition: transform 1.2s ease; z-index: 1;}
-        .t-car { width: 85px; height: 32px; border: 2px solid var(--l3); background: var(--card-bg); border-radius: 3px; display: flex; justify-content: space-evenly; align-items: flex-end; position: relative;}
-        .t-car::after { content: attr(data-label); position: absolute; top: -20px; font-size: 0.65rem; color: #888; font-weight: bold; width: 100%; text-align: center; }
-        .t-door { width: 10px; height: 16px; background: var(--group-bg); border: 1px solid var(--border-color); border-radius: 2px 2px 0 0; }
-        .t-door.target { background: #4CAF50; border-color: #FFF; box-shadow: 0 0 8px #4CAF50; position: relative; }
-        .t-door.target::before { content: '▼'; position: absolute; top: -22px; left: -3px; color: #4CAF50; animation: bounce 1s infinite; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+        /* NOVO TREM VISTO DE CIMA (DUAS FACES) */
+        .t-container { width: 100%; height: 95px; background: var(--train-bg); border-radius: 8px; position: relative; overflow: hidden; margin: 10px 0; border: 1px solid var(--border-color); }
+        .t-track { position: absolute; height: 100%; width: 100%; background: repeating-linear-gradient(90deg, transparent, transparent 15px, rgba(255,255,255,0.05) 15px, rgba(255,255,255,0.05) 20px); }
+        .t-wrapper { position: absolute; top: 15px; display: flex; align-items: center; gap: 6px; padding: 0 10px; height: 65px; transition: transform 1.2s ease; z-index: 1;}
+        .t-car { width: 90px; height: 100%; border: 2px solid var(--l3); background: var(--card-bg); border-radius: 6px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+        .t-car::after { content: attr(data-label); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.75rem; color: var(--text-muted); font-weight: bold; }
+        .t-doors-side { display: flex; justify-content: space-evenly; width: 100%; padding: 0 2px; }
+        .t-door { width: 10px; height: 8px; background: var(--group-bg); border: 1px solid var(--border-color); }
+        .t-door.top { border-radius: 0 0 3px 3px; border-top: none; }
+        .t-door.bottom { border-radius: 3px 3px 0 0; border-bottom: none; }
+        .t-door.target { background: #4CAF50; border-color: #FFF; box-shadow: 0 0 10px #4CAF50; z-index: 2; }
+        
         .hidden { display: none; }
     </style>
 </head>
@@ -60,15 +61,12 @@
     <div class="container">
         
         <div class="hero-header-main">
-            <svg class="hero-logo-svg" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+            <svg class="hero-logo-svg" viewBox="0 0 120 40">
                 <rect x="5" y="5" width="110" height="30" rx="4" fill="#1A1A1A" stroke="#888" stroke-width="2"/>
-                <rect x="15" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
-                <rect x="40" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
                 <rect x="65" y="12" width="12" height="23" rx="1.5" class="logo-door-target"/>
-                <rect x="90" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
             </svg>
             <h1 class="hero-title">PORTA CERTA SP</h1>
-            <p style="color: var(--text-muted); margin-top: 5px; font-size: 0.9rem;">(Módulo de Teste DB L3)</p>
+            <p style="color: var(--text-muted); margin-top: 5px; font-size: 0.9rem;">(Módulo Dupla Face L3)</p>
         </div>
 
         <label>Sua preferência de saída no destino final:</label>
@@ -80,20 +78,12 @@
 
         <div class="selection-group">
             <label>📍 Origem (Embarque):</label>
-            <select id="estacao-origem" onchange="UI.limpar()">
-                <option value="ITQ">Corinthians-Itaquera</option>
-                <option value="ART">Artur Alvim</option>
-                <option value="PCA">Patriarca</option>
-            </select>
+            <select id="estacao-origem" onchange="UI.limpar()"></select>
         </div>
 
         <div class="selection-group">
             <label>🏁 Destino (Desembarque):</label>
-            <select id="estacao-destino" onchange="UI.limpar()">
-                <option value="ITQ">Corinthians-Itaquera</option>
-                <option value="ART" selected>Artur Alvim</option>
-                <option value="PCA">Patriarca</option>
-            </select>
+            <select id="estacao-destino" onchange="UI.limpar()"></select>
         </div>
 
         <button class="btn-action" onclick="UI.iniciarCalculo()">Qual é a Porta Certa?</button>
@@ -104,16 +94,28 @@
 
 <script>
 /**
- * DADOS DE TESTE 
+ * DADOS DE TESTE - L3
  * S1 = Itaquera
  * S2 = Barra Funda
  */
 const AppData = {
-    ordemL3: ["ITQ", "ART", "PCA"], // Sentido geográfico: Menor (0) para Maior (2) = Sentido Barra Funda (S2)
+    // Ordem geográfica real L3 (Sentido 2 = Da esquerda p/ direita no array)
+    ordemL3: ["ITQ", "ART", "PCA", "TAT", "BEL", "BRE", "BAS", "PSE", "REP", "CEC", "DEO", "BFU"],
+    
     estacoes: {
         "ITQ": { nome: "Corinthians-Itaquera", dbStr: "ITAS2E11,ITAS2F44,ITAS2F31,ITAS2R44-I,ITAS2R54-I,ITAS2R31-O,ITAS2R21-I,ITAS2R21-O" },
         "ART": { nome: "Artur Alvim", dbStr: "ARTS1E64,ARTS1F24,ARTS1F33,ARTS1R24-O,ARTS1R33-I,ARTS1R43-O,ARTS2E65,ARTS2F25,ARTS2F36,ARTS2R25-O,ARTS2R36-I,ARTS2R47-O" },
-        "PCA": { nome: "Patriarca", dbStr: "PCAS1E11,PCAS1F44,PCAS1R34-I,PCAS1R34-O,PCAS1R31-I,PCAS1R31-O,PCAS2E18,PCAS2F45,PCAS2R35-I,PCAS2R35-O,PCAS2R38-I,PCAS2R38-O" }
+        "PCA": { nome: "Patriarca", dbStr: "PCAS1E11,PCAS1F44,PCAS1R34-I,PCAS1R34-O,PCAS1R31-I,PCAS1R31-O,PCAS2E18,PCAS2F45,PCAS2R35-I,PCAS2R35-O,PCAS2R38-I,PCAS2R38-O" },
+        // Adicionadas as novas estações com base nos dados fornecidos
+        "TAT": { nome: "Tatuapé (Espanhola)", dbStr: "TATS2F11,TATS2F44,TATS2R53-I,TATS2R33-I,TATS2R14-I,TATS1F35,TATS1F18,TATS1R55-I,TATS1R45-I,TATS1R15-I" }, // Nota: DB não distinguiu I/O aqui, deixei como I para rolantes
+        "BEL": { nome: "Belém", dbStr: "" },
+        "BRE": { nome: "Bresser-Mooca", dbStr: "" },
+        "BAS": { nome: "Brás (Espanhola)", dbStr: "BASS2F31,BASS2R21-O,BASS2R31-I,BASS2R41-I,BASS1F44,BASS1R48-O,BASS1R28-I" }, // Ex: v3p4 sentido S1 = (3+1=4, logo 48) - Adaptado para o padrão Numérico 
+        "PSE": { nome: "Sé", dbStr: "" },
+        "REP": { nome: "República", dbStr: "REPS1E55,REPS1F62,REPS1R54-O,REPS1R41-O,REPS2E68,REPS2F42,REPS2R53-O,REPS2R44-O,REPS2R32-O" },
+        "CEC": { nome: "Santa Cecília", dbStr: "CECS1E48,CECS1F58,CECS1F38" }, // Sem S2 na DB base
+        "DEO": { nome: "Marechal Deodoro", dbStr: "DEOS1E37,DEOS1F28,DEOS1F45,DEOS1R28-O,DEOS1R45-I" }, // Sem S2 na DB base
+        "BFU": { nome: "Palmeiras-Barra Funda", dbStr: "" }
     }
 };
 
@@ -121,36 +123,30 @@ const Router = {
     calcularSentido: function(idOr, idDest) {
         let idxOr = AppData.ordemL3.indexOf(idOr);
         let idxDest = AppData.ordemL3.indexOf(idDest);
-        // Se Origem < Destino na array (Ex: ITQ[0] -> ART[1]), é S2 (Barra Funda)
-        // Se Origem > Destino na array (Ex: PCA[2] -> ART[1]), é S1 (Itaquera)
         return idxOr < idxDest ? "S2" : "S1"; 
     },
     
     extrairPortaAlvo: function(nodeDest, sentido, pref) {
         if (!nodeDest.dbStr) return null;
 
-        // Converter preferência para a letra do DB
         let tipo = 'F';
         if (pref === 'elevador') tipo = 'E';
         if (pref === 'rolante') tipo = 'R';
 
         let tokens = nodeDest.dbStr.split(',');
-        let prefixoEstacao = nodeDest.dbStr.substring(0,3); // Ex: ITA, ART, PCA
-        let prefixoBusca = `${prefixoEstacao}${sentido}${tipo}`; // Ex: ARTS2R
+        let prefixoEstacao = nodeDest.dbStr.substring(0,3); 
+        let prefixoBusca = `${prefixoEstacao}${sentido}${tipo}`; 
 
         let match = null;
 
         if (tipo === 'R') {
-            // Se for escada rolante, a prioridade absoluta é achar a que termina com -O (Desembarque/Output)
             match = tokens.find(t => t.startsWith(prefixoBusca) && t.endsWith('-O'));
+            // Se não achar saída (O), e for plataforma espanhola, pode não haver marcação O, pega genérica
+            if (!match) match = tokens.find(t => t.startsWith(prefixoBusca) && !t.endsWith('-I'));
+            // Se ainda não achar, pega o que tiver (ex: tatuapé que só mandou "R:53;33;14")
+            if (!match) match = tokens.find(t => t.startsWith(prefixoBusca));
         } else {
-            // Para Elevador(E) e Fixa(F), que não têm marcação I/O na sua DB de exemplo
             match = tokens.find(t => t.startsWith(prefixoBusca));
-        }
-        
-        // Se não achou com -O, tenta achar qualquer uma genérica que não seja de embarque (-I)
-        if (!match) {
-            match = tokens.find(t => t.startsWith(prefixoBusca) && !t.endsWith('-I'));
         }
 
         if (match) {
@@ -161,16 +157,64 @@ const Router = {
         return null;
     },
     
-    parseVagaoPorta: function(rawNumStr) {
-        // Mantido Inalterado: 11 = vagão 1, porta 1 (como solicitado)
+    // Novo parser: Entende de qual lado do trem a porta fica, para plotar corretamente
+    parseVagaoPorta: function(rawNumStr, sentido) {
         if (!rawNumStr || rawNumStr.length !== 2) return null;
-        let v = parseInt(rawNumStr.charAt(0));
-        let p = parseInt(rawNumStr.charAt(1));
-        return { v: v, p: p };
+        let pOriginal = parseInt(rawNumStr);
+        let d1 = parseInt(rawNumStr.charAt(0)); // dezena
+        let d2 = parseInt(rawNumStr.charAt(1)); // unidade
+        
+        let v, p_esquerda, p_direita;
+
+        if (sentido === "S2") { // Sentido Barra Funda
+            v = d1;
+            if (d2 >= 1 && d2 <= 4) {
+                p_esquerda = d2;
+                p_direita = (p_esquerda === 1) ? 8 : (p_esquerda === 2) ? 7 : (p_esquerda === 3) ? 6 : 5;
+            } else {
+                p_direita = d2;
+                p_esquerda = (p_direita === 8) ? 1 : (p_direita === 7) ? 2 : (p_direita === 6) ? 3 : 4;
+            }
+        } else { // Sentido Itaquera
+            v = 7 - d1;
+            if (d2 >= 1 && d2 <= 4) {
+                p_esquerda = d2;
+                p_direita = (p_esquerda === 4) ? 5 : (p_esquerda === 3) ? 6 : (p_esquerda === 2) ? 7 : 8;
+            } else {
+                p_direita = d2;
+                p_esquerda = (p_direita === 5) ? 4 : (p_direita === 6) ? 3 : (p_direita === 7) ? 2 : 1;
+            }
+        }
+        
+        // Determina se a porta alvo lida no DB estava na face Esquerda (1-4) ou Direita (5-8) original
+        let isFaceDireita = (d2 >= 5 && d2 <= 8);
+
+        return { 
+            v: v, 
+            p_esq: p_esquerda, 
+            p_dir: p_direita, 
+            isDir: isFaceDireita,
+            rawStr: rawNumStr
+        };
     }
 };
 
 const UI = {
+    init: function() {
+        const selOr = document.getElementById('estacao-origem');
+        const selDest = document.getElementById('estacao-destino');
+        selOr.innerHTML = ""; selDest.innerHTML = "";
+        
+        AppData.ordemL3.forEach(id => {
+            if(AppData.estacoes[id].dbStr) {
+                selOr.add(new Option(AppData.estacoes[id].nome, id));
+                selDest.add(new Option(AppData.estacoes[id].nome, id));
+            }
+        });
+        selOr.value = "ITQ";
+        selDest.value = "ART";
+    },
+
     limpar: () => document.getElementById('resultado-box').style.display = 'none',
     
     iniciarCalculo: function() {
@@ -188,18 +232,24 @@ const UI = {
         const sentido = Router.calcularSentido(or, dest);
         const portaStr = Router.extrairPortaAlvo(AppData.estacoes[dest], sentido, pref);
         
-        let htmlFinal = `<div class="info-text">Em <b>${AppData.estacoes[or].nome}</b>, embarque na:</div>`;
+        let htmlFinal = `<div class="info-text">Em <b>${AppData.estacoes[or].nome}</b> (Sentido ${sentido === 'S1' ? 'Itaquera' : 'Barra Funda'}), posicione-se na:</div>`;
         
         if (portaStr) {
-            let parsed = Router.parseVagaoPorta(portaStr);
-            htmlFinal += `<div class="result-door">Porta ${portaStr}</div>`;
-            htmlFinal += `<div class="info-text" style="font-size: 0.9rem;">(Vagão ${parsed.v}, Porta ${parsed.p})</div>`;
-            htmlFinal += this.gerarTrem(parsed.v, parsed.p);
+            let parsed = Router.parseVagaoPorta(portaStr, sentido);
+            
+            // O texto sempre mostra a porta correspondente para o usuário EMBARCAR.
+            // (Mesmo que o desembarque em plataforma espanhola mude a numeração, 
+            // a posição física do vagão é a mesma).
+            htmlFinal += `<div class="result-door">Porta ${parsed.rawStr}</div>`;
+            htmlFinal += `<div class="info-text" style="font-size: 0.9rem;">(Vagão ${parsed.v})</div>`;
+            
+            // Renderiza o trem visto de cima
+            htmlFinal += this.gerarTremDuplaFace(parsed);
             
             let txtPref = pref === 'rolante' ? 'escada rolante' : (pref === 'elevador' ? 'porta do elevador' : 'escada fixa');
-            htmlFinal += `<div class="info-text" style="margin-top:15px; padding-top:10px; border-top: 1px dashed #444;">No destino (<b>${AppData.estacoes[dest].nome}</b>), você sairá de frente para a ${txtPref} de desembarque.</div>`;
+            htmlFinal += `<div class="info-text" style="margin-top:15px; padding-top:10px; border-top: 1px dashed #444;">No destino (<b>${AppData.estacoes[dest].nome}</b>), você sairá de frente para a ${txtPref}.</div>`;
         } else {
-            htmlFinal += `<div class="alert-warning">🚫 Equipamento inexistente nesta estação (Sentido ${sentido}).</div>`;
+            htmlFinal += `<div class="alert-warning">🚫 Equipamento não mapeado ou inexistente (Sentido ${sentido}).</div>`;
         }
 
         box.innerHTML = htmlFinal;
@@ -207,15 +257,31 @@ const UI = {
         this.ajustarTrem();
     },
     
-    gerarTrem: function(vt, pt) {
+    gerarTremDuplaFace: function(parsedData) {
         let html = '<div class="t-container"><div class="t-track"></div><div class="t-wrapper">';
+        
         for(let v=1; v<=6; v++) {
-            html += `<div class="t-car" data-label="C${v}">`;
+            html += `<div class="t-car" data-label="V${v}">`;
+            
+            // Face Superior (Portas 5 a 8 na representação da Tabela)
+            html += `<div class="t-doors-side top">`;
             for(let p=1; p<=4; p++) {
-                let isTarget = (v === vt && p === pt);
-                html += `<div class="t-door ${isTarget ? 'target' : ''}"></div>`;
+                // Na face superior direita, a contagem na tabela é inversa dependendo do sentido.
+                // Mas graficamente, é a face de "cima" do desenho.
+                let isTarget = (v === parsedData.v && parsedData.isDir && parsedData.p_esq === p);
+                html += `<div class="t-door top ${isTarget ? 'target' : ''}"></div>`;
             }
             html += `</div>`;
+
+            // Face Inferior (Portas 1 a 4 na representação da Tabela)
+            html += `<div class="t-doors-side bottom">`;
+            for(let p=1; p<=4; p++) {
+                let isTarget = (v === parsedData.v && !parsedData.isDir && parsedData.p_esq === p);
+                html += `<div class="t-door bottom ${isTarget ? 'target' : ''}"></div>`;
+            }
+            html += `</div>`;
+
+            html += `</div>`; // Fecha Car
         }
         return html + '</div></div>';
     },
@@ -226,10 +292,16 @@ const UI = {
             let wrapper = document.querySelector('.t-wrapper');
             let container = document.querySelector('.t-container');
             if (target && wrapper && container) {
+                // Para pegar a posição correta, pegamos o parente (o Vagão) do target
+                let car = target.closest('.t-car');
                 let cWidth = container.offsetWidth;
-                let tOffset = target.getBoundingClientRect().left - wrapper.getBoundingClientRect().left;
-                let tWidth = target.offsetWidth;
-                let translateX = (cWidth / 2) - tOffset - (tWidth / 2);
+                let tOffset = car.getBoundingClientRect().left - wrapper.getBoundingClientRect().left;
+                
+                // Precisamos calcular a posição exata da porta dentro do vagão
+                let portaOffsetDentroVagao = target.offsetLeft;
+                let deslocamentoTotal = tOffset + portaOffsetDentroVagao;
+
+                let translateX = (cWidth / 2) - deslocamentoTotal - (target.offsetWidth / 2);
                 wrapper.style.transform = `translateX(${translateX}px)`;
             }
         }, 50);
@@ -237,7 +309,7 @@ const UI = {
 };
 
 window.onload = function() {
-    UI.limpar();
+    UI.init();
 };
 </script>
 </body>
