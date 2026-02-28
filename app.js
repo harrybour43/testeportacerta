@@ -11,8 +11,14 @@ const Formatter = {
         
         let res = [];
         if (parsed) {
-            let numPorta = sentido === "BF" ? `${parsed.v}${9 - parsed.p}` : `${7 - parsed.v}${parsed.p}`;
-            res.push(['zh', 'ja', 'ko'].includes(AppData.currentLang) ? `${numPorta}${t.txtPorta}` : `${t.txtPorta} ${numPorta}`);
+            // SOLUÇÃO: Em vez de calcular, extraímos o número original da string (ex: de "Porta 63" pegamos "63")
+            let numMatch = raw.match(/\d{2}/);
+            let numPortaFinal = numMatch ? numMatch[0] : (sentido === "BF" ? `${parsed.v}${9 - parsed.p}` : `${7 - parsed.v}${parsed.p}`);
+            
+            // Monta o texto "Porta XX"
+            res.push(['zh', 'ja', 'ko'].includes(AppData.currentLang) ? `${numPortaFinal}${t.txtPorta}` : `${t.txtPorta} ${numPortaFinal}`);
+            
+            // Monta o texto "(Vagão X, Porta Y)"
             let tradVagao = `(${t.txtVagao} ${parsed.v}, ${t.txtPorta} ${parsed.p})`;
             if (AppData.currentLang === 'zh' || AppData.currentLang === 'ja' || AppData.currentLang === 'ko') {
                 tradVagao = `(${parsed.v}${t.txtVagao} ${parsed.p}${t.txtPorta})`;
@@ -24,7 +30,6 @@ const Formatter = {
         return res.length > 0 ? res.join(" ") : raw;
     }
 };
-
 /**
  * ==========================================
  * [BLOCO 5] JS: MOTOR DE ROTEAMENTO (Router)
