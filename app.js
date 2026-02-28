@@ -5,20 +5,31 @@
  */
 const Formatter = {
     formatarPorta: function(raw, sentido) {
+        // Se o valor for inválido, devolve do jeito que veio
         if (!raw || raw === "-" || raw === "Pendente" || raw === "Inexistente") return raw;
+        
         let t = AppData.dicionario[AppData.currentLang];
-        let parsed = Router.parseVagaoPorta(raw, sentido);
+        
+        // Mantemos o parse apenas para descobrir o Vagão e a Porta física e desenhar o trem certo
+        let parsed = Router.parseVagaoPorta(raw, sentido); 
         
         let res = [];
+        
+        // REGRA DE OURO: O número escrito no seu banco de dados prevalece ABSOLUTAMENTE
+        let numeroCravadoNoBanco = null;
+        let numMatch = raw.match(/\d{2}/);
+        if (numMatch) {
+            numeroCravadoNoBanco = numMatch[0]; // Pega o "63" puro da string "Porta 63" que você digitou
+        }
+
         if (parsed) {
-            // SOLUÇÃO: Em vez de calcular, extraímos o número original da string (ex: de "Porta 63" pegamos "63")
-            let numMatch = raw.match(/\d{2}/);
-            let numPortaFinal = numMatch ? numMatch[0] : (sentido === "BF" ? `${parsed.v}${9 - parsed.p}` : `${7 - parsed.v}${parsed.p}`);
+            // Se você digitou um número no DB (ex: 63), ele USA o 63. A matemática só roda se não tiver número.
+            let numeroExibido = numeroCravadoNoBanco ? numeroCravadoNoBanco : (sentido === "BF" ? `${parsed.v}${9 - parsed.p}` : `${7 - parsed.v}${parsed.p}`);
             
-            // Monta o texto "Porta XX"
-            res.push(['zh', 'ja', 'ko'].includes(AppData.currentLang) ? `${numPortaFinal}${t.txtPorta}` : `${t.txtPorta} ${numPortaFinal}`);
+            // Monta o texto Principal: "Porta 63"
+            res.push(['zh', 'ja', 'ko'].includes(AppData.currentLang) ? `${numeroExibido}${t.txtPorta}` : `${t.txtPorta} ${numeroExibido}`);
             
-            // Monta o texto "(Vagão X, Porta Y)"
+            // Monta o subtexto: "(Vagão 1, Porta 2)"
             let tradVagao = `(${t.txtVagao} ${parsed.v}, ${t.txtPorta} ${parsed.p})`;
             if (AppData.currentLang === 'zh' || AppData.currentLang === 'ja' || AppData.currentLang === 'ko') {
                 tradVagao = `(${parsed.v}${t.txtVagao} ${parsed.p}${t.txtPorta})`;
@@ -26,7 +37,10 @@ const Formatter = {
             res.push(tradVagao);
         } else if (raw.includes("Porta")) {
             res.push(raw.replace("Porta", t.txtPorta));
+        } else {
+            res.push(raw);
         }
+        
         return res.length > 0 ? res.join(" ") : raw;
     }
 };
