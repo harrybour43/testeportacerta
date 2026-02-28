@@ -58,15 +58,6 @@
         .fade-in-delayed { opacity: 0; animation: fadeIn 0.8s ease forwards 1s; }
         @keyframes fadeIn { to { opacity: 1; } }
 
-        /* LOGOTIPO SVG HEADER */
-        .logo-container { display: flex; align-items: center; gap: 10px; }
-        .logo-svg { height: 26px; width: auto; flex-shrink: 0; }
-        .logo-door-target { fill: #4CAF50; animation: logoPulse 2s infinite; }
-        body.light-mode .logo-svg rect[fill="#1A1A1A"] { fill: #FFFFFF; }
-        body.light-mode .logo-svg rect[fill="#000"] { fill: #E0E0E0; }
-        body.light-mode .logo-svg line { stroke: #CCC; }
-        @keyframes logoPulse { 0%, 100% { filter: drop-shadow(0 0 2px #4CAF50); } 50% { filter: drop-shadow(0 0 8px #4CAF50); } }
-
         /* MODAL DE EMERGÊNCIA */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: var(--card-bg); border: 1px solid var(--border-color); border-top: 5px solid #FF3B30; padding: 25px; border-radius: 12px; max-width: 380px; width: 100%; text-align: left; box-shadow: 0 10px 25px rgba(0,0,0,0.5); color: var(--text-main); }
@@ -82,6 +73,51 @@
         body.light-mode .action-btn:hover { background: #E5E5E5; }
         h1 { font-size: 1.45rem; margin: 0; color: var(--text-main); line-height: 1.1; letter-spacing: -0.5px; }
         
+        /* ========================================== */
+        /* NOVO HERO HEADER (TELA PRINCIPAL)          */
+        /* ========================================== */
+        .hero-header-main {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero-settings {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .hero-logo-svg {
+            height: 45px; 
+            width: auto;
+            margin-bottom: 12px;
+        }
+
+        .logo-door-target { fill: #4CAF50; animation: logoPulse 2s infinite; }
+        @keyframes logoPulse { 0%, 100% { filter: drop-shadow(0 0 2px #4CAF50); } 50% { filter: drop-shadow(0 0 8px #4CAF50); } }
+
+        body.light-mode .hero-logo-svg rect[fill="#1A1A1A"] { fill: #FFFFFF; }
+        body.light-mode .hero-logo-svg rect[fill="#000"] { fill: #E0E0E0; }
+        body.light-mode .hero-logo-svg line { stroke: #CCC; }
+
+        .hero-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin: 0;
+            color: var(--text-main);
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        body.large-font .hero-title { font-size: 2.8rem; }
+        /* ========================================== */
+
         .selection-group { background-color: var(--group-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 15px; }
         .selection-title { font-size: 1.05rem; font-weight: bold; color: var(--text-main); margin-bottom: 10px; border-left: 4px solid var(--border-color); padding-left: 8px; }
         .selection-title.origem { border-color: #4CAF50; }
@@ -196,20 +232,21 @@
 
 <div id="view-main" class="app-view">
     <div class="container">
-        <div class="header-top">
-            <div class="logo-container">
-                <svg class="logo-svg" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="5" y="5" width="110" height="30" rx="4" fill="#1A1A1A" stroke="#888" stroke-width="2"/>
-                    <rect x="15" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
-                    <rect x="40" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
-                    <rect x="65" y="12" width="12" height="23" rx="1.5" class="logo-door-target"/>
-                    <rect x="90" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
-                </svg>
-                <h1 id="app-title">PORTA CERTA SP</h1>
-            </div>
-            <div class="header-actions">
+        
+        <div class="hero-header-main">
+            <div class="hero-settings">
                 <span class="action-btn" onclick="UI.showView('view-settings')" title="Configurações">⚙️</span>
             </div>
+            
+            <svg class="hero-logo-svg" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="5" width="110" height="30" rx="4" fill="#1A1A1A" stroke="#888" stroke-width="2"/>
+                <rect x="15" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
+                <rect x="40" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
+                <rect x="65" y="12" width="12" height="23" rx="1.5" class="logo-door-target"/>
+                <rect x="90" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
+            </svg>
+            
+            <h1 id="app-title" class="hero-title">PORTA CERTA SP</h1>
         </div>
         
         <label for="preferencia" id="lbl-pref">Sua preferência de saída no destino final:</label>
