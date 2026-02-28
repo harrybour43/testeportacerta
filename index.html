@@ -9,23 +9,46 @@
         * { box-sizing: border-box; }
 
         :root {
+            /* Cores das Linhas do Metrô/CPTM */
             --l1: #00539B; --l2: #008061; --l3: #EE3E34; --l4: #F0D200; --l5: #A52182;
             --l7: #A0184B; --l8: #9E9E93; --l9: #00A88E; --l10: #007C8F; --l11: #F04D22;
             --l12: #033F88; --l13: #00B352; --l15: #8D8D8D;
-            --bg-color: #000000; --card-bg: #1A1A1A; --text-main: #FFFFFF;
-            --text-muted: #CCCCCC; --border-color: #444444; --btn-color: #EE3E34;
+            
+            /* Cores Temáticas Base (Modo Escuro Padrão) */
+            --bg-color: #000000; 
+            --card-bg: #1A1A1A; 
+            --text-main: #FFFFFF;
+            --text-muted: #CCCCCC; 
+            --border-color: #444444; 
+            --btn-color: #EE3E34;
+            --input-bg: #000000;
+            --group-bg: #111111;
+            --train-bg: #050505;
         }
         
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 15px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; transition: all 0.3s ease; direction: ltr; }
+        /* OVERRIDES: MODO CLARO */
+        body.light-mode {
+            --bg-color: #F0F2F5;
+            --card-bg: #FFFFFF;
+            --text-main: #111111;
+            --text-muted: #555555;
+            --border-color: #DDDDDD;
+            --input-bg: #FFFFFF;
+            --group-bg: #F9F9F9;
+            --train-bg: #EAEAEA;
+        }
+        
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 15px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; transition: background-color 0.3s ease, color 0.3s ease; direction: ltr; }
         
         /* SISTEMA DE TELAS (SPA) */
         .app-view { display: none; width: 100%; max-width: 420px; flex-direction: column; animation: fadeInView 0.3s ease; }
         .app-view.active { display: flex; }
         @keyframes fadeInView { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .container { background-color: var(--card-bg); border-radius: 12px; padding: 24px; width: 100%; box-shadow: 0 8px 16px rgba(0,0,0,0.8); border-top: 6px solid var(--text-muted); border: 1px solid var(--border-color); }
+        .container { background-color: var(--card-bg); border-radius: 12px; padding: 24px; width: 100%; box-shadow: 0 8px 16px rgba(0,0,0,0.8); border-top: 6px solid var(--text-muted); border: 1px solid var(--border-color); transition: all 0.3s ease; }
+        body.light-mode .container { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
         .container-header { display: flex; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
-        .container-header h2 { margin: 0; font-size: 1.4rem; color: #FFF; line-height: 1.2; }
+        .container-header h2 { margin: 0; font-size: 1.4rem; color: var(--text-main); line-height: 1.2; }
 
         /* SPLASH SCREEN ANIMATION */
         #view-splash { justify-content: center; align-items: center; min-height: 90vh; text-align: center; }
@@ -39,65 +62,80 @@
         .logo-container { display: flex; align-items: center; gap: 10px; }
         .logo-svg { height: 26px; width: auto; flex-shrink: 0; }
         .logo-door-target { fill: #4CAF50; animation: logoPulse 2s infinite; }
+        body.light-mode .logo-svg rect[fill="#1A1A1A"] { fill: #FFFFFF; }
+        body.light-mode .logo-svg rect[fill="#000"] { fill: #E0E0E0; }
+        body.light-mode .logo-svg line { stroke: #CCC; }
         @keyframes logoPulse { 0%, 100% { filter: drop-shadow(0 0 2px #4CAF50); } 50% { filter: drop-shadow(0 0 8px #4CAF50); } }
 
         /* MODAL DE EMERGÊNCIA */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: #1A1A1A; border: 1px solid var(--border-color); border-top: 5px solid #FF3B30; padding: 25px; border-radius: 12px; max-width: 380px; width: 100%; text-align: left; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .modal-content { background: var(--card-bg); border: 1px solid var(--border-color); border-top: 5px solid #FF3B30; padding: 25px; border-radius: 12px; max-width: 380px; width: 100%; text-align: left; box-shadow: 0 10px 25px rgba(0,0,0,0.5); color: var(--text-main); }
         .modal-content h2 { margin-top: 0; font-size: 1.4rem; color: #FF3B30; line-height: 1.2;}
         
         .checkbox-container { display: flex; align-items: center; gap: 10px; margin-bottom: 25px; cursor: pointer; }
         .checkbox-container input { width: 22px; height: 22px; accent-color: var(--btn-color); cursor: pointer; }
-        .checkbox-container span { font-weight: bold; color: #FFF; font-size: 1.05rem; }
+        .checkbox-container span { font-weight: bold; font-size: 1.05rem; }
 
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .header-actions { display: flex; gap: 8px; flex-shrink: 0; }
-        .action-btn { font-size: 1.2rem; font-weight: bold; color: var(--text-main); background: #333; border: 1px solid var(--border-color); border-radius: 6px; padding: 4px 10px; cursor: pointer; user-select: none; }
+        .action-btn { font-size: 1.4rem; font-weight: bold; color: var(--text-main); background: var(--group-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 6px 12px; cursor: pointer; user-select: none; transition: background 0.2s; }
+        .action-btn:hover { background: #333; }
+        body.light-mode .action-btn:hover { background: #E5E5E5; }
         h1 { font-size: 1.45rem; margin: 0; color: var(--text-main); line-height: 1.1; letter-spacing: -0.5px; }
         
-        .selection-group { background-color: #111; padding: 15px; border-radius: 8px; border: 1px solid #333; margin-bottom: 15px; }
-        .selection-title { font-size: 1.05rem; font-weight: bold; color: #FFF; margin-bottom: 10px; border-left: 4px solid var(--border-color); padding-left: 8px; }
+        .selection-group { background-color: var(--group-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 15px; }
+        .selection-title { font-size: 1.05rem; font-weight: bold; color: var(--text-main); margin-bottom: 10px; border-left: 4px solid var(--border-color); padding-left: 8px; }
         .selection-title.origem { border-color: #4CAF50; }
         .selection-title.destino { border-color: #E91E63; }
         label { display: block; margin-bottom: 5px; font-size: 0.9rem; font-weight: 600; color: var(--text-muted); }
-        select { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 6px; border: 2px solid var(--border-color); background-color: #000000; color: var(--text-main); font-size: 1rem; appearance: none; cursor: pointer; }
+        select { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 6px; border: 2px solid var(--border-color); background-color: var(--input-bg); color: var(--text-main); font-size: 1rem; appearance: none; cursor: pointer; }
         select:last-child { margin-bottom: 0; }
-        select:disabled { opacity: 0.5; cursor: not-allowed; color: #666; }
-        optgroup { font-weight: bold; color: var(--text-muted); background: #111; font-style: normal; }
+        select:disabled { opacity: 0.5; cursor: not-allowed; }
+        optgroup { font-weight: bold; color: var(--text-muted); background: var(--group-bg); font-style: normal; }
+
+        /* BOTÕES DE CONFIGURAÇÃO (HUB) */
+        .settings-list { display: flex; flex-direction: column; gap: 10px; }
+        .settings-btn { display: flex; align-items: center; background: var(--group-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 15px; border-radius: 8px; cursor: pointer; font-size: 1.05rem; font-weight: bold; transition: background 0.2s; text-align: left; }
+        .settings-btn:hover { background: #333; }
+        body.light-mode .settings-btn:hover { background: #EEEEEE; }
+        .settings-btn .icon { font-size: 1.4rem; width: 40px; text-align: center; margin-right: 10px; }
 
         .btn-action { display: block; width: 100%; padding: 16px; margin-top: 10px; margin-bottom: 10px; background-color: var(--btn-color); color: #FFF; border: none; border-radius: 8px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: background 0.3s; text-decoration: none; text-align: center; }
         .btn-action:hover { background-color: #c92f27; }
         .btn-action:disabled { background-color: #555; color: #888; cursor: not-allowed; }
-        .btn-secondary { background-color: #333; margin-top: 0; border: 1px solid #555; }
-        .btn-gps { background: #333; color: #4CAF50; border: 1px solid #4CAF50; border-radius: 6px; padding: 4px 10px; cursor: pointer; font-weight: bold; font-size: 0.85rem; transition: all 0.2s; }
-        .btn-gps:hover { background: #4CAF50; color: #000; }
+        .btn-secondary { background-color: var(--group-bg); color: var(--text-main); margin-top: 0; border: 1px solid var(--border-color); }
+        .btn-gps { background: var(--group-bg); color: #4CAF50; border: 1px solid #4CAF50; border-radius: 6px; padding: 4px 10px; cursor: pointer; font-weight: bold; font-size: 0.85rem; transition: all 0.2s; }
+        .btn-gps:hover { background: #4CAF50; color: #FFF; }
 
-        .result-box { background-color: #0A0A0A; border-radius: 8px; padding: 20px; margin-top: 15px; border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; }
+        .result-box { background-color: var(--group-bg); border-radius: 8px; padding: 20px; margin-top: 15px; border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; }
         .route-step { border-left: 4px solid var(--border-color); padding-left: 15px; margin-bottom: 25px; position: relative; }
         .route-step:last-child { margin-bottom: 0; }
         .route-step::before { content: ''; position: absolute; left: -9px; top: 0; width: 14px; height: 14px; border-radius: 50%; background-color: var(--card-bg); border: 4px solid var(--step-color, var(--border-color)); }
         
         .step-title { font-size: 0.95rem; font-weight: bold; color: var(--text-main); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .result-door { font-size: 1.8rem; font-weight: 900; margin: 8px 0; color: #FFF; line-height: 1.2; }
+        .result-door { font-size: 1.8rem; font-weight: 900; margin: 8px 0; color: var(--text-main); line-height: 1.2; }
         .info-text { font-size: 1rem; line-height: 1.4; color: var(--text-muted); }
         .alert-warning { font-size: 0.95rem; margin-top: 10px; padding: 12px; border-radius: 6px; }
-        .alert-info { background-color: rgba(33, 150, 243, 0.1); border: 1px solid rgba(33, 150, 243, 0.3); color: #FFF; margin-bottom: 20px; }
+        .alert-info { background-color: rgba(33, 150, 243, 0.1); border: 1px solid rgba(33, 150, 243, 0.3); color: var(--text-main); margin-bottom: 20px; }
+        body.light-mode .alert-info { background-color: rgba(33, 150, 243, 0.05); color: #033F88; }
         .alert-pendente { background-color: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3); color: #FFC107; }
+        body.light-mode .alert-pendente { color: #E65100; }
 
-        .t-container { width: 100%; height: 85px; background-color: #050505; border: 1px solid #333; border-radius: 8px; overflow: hidden; position: relative; margin-top: 10px; margin-bottom: 10px; box-shadow: inset 0 0 10px rgba(0,0,0,0.8); }
-        .t-track { position: absolute; height: 2px; width: 100%; bottom: 15px; background: #444; z-index: 0; }
+        .t-container { width: 100%; height: 85px; background-color: var(--train-bg); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; position: relative; margin-top: 10px; margin-bottom: 10px; box-shadow: inset 0 0 10px rgba(0,0,0,0.4); }
+        body.light-mode .t-container { box-shadow: inset 0 0 5px rgba(0,0,0,0.05); }
+        .t-track { position: absolute; height: 2px; width: 100%; bottom: 15px; background: var(--border-color); z-index: 0; }
         .t-wrapper { position: absolute; top: 0; left: 0; height: 100%; display: flex; align-items: center; gap: 6px; transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); z-index: 1; padding: 0 10px; }
-        .t-car { width: 85px; height: 32px; border: 2px solid; background: #1A1A1A; border-radius: 3px; display: flex; justify-content: space-evenly; align-items: flex-end; padding-bottom: 2px; position: relative; }
+        .t-car { width: 85px; height: 32px; border: 2px solid; background: var(--card-bg); border-radius: 3px; display: flex; justify-content: space-evenly; align-items: flex-end; padding-bottom: 2px; position: relative; }
         .t-car.front { border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
         .t-car.back { border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
         .t-car::after { content: attr(data-label); position: absolute; top: -20px; font-size: 0.65rem; color: #888; font-weight: bold; width: 100%; text-align: center; }
-        .t-door { width: 10px; height: 16px; background: #000; border: 1px solid #444; border-radius: 2px 2px 0 0; position: relative; }
+        .t-door { width: 10px; height: 16px; background: var(--group-bg); border: 1px solid var(--border-color); border-radius: 2px 2px 0 0; position: relative; }
         .t-door.target { background: #4CAF50; border-color: #FFF; box-shadow: 0 0 8px #4CAF50; }
-        .t-door.target::before { content: '▼'; position: absolute; top: -22px; left: -3px; color: #4CAF50; font-size: 14px; animation: bounce 1s infinite; text-shadow: 0 0 5px #000; }
+        .t-door.target::before { content: '▼'; position: absolute; top: -22px; left: -3px; color: #4CAF50; font-size: 14px; animation: bounce 1s infinite; text-shadow: 0 0 5px rgba(0,0,0,0.5); }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 
         .footer { margin-top: 25px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 20px; }
         .lang-footer-container { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 15px; }
-        .lang-flag { font-size: 1.8rem; cursor: pointer; user-select: none; opacity: 0.4; filter: grayscale(50%); transition: all 0.3s ease; }
+        .lang-flag { font-size: 2rem; cursor: pointer; user-select: none; opacity: 0.4; filter: grayscale(50%); transition: all 0.3s ease; }
         .lang-flag.active { opacity: 1; filter: grayscale(0%); transform: scale(1.15); }
         .slogan { font-style: italic; margin-bottom: 8px; color: var(--text-main); font-size: 0.85rem;}
         .signature { font-weight: bold; color: var(--text-muted); letter-spacing: 0.5px; font-size: 0.85rem;}
@@ -107,11 +145,11 @@
         body[dir="rtl"] .route-step::before { left: auto; right: -9px; }
         
         .mapped-list { list-style: none; padding: 0; margin: 0; }
-        .mapped-list li { padding: 8px 0; border-bottom: 1px solid #333; color: #FFF; font-size: 0.95rem; }
+        .mapped-list li { padding: 8px 0; border-bottom: 1px solid var(--border-color); color: var(--text-main); font-size: 0.95rem; }
         .mapped-list li::before { content: '✔️'; margin-right: 8px; }
-        .help-text p { font-size: 1.05rem; color: #CCC; margin-top: 0; margin-bottom: 15px; line-height: 1.4; }
-        .help-text h3 { margin-bottom: 5px; color: #FFF; margin-top: 25px; }
-        .help-text ul { padding-left: 20px; margin-top: 0; color: #CCC; font-size: 1rem; line-height: 1.4; }
+        .help-text p { font-size: 1.05rem; color: var(--text-muted); margin-top: 0; margin-bottom: 15px; line-height: 1.4; }
+        .help-text h3 { margin-bottom: 5px; color: var(--text-main); margin-top: 25px; }
+        .help-text ul { padding-left: 20px; margin-top: 0; color: var(--text-muted); font-size: 1rem; line-height: 1.4; }
         .help-text li { margin-bottom: 12px; }
         
         body.large-font h1 { font-size: 2.2rem; }
@@ -141,7 +179,7 @@
     <p class="fade-in-delayed" style="color:var(--text-muted); margin-top:0; margin-bottom: 40px;">Precisão e Autonomia</p>
     
     <button class="btn-action fade-in-delayed" id="btn-entrar-splash" onclick="UI.showView('view-warning')" style="max-width: 250px;">Entrar no Guia</button>
-    <div class="fade-in-delayed" style="margin-top: 30px; font-weight: bold; color: #666;">v4.5.2</div>
+    <div class="fade-in-delayed" style="margin-top: 30px; font-weight: bold; color: #666;">v4.6.0</div>
 </div>
 
 <div id="view-warning" class="app-view">
@@ -170,9 +208,7 @@
                 <h1 id="app-title">PORTA CERTA SP</h1>
             </div>
             <div class="header-actions">
-                <span class="action-btn" onclick="UI.showView('view-tutorial')" title="Como usar">❓</span>
-                <span class="action-btn" onclick="UI.showView('view-mapped')" title="Estações Mapeadas">📋</span>
-                <span class="action-btn" id="btn-font" onclick="UI.toggleFontSize()" title="Acessibilidade Visual">A+</span>
+                <span class="action-btn" onclick="UI.showView('view-settings')" title="Configurações">⚙️</span>
             </div>
         </div>
         
@@ -206,15 +242,36 @@
 
         <div class="result-box" id="resultado-box" style="display: none;"></div>
 
-        <div style="background-color: #111; padding: 20px; border-radius: 8px; border: 1px dashed #4CAF50; margin-top: 25px; text-align: center;">
+        <div style="background-color: var(--group-bg); padding: 20px; border-radius: 8px; border: 1px dashed #4CAF50; margin-top: 25px; text-align: center;">
             <h3 style="color: #4CAF50; margin-top: 0; font-size: 1.1rem; margin-bottom: 8px;">Conhece a porta certa?</h3>
-            <p style="font-size: 0.95rem; color: #CCC; margin-top: 0; margin-bottom: 15px; line-height: 1.4;">Ajude a mapear a rede! Sua informação garante a autonomia de outras pessoas.</p>
+            <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 0; margin-bottom: 15px; line-height: 1.4;">Ajude a mapear a rede! Sua informação garante a autonomia de outras pessoas.</p>
             <a href="https://forms.office.com/r/ByJS9dV1rP" target="_blank" class="btn-action" style="background-color: #4CAF50; color: #000;">
                 🤝 Contribuir com o Mapa
             </a>
         </div>
 
         <div class="footer">
+            <div class="slogan" id="slogan-text">Autonomia. Precisão no embarque. Distâncias menores.</div>
+            <div class="signature">Harry Bour | 2026</div>
+        </div>
+    </div>
+</div>
+
+<div id="view-settings" class="app-view">
+    <div class="container">
+        <div class="container-header">
+            <h2 id="settings-title">Configurações</h2>
+        </div>
+        
+        <div class="settings-list">
+            <button class="settings-btn" onclick="UI.showView('view-tutorial')"><span class="icon">❓</span> <span id="lbl-set-tut">Como usar o Guia</span></button>
+            <button class="settings-btn" onclick="UI.showView('view-mapped')"><span class="icon">📋</span> <span id="lbl-set-map">Estações Mapeadas</span></button>
+            <button class="settings-btn" onclick="UI.toggleFontSize()"><span class="icon">A+</span> <span id="lbl-set-font">Tamanho da Letra</span></button>
+            <button class="settings-btn" id="btn-theme" onclick="UI.toggleTheme()"><span class="icon" id="theme-icon">☀️</span> <span id="theme-text">Modo Claro</span></button>
+        </div>
+
+        <div class="selection-group" style="margin-top: 20px;">
+            <div class="selection-title" id="lbl-set-lang" style="border-left: none; padding-left: 0; text-align: center; margin-bottom: 15px;">Idioma / Language</div>
             <div class="lang-footer-container">
                 <span class="lang-flag active" id="flag-pt" onclick="UI.changeLanguage('pt')">🇧🇷</span>
                 <span class="lang-flag" id="flag-en" onclick="UI.changeLanguage('en')">🇺🇸</span>
@@ -225,39 +282,37 @@
                 <span class="lang-flag" id="flag-ko" onclick="UI.changeLanguage('ko')">🇰🇷</span>
                 <span class="lang-flag" id="flag-ar" onclick="UI.changeLanguage('ar')">🇸🇦</span>
             </div>
-            <div class="slogan" id="slogan-text">Autonomia. Precisão no embarque. Distâncias menores.</div>
-            <div class="signature">Harry Bour | 2026</div>
         </div>
+
+        <button class="btn-action btn-secondary" onclick="UI.showView('view-main')" style="margin-top: 25px;" id="btn-voltar-settings">⬅ Voltar para a PORTA CERTA SP</button>
     </div>
 </div>
 
 <div id="view-tutorial" class="app-view">
     <div class="container help-text">
         <div class="container-header">
-            <h2 style="color: var(--l3);">Como usar o Guia</h2>
+            <h2 style="color: var(--l3);" id="tut-title">Como usar o Guia</h2>
         </div>
         
         <p>O aplicativo calcula em qual porta do trem você deve entrar para sair exatamente de frente para a escada ou elevador que você precisa no destino.</p>
-
         <h3>1. O que você precisa?</h3>
         <p>No topo da tela, escolha a sua preferência para a saída no destino final: Elevador, Escada Rolante ou Escada Fixa.</p>
-
         <h3>2. Origem e Destino</h3>
         <p>Escolha a Linha e a Estação onde você vai embarcar. Você também pode usar o botão <strong>🎯 Perto de mim</strong> para achar a estação mais próxima pelo GPS. Depois, escolha a estação destino. <br><em style="font-size:0.9rem;">Nota: Estações com o aviso "(Em breve)" estão bloqueadas porque ainda não foram mapeadas na origem.</em></p>
-
         <h3>3. Calcule a rota</h3>
         <p>Clique no botão <strong>Qual é a Porta Certa?</strong>. O sistema mostrará o trajeto completo passo a passo. Ele dirá onde você deve embarcar. Exemplo: <strong>Porta 47 (Vagão 4, Porta 2)</strong>.</p>
         <p>Basta procurar o adesivo 47 no chão ou no alto da porta de vidro. Se a estação não tiver marcação, nosso mapa dinâmico mostrará em qual vagão você deve entrar.</p>
 
         <h3 style="margin-top: 30px;">Recursos importantes:</h3>
         <ul>
-            <li><strong>Acessibilidade visual (A+):</strong> Aumenta o tamanho de todas as letras da tela (botão no topo).</li>
+            <li><strong>Acessibilidade visual (A+):</strong> Aumenta o tamanho de todas as letras da tela.</li>
+            <li><strong>Modo Claro (☀️):</strong> Troca o fundo preto por um fundo claro para melhor leitura de dia.</li>
             <li><strong>Estações mapeadas (📋):</strong> Mostra a lista de estações que já funcionam com precisão.</li>
             <li><strong>Direito ao acesso (FALA.SP):</strong> Se a estação destino não tiver o equipamento que você precisa, o app gera um alerta com um atalho direto para a Ouvidoria do Estado. Cobre seus direitos.</li>
             <li><strong>Ajude a mapear:</strong> Descobriu a porta exata de uma estação nova? Vá até a tela principal e clique em "Contribuir com o Mapa" para nos enviar a informação.</li>
         </ul>
 
-        <button class="btn-action btn-secondary" onclick="UI.showView('view-main')" style="margin-top: 30px;" id="btn-voltar-tut">⬅ Voltar</button>
+        <button class="btn-action btn-secondary" onclick="UI.showView('view-settings')" style="margin-top: 30px;" id="btn-voltar-tut">⬅ Voltar</button>
     </div>
 </div>
 
@@ -267,11 +322,11 @@
             <h2 id="list-title">Estações Mapeadas</h2>
         </div>
         <p id="list-desc" style="margin-bottom: 15px; color: var(--text-muted);">A precisão de portas já funciona nestas estações:</p>
-        <div style="background: #000; padding: 15px; border-radius: 8px; margin-bottom: 20px; max-height: 400px; overflow-y: auto;">
+        <div style="background: var(--group-bg); padding: 15px; border-radius: 8px; margin-bottom: 20px; max-height: 400px; overflow-y: auto; border: 1px solid var(--border-color);">
             <h3 style="color: var(--l3); margin-top: 0; font-size: 1.1rem;">■ Linha 3 - Vermelha</h3>
             <ul class="mapped-list" id="ul-mapeadas"></ul>
         </div>
-        <button class="btn-action btn-secondary" onclick="UI.showView('view-main')" id="btn-voltar-map">⬅ Voltar</button>
+        <button class="btn-action btn-secondary" onclick="UI.showView('view-settings')" id="btn-voltar-map">⬅ Voltar</button>
     </div>
 </div>
 
@@ -291,16 +346,18 @@
  * ============================================================================
  * PROJETO: PORTA CERTA SP
  * DATA: 27/02/2026
- * VERSÃO: 4.5.2 (Fix: Botão de Acessibilidade Visual A+)
+ * VERSÃO: 4.6.0 (Hub de Configurações e Modo Claro)
  * DESENVOLVEDOR: Harry Bour
- * MOTIVO DA VERSÃO: Restauração da função de aumento de fonte (A+) no header
- * da aplicação, que havia sido ocultada na mudança de arquitetura de telas.
+ * MOTIVO DA VERSÃO: Otimização do header principal reunindo opções em um menu
+ * de Configurações (⚙️). Implementação estrutural do Modo Claro/Escuro via
+ * CSS Variables com salvamento de preferência no LocalStorage.
  * ============================================================================
  */
 
 const AppData = {
     currentLang: 'pt',
     isLargeFont: false,
+    isLightMode: false,
     linhas: [1, 2, 3, 4, 5, 15, 7, 8, 9, 10, 11, 12, 13],
     
     transferencias: {
@@ -360,14 +417,14 @@ const AppData = {
     },
 
     dicionario: {
-        'pt': { modTitle: 'Aviso: Acessibilidade e Direitos', btnEntrarSplash: 'Entrar no Guia', btnVoltar: '⬅ Voltar', lblPref: 'Sua preferência de saída no destino final:', optElevador: 'Elevador', optRolante: 'Escada Rolante', optFixa: 'Escada Fixa', titleOrigem: '📍 PONTO DE PARTIDA', titleDestino: '🏁 DESTINO FINAL', selLinhaOr: 'Escolha a Linha', selLinhaDest: 'Escolha a Linha', selEstOr: 'Primeiro, escolha a linha', selEstDest: 'Primeiro, escolha a linha', selEstAtivo: 'Agora, escolha a estação', listTitle: 'Estações Mapeadas', listDesc: 'A precisão de portas já funciona nestas estações:', mesmaEstacao: 'Você já está na estação de destino.', trecho: 'Trecho', emBreve: '(Em breve)', l1: 'L1-Azul', l2: 'L2-Verde', l3: 'L3-Vermelha', l4: 'L4-Amarela', l5: 'L5-Lilás', l7: 'L7-Rubi', l8: 'L8-Diamante', l9: 'L9-Esmeralda', l10: 'L10-Turquesa', l11: 'L11-Coral', l12: 'L12-Safira', l13: 'L13-Jade', l15: 'L15-Prata', embTrecho: 'Em {est}, embarque na:', transfTrecho: 'Desembarque em {est} e faça transferência para a {linha}.', saidaFinal: 'No destino final ({est}), você sairá de frente para a {tipo}.', tipoElevador: 'porta do elevador', tipoRolante: 'escada rolante', tipoFixa: 'escada fixa', pendente: 'A estação selecionada ainda não foi mapeada.', txtPorta: 'Porta', txtVagao: 'Vagão', accTitle: 'Direito à Acessibilidade', accBtnFala: 'Registrar Cobrança no FALA.SP', accBtnClose: 'Entendi', txtInexistente: 'Equipamento inexistente nesta estação.', gpsBtn: '🎯 Perto de mim', gpsBusca: '⏳ Buscando...', gpsFeito: '🎯 Feito!', gpsErro: '❌ Sem estações próximas', freqUsadas: 'Mais Usadas', freqTodas: 'Todas as Estações', avisoRota: 'Sobre esta rota', avisoRotaTexto: 'O foco deste trajeto é garantir sua acessibilidade nas estações. Pode não ser o caminho mais rápido para quem não possui restrição de mobilidade.', btnCalc: 'Qual é a Porta Certa?' },
-        'en': { modTitle: 'Notice: Accessibility and Rights', btnEntrarSplash: 'Enter Guide', btnVoltar: '⬅ Back', lblPref: 'Your preferred exit at final destination:', optElevador: 'Elevator', optRolante: 'Escalator', optFixa: 'Stairs', titleOrigem: '📍 STARTING POINT', titleDestino: '🏁 FINAL DESTINATION', selLinhaOr: 'Select Line', selLinhaDest: 'Select Line', selEstOr: 'Select a line first', selEstDest: 'Select a line first', selEstAtivo: 'Now, choose the station', listTitle: 'Mapped Stations', listDesc: 'Currently available at:', mesmaEstacao: 'You are already at the destination station.', trecho: 'Leg', emBreve: '(Soon)', l1: 'L1-Blue', l2: 'L2-Green', l3: 'L3-Red', l4: 'L4-Yellow', l5: 'L5-Lilac', l7: 'L7-Ruby', l8: 'L8-Diamond', l9: 'L9-Emerald', l10: 'L10-Turquoise', l11: 'L11-Coral', l12: 'L12-Sapphire', l13: 'L13-Jade', l15: 'L15-Silver', embTrecho: 'At {est}, board exactly at:', transfTrecho: 'Get off at {est} and transfer to {linha}.', saidaFinal: 'At final destination ({est}), you will exit facing the {tipo}.', tipoElevador: 'elevator door', tipoRolante: 'escalator', tipoFixa: 'stairs', pendente: 'The selected station has not been mapped yet.', txtPorta: 'Door', txtVagao: 'Car', accTitle: 'Accessibility Rights', accBtnFala: 'Complain on FALA.SP', accBtnClose: 'Close', txtInexistente: 'Equipment not available here.', gpsBtn: '🎯 Near me', gpsBusca: '⏳ Searching...', gpsFeito: '🎯 Done!', gpsErro: '❌ No stations found', freqUsadas: 'Most Used', freqTodas: 'All Stations', avisoRota: 'About this route', avisoRotaTexto: 'This route focuses on accessibility. It might not be the fastest path.', btnCalc: 'What is the Right Door?' },
-        'es': { modTitle: 'Aviso: Accesibilidad y Derechos', btnEntrarSplash: 'Entrar a la Guía', btnVoltar: '⬅ Volver', lblPref: 'Tu preferencia de salida:', optElevador: 'Ascensor', optRolante: 'Escalera Mecánica', optFixa: 'Escalera Fija', titleOrigem: '📍 PUNTO DE PARTIDA', titleDestino: '🏁 DESTINO FINAL', selLinhaOr: 'Línea de Origen', selLinhaDest: 'Línea de Destino', selEstOr: 'Primero elige la línea', selEstDest: 'Primero elige la línea', selEstAtivo: 'Ahora, elige la estación', listTitle: 'Estaciones Mapeadas', listDesc: 'Precisión disponible en:', mesmaEstacao: 'Ya estás en la estación.', trecho: 'Tramo', emBreve: '(Pronto)', l1: 'L1-Azul', l2: 'L2-Verde', l3: 'L3-Roja', l4: 'L4-Amarilla', l5: 'L5-Lila', l7: 'L7-Rubí', l8: 'L8-Diamante', l9: 'L9-Esmeralda', l10: 'L10-Turquesa', l11: 'L11-Coral', l12: 'L12-Zafiro', l13: 'L13-Jade', l15: 'L15-Plata', embTrecho: 'En {est}, sube en:', transfTrecho: 'Baja en {est} y transfiere a {linha}.', saidaFinal: 'En tu destino ({est}), saldrás frente a {tipo}.', tipoElevador: 'puerta del ascensor', tipoRolante: 'escalera mecánica', tipoFixa: 'escalera fija', pendente: 'La estación seleccionada aún no ha sido mapeada.', txtPorta: 'Puerta', txtVagao: 'Vagón', accTitle: 'Derecho a la Accesibilidad', accBtnFala: 'Reclamar en FALA.SP', accBtnClose: 'Cerrar', txtInexistente: 'Equipo no disponible.', gpsBtn: '🎯 Cerca de mí', gpsBusca: '⏳ Buscando...', gpsFeito: '🎯 ¡Hecho!', gpsErro: '❌ Sin estaciones', freqUsadas: 'Más Usadas', freqTodas: 'Todas las Estaciones', avisoRota: 'Sobre esta ruta', avisoRotaTexto: 'Esta ruta se centra en la accesibilidad. Puede que no sea el camino más rápido.', btnCalc: '¿Cuál es la Puerta Correcta?' },
-        'fr': { modTitle: 'Avis : Accessibilité', btnEntrarSplash: 'Entrer dans le Guide', btnVoltar: '⬅ Retour', lblPref: 'Sortie:', optElevador: 'Ascenseur', optRolante: 'Escalator', optFixa: 'Escaliers', titleOrigem: '📍 DÉPART', titleDestino: '🏁 DESTINATION', selLinhaOr: 'Ligne', selLinhaDest: 'Ligne', selEstOr: 'Ligne d\'abord', selEstDest: 'Ligne d\'abord', selEstAtivo: 'Maintenant, choisissez la station', listTitle: 'Stations', listDesc: 'Disponibles:', mesmaEstacao: 'Même station.', trecho: 'Trajet', emBreve: '(Bientôt)', l1: 'L1-Bleue', l2: 'L2-Verte', l3: 'L3-Rouge', l4: 'L4-Jaune', l5: 'L5-Lilas', l7: 'L7-Rubis', l8: 'L8-Diamant', l9: 'L9-Émeraude', l10: 'L10-Turquoise', l11: 'L11-Corail', l12: 'L12-Saphir', l13: 'L13-Jade', l15: 'L15-Argent', embTrecho: 'À {est}, montez à:', transfTrecho: 'À {est}, prenez {linha}.', saidaFinal: 'À {est}, face à {tipo}.', tipoElevador: 'porte de l\'ascenseur', tipoRolante: 'escalator', tipoFixa: 'escaliers', pendente: 'Non cartographiée.', txtPorta: 'Porte', txtVagao: 'Voiture', accTitle: 'Accessibilité', accBtnFala: 'FALA.SP', accBtnClose: 'Fermer', txtInexistente: 'Indisponible.', gpsBtn: '🎯 Près de moi', gpsBusca: '⏳ Recherche...', gpsFeito: '🎯 Fait!', gpsErro: '❌ Aucune station', freqUsadas: 'Plus Utilisées', freqTodas: 'Toutes les Stations', avisoRota: 'À propos de cet itinéraire', avisoRotaTexto: 'Cet itinéraire privilégie l\'accessibilité.', btnCalc: 'Quelle est la bonne porte ?' },
-        'zh': { modTitle: '提示：无障碍与权利', btnEntrarSplash: '进入指南', btnVoltar: '⬅ 返回', lblPref: '首选出口:', optElevador: '直梯', optRolante: '扶梯', optFixa: '楼梯', titleOrigem: '📍 起点', titleDestino: '🏁 终点', selLinhaOr: '线', selLinhaDest: '线', selEstOr: '先选线', selEstDest: '先选线', selEstAtivo: '现在，请选择车站', listTitle: '已测绘车站', listDesc: '目前可用:', mesmaEstacao: '已在终点。', trecho: '路段', emBreve: '(即将)', l1: '1号线', l2: '2号线', l3: '3号线', l4: '4号线', l5: '5号线', l7: '7号线', l8: '8号线', l9: '9号线', l10: '10号线', l11: '11号线', l12: '12号线', l13: '13号线', l15: '15号线', embTrecho: '在 {est} 上车:', transfTrecho: '在 {est} 换乘 {linha}。', saidaFinal: '在终点 ({est})，正对{tipo}。', tipoElevador: '直梯', tipoRolante: '扶梯', tipoFixa: '楼梯', pendente: '尚未测绘。', txtPorta: '号门', txtVagao: '号车厢', accTitle: '无障碍权利', accBtnFala: 'FALA.SP', accBtnClose: '关闭', txtInexistente: '不可用。', gpsBtn: '🎯 在我附近', gpsBusca: '⏳ 搜索中...', gpsFeito: '🎯 完成!', gpsErro: '❌ 未找到车站', freqUsadas: '最常用', freqTodas: '所有车站', avisoRota: '关于此路线', avisoRotaTexto: '此路线侧重于无障碍设施。', btnCalc: '正确的车门是哪个？' },
-        'ja': { modTitle: 'お知らせ：アクセシビリティ', btnEntrarSplash: 'ガイドへ入る', btnVoltar: '⬅ 戻る', lblPref: '希望出口:', optElevador: 'EV', optRolante: 'エスカレーター', optFixa: '階段', titleOrigem: '📍 出発', titleDestino: '🏁 目的', selLinhaOr: '路線', selLinhaDest: '路線', selEstOr: 'まず路線を選択', selEstDest: 'まず路線を選択', selEstAtivo: '次に、駅を選択してください', listTitle: 'マッピング済み', listDesc: '利用可能:', mesmaEstacao: '同じ駅。', trecho: '区間', emBreve: '(準備中)', l1: '1号線', l2: '2号線', l3: '3号線', l4: '4号線', l5: '5号線', l7: '7号線', l8: '8号線', l9: '9号線', l10: '10号線', l11: '11号線', l12: '12号線', l13: '13号線', l15: '15号線', embTrecho: '{est}で乗車:', transfTrecho: '{est}で降りて{linha}に乗換。', saidaFinal: '目的地({est})で{tipo}の前。', tipoElevador: 'EVドア', tipoRolante: 'エスカレーター', tipoFixa: '階段', pendente: 'まだマッピングされていません。', txtPorta: '番ドア', txtVagao: '号車', accTitle: 'アクセシビリティ', accBtnFala: 'FALA.SP', accBtnClose: '閉じる', txtInexistente: '利用不可。', gpsBtn: '🎯 近くの駅', gpsBusca: '⏳ 検索中...', gpsFeito: '🎯 完了!', gpsErro: '❌ 駅が見つかりません', freqUsadas: 'よく使う駅', freqTodas: 'すべての駅', avisoRota: 'このルートについて', avisoRotaTexto: 'このルートはアクセシビリティを重視しています。', btnCalc: '正しいドアは？' },
-        'ko': { modTitle: '공지: 접근성 및 권리', btnEntrarSplash: '가이드 시작', btnVoltar: '⬅ 뒤로', lblPref: '선호 출구:', optElevador: '엘리베이터', optRolante: '에스컬레이터', optFixa: '계단', titleOrigem: '📍 출발', titleDestino: '🏁 도착', selLinhaOr: '노선', selLinhaDest: '노선', selEstOr: '노선 선택', selEstDest: '노선 선택', selEstAtivo: '이제 역을 선택하세요', listTitle: '매핑된 역', listDesc: '사용 가능:', mesmaEstacao: '같은 역.', trecho: '구간', emBreve: '(예정)', l1: '1호선', l2: '2호선', l3: '3호선', l4: '4호선', l5: '5호선', l7: '7호선', l8: '8호선', l9: '9호선', l10: '10호선', l11: '11호선', l12: '12호선', l13: '13호선', l15: '15호선', embTrecho: '{est}에서 탑승:', transfTrecho: '{est}에서 내려 {linha} 환승.', saidaFinal: '도착지({est})에서 {tipo} 앞.', tipoElevador: '엘리베이터', tipoRolante: '에스컬레이터', 타입고정: '계단', pendente: '아직 매핑되지 않았습니다.', txtPorta: '번 문', txtVagao: '호차', accTitle: '접근성', accBtnFala: 'FALA.SP', accBtnClose: '닫기', txtInexistente: '불가.', gpsBtn: '🎯 내 근처', gpsBusca: '⏳ 검색 중...', gpsFeito: '🎯 완료!', gpsErro: '❌ 역 없음', freqUsadas: '자주 찾는 역', freqTodas: '모든 역', avisoRota: '이 경로에 대하여', avisoRotaTexto: '이 경로는 접근성을 중점으로 합니다.', btnCalc: '정확한 탑승 문은?' },
-        'ar': { modTitle: 'إشعار: إمكانية الوصول والحقوق', btnEntrarSplash: 'أدخل الدليل', btnVoltar: '⬅ عودة', lblPref: 'المخرج:', optElevador: 'مصعد', optRolante: 'سلم كهربائي', optFixa: 'سلم', titleOrigem: '📍 الانطلاق', titleDestino: '🏁 الوجهة', selLinhaOr: 'الخط', selLinhaDest: 'الخط', selEstOr: 'اختر الخط', selEstDest: 'اختر الخط', selEstAtivo: 'الآن، اختر المحطة', listTitle: 'المحطات', listDesc: 'متاح في:', mesmaEstacao: 'نفس المحطة.', trecho: 'جزء', emBreve: '(قريباً)', l1: '1', l2: '2', l3: '3', l4: '4', l5: '5', l7: '7', l8: '8', l9: '9', l10: '10', l11: '11', l12: '12', l13: '13', l15: '15', embTrecho: 'في {est} اصعد:', transfTrecho: 'انزل في {est} وانتقل إلى {linha}.', saidaFinal: 'في ({est})، أمام {tipo}.', tipoElevador: 'المصعد', tipoRolante: 'السلم', tipoFixa: 'السلم', pendente: 'لم يتم التعيين بعد.', txtPorta: 'باب', txtVagao: 'عربة', accTitle: 'إمكانية الوصول', accBtnFala: 'FALA.SP', accBtnClose: 'أغلق', txtInexistente: 'غير متوفر.', gpsBtn: '🎯 بالقرب مني', gpsBusca: '⏳ جاري البحث...', gpsFeito: '🎯 تم!', gpsErro: '❌ لا توجد محطات', freqUsadas: 'الأكثر استخداماً', freqTodas: 'جميع المحطات', avisoRota: 'حول هذا المسار', avisoRotaTexto: 'يركز هذا المسار على إمكانية الوصول.', btnCalc: 'الباب الصحيح؟' }
+        'pt': { modTitle: 'Aviso: Acessibilidade e Direitos', btnEntrarSplash: 'Entrar no Guia', btnVoltarApp: '⬅ Voltar para PORTA CERTA SP', lblPref: 'Sua preferência de saída no destino final:', optElevador: 'Elevador', optRolante: 'Escada Rolante', optFixa: 'Escada Fixa', titleOrigem: '📍 PONTO DE PARTIDA', titleDestino: '🏁 DESTINO FINAL', selLinhaOr: 'Escolha a Linha', selLinhaDest: 'Escolha a Linha', selEstOr: 'Primeiro, escolha a linha', selEstDest: 'Primeiro, escolha a linha', selEstAtivo: 'Agora, escolha a estação', listTitle: 'Estações Mapeadas', listDesc: 'A precisão de portas já funciona nestas estações:', mesmaEstacao: 'Você já está na estação de destino.', trecho: 'Trecho', emBreve: '(Em breve)', l1: 'L1-Azul', l2: 'L2-Verde', l3: 'L3-Vermelha', l4: 'L4-Amarela', l5: 'L5-Lilás', l7: 'L7-Rubi', l8: 'L8-Diamante', l9: 'L9-Esmeralda', l10: 'L10-Turquesa', l11: 'L11-Coral', l12: 'L12-Safira', l13: 'L13-Jade', l15: 'L15-Prata', embTrecho: 'Em {est}, embarque na:', transfTrecho: 'Desembarque em {est} e faça transferência para a {linha}.', saidaFinal: 'No destino final ({est}), você sairá de frente para a {tipo}.', tipoElevador: 'porta do elevador', tipoRolante: 'escada rolante', tipoFixa: 'escada fixa', pendente: 'A estação selecionada ainda não foi mapeada.', txtPorta: 'Porta', txtVagao: 'Vagão', accTitle: 'Direito à Acessibilidade', accBtnFala: 'Registrar Cobrança no FALA.SP', accBtnClose: 'Entendi', txtInexistente: 'Equipamento inexistente nesta estação.', gpsBtn: '🎯 Perto de mim', gpsBusca: '⏳ Buscando...', gpsFeito: '🎯 Feito!', gpsErro: '❌ Sem estações', freqUsadas: 'Mais Usadas', freqTodas: 'Todas as Estações', avisoRota: 'Sobre esta rota', avisoRotaTexto: 'O foco deste trajeto é garantir sua acessibilidade nas estações. Pode não ser o caminho mais rápido.', btnCalc: 'Qual é a Porta Certa?', configTitle: 'Configurações', setTut: 'Como usar o Guia', setMap: 'Estações Mapeadas', setFont: 'Tamanho da Letra', modoClaro: 'Modo Claro', modoEscuro: 'Modo Escuro', setLang: 'Idioma / Language' },
+        'en': { modTitle: 'Notice: Accessibility', btnEntrarSplash: 'Enter Guide', btnVoltarApp: '⬅ Back to PORTA CERTA SP', lblPref: 'Your preferred exit at final destination:', optElevador: 'Elevator', optRolante: 'Escalator', optFixa: 'Stairs', titleOrigem: '📍 STARTING POINT', titleDestino: '🏁 FINAL DESTINATION', selLinhaOr: 'Select Line', selLinhaDest: 'Select Line', selEstOr: 'Select a line first', selEstDest: 'Select a line first', selEstAtivo: 'Now, choose the station', listTitle: 'Mapped Stations', listDesc: 'Currently available at:', mesmaEstacao: 'You are already at the destination station.', trecho: 'Leg', emBreve: '(Soon)', l1: 'L1-Blue', l2: 'L2-Green', l3: 'L3-Red', l4: 'L4-Yellow', l5: 'L5-Lilac', l7: 'L7-Ruby', l8: 'L8-Diamond', l9: 'L9-Emerald', l10: 'L10-Turquoise', l11: 'L11-Coral', l12: 'L12-Sapphire', l13: 'L13-Jade', l15: 'L15-Silver', embTrecho: 'At {est}, board exactly at:', transfTrecho: 'Get off at {est} and transfer to {linha}.', saidaFinal: 'At final destination ({est}), you will exit facing the {tipo}.', tipoElevador: 'elevator door', tipoRolante: 'escalator', tipoFixa: 'stairs', pendente: 'The selected station has not been mapped yet.', txtPorta: 'Door', txtVagao: 'Car', accTitle: 'Accessibility Rights', accBtnFala: 'Complain on FALA.SP', accBtnClose: 'Close', txtInexistente: 'Equipment not available here.', gpsBtn: '🎯 Near me', gpsBusca: '⏳ Searching...', gpsFeito: '🎯 Done!', gpsErro: '❌ No stations', freqUsadas: 'Most Used', freqTodas: 'All Stations', avisoRota: 'About this route', avisoRotaTexto: 'This route focuses on accessibility. It might not be the fastest path.', btnCalc: 'What is the Right Door?', configTitle: 'Settings', setTut: 'How to use', setMap: 'Mapped Stations', setFont: 'Font Size', modoClaro: 'Light Mode', modoEscuro: 'Dark Mode', setLang: 'Language' },
+        'es': { modTitle: 'Aviso: Accesibilidad', btnEntrarSplash: 'Entrar a la Guía', btnVoltarApp: '⬅ Volver a PORTA CERTA SP', lblPref: 'Tu preferencia de salida:', optElevador: 'Ascensor', optRolante: 'Escalera Mecánica', optFixa: 'Escalera Fija', titleOrigem: '📍 PUNTO DE PARTIDA', titleDestino: '🏁 DESTINO FINAL', selLinhaOr: 'Línea de Origen', selLinhaDest: 'Línea de Destino', selEstOr: 'Primero elige la línea', selEstDest: 'Primero elige la línea', selEstAtivo: 'Ahora, elige la estación', listTitle: 'Estaciones Mapeadas', listDesc: 'Precisión disponible en:', mesmaEstacao: 'Ya estás en la estación.', trecho: 'Tramo', emBreve: '(Pronto)', l1: 'L1-Azul', l2: 'L2-Verde', l3: 'L3-Roja', l4: 'L4-Amarilla', l5: 'L5-Lila', l7: 'L7-Rubí', l8: 'L8-Diamante', l9: 'L9-Esmeralda', l10: 'L10-Turquesa', l11: 'L11-Coral', l12: 'L12-Zafiro', l13: 'L13-Jade', l15: 'L15-Plata', embTrecho: 'En {est}, sube en:', transfTrecho: 'Baja en {est} y transfiere a {linha}.', saidaFinal: 'En tu destino ({est}), saldrás frente a {tipo}.', tipoElevador: 'puerta del ascensor', tipoRolante: 'escalera mecánica', tipoFixa: 'escalera fija', pendente: 'Aún no ha sido mapeada.', txtPorta: 'Puerta', txtVagao: 'Vagón', accTitle: 'Derecho a la Accesibilidad', accBtnFala: 'Reclamar en FALA.SP', accBtnClose: 'Cerrar', txtInexistente: 'Equipo no disponible.', gpsBtn: '🎯 Cerca de mí', gpsBusca: '⏳ Buscando...', gpsFeito: '🎯 ¡Hecho!', gpsErro: '❌ Sin estaciones', freqUsadas: 'Más Usadas', freqTodas: 'Todas las Estaciones', avisoRota: 'Sobre esta ruta', avisoRotaTexto: 'Esta ruta se centra en la accesibilidad. Puede que no sea el camino más rápido.', btnCalc: '¿Cuál es la Puerta Correcta?', configTitle: 'Ajustes', setTut: 'Cómo usar', setMap: 'Estaciones Mapeadas', setFont: 'Tamaño de Letra', modoClaro: 'Modo Claro', modoEscuro: 'Modo Oscuro', setLang: 'Idioma / Language' },
+        'fr': { modTitle: 'Avis : Accessibilité', btnEntrarSplash: 'Entrer dans le Guide', btnVoltarApp: '⬅ Retour', lblPref: 'Sortie:', optElevador: 'Ascenseur', optRolante: 'Escalator', optFixa: 'Escaliers', titleOrigem: '📍 DÉPART', titleDestino: '🏁 DESTINATION', selLinhaOr: 'Ligne', selLinhaDest: 'Ligne', selEstOr: 'Ligne d\'abord', selEstDest: 'Ligne d\'abord', selEstAtivo: 'Maintenant, choisissez la station', listTitle: 'Stations', listDesc: 'Disponibles:', mesmaEstacao: 'Même station.', trecho: 'Trajet', emBreve: '(Bientôt)', l1: 'L1-Bleue', l2: 'L2-Verte', l3: 'L3-Rouge', l4: 'L4-Jaune', l5: 'L5-Lilas', l7: 'L7-Rubis', l8: 'L8-Diamant', l9: 'L9-Émeraude', l10: 'L10-Turquoise', l11: 'L11-Corail', l12: 'L12-Saphir', l13: 'L13-Jade', l15: 'L15-Argent', embTrecho: 'À {est}, montez à:', transfTrecho: 'À {est}, prenez {linha}.', saidaFinal: 'À {est}, face à {tipo}.', tipoElevador: 'porte de l\'ascenseur', tipoRolante: 'escalator', tipoFixa: 'escaliers', pendente: 'Non cartographiée.', txtPorta: 'Porte', txtVagao: 'Voiture', accTitle: 'Accessibilité', accBtnFala: 'FALA.SP', accBtnClose: 'Fermer', txtInexistente: 'Indisponible.', gpsBtn: '🎯 Près de moi', gpsBusca: '⏳ Recherche...', gpsFeito: '🎯 Fait!', gpsErro: '❌ Aucune station', freqUsadas: 'Plus Utilisées', freqTodas: 'Toutes les Stations', avisoRota: 'À propos', avisoRotaTexto: 'Cet itinéraire privilégie l\'accessibilité.', btnCalc: 'Quelle est la bonne porte ?', configTitle: 'Paramètres', setTut: 'Comment utiliser', setMap: 'Stations', setFont: 'Taille de la police', modoClaro: 'Mode Clair', modoEscuro: 'Mode Sombre', setLang: 'Langue' },
+        'zh': { modTitle: '提示：无障碍与权利', btnEntrarSplash: '进入指南', btnVoltarApp: '⬅ 返回', lblPref: '首选出口:', optElevador: '直梯', optRolante: '扶梯', optFixa: '楼梯', titleOrigem: '📍 起点', titleDestino: '🏁 终点', selLinhaOr: '线', selLinhaDest: '线', selEstOr: '先选线', selEstDest: '先选线', selEstAtivo: '现在，请选择车站', listTitle: '已测绘车站', listDesc: '目前可用:', mesmaEstacao: '已在终点。', trecho: '路段', emBreve: '(即将)', l1: '1号线', l2: '2号线', l3: '3号线', l4: '4号线', l5: '5号线', l7: '7号线', l8: '8号线', l9: '9号线', l10: '10号线', l11: '11号线', l12: '12号线', l13: '13号线', l15: '15号线', embTrecho: '在 {est} 上车:', transfTrecho: '在 {est} 换乘 {linha}。', saidaFinal: '在终点 ({est})，正对{tipo}。', tipoElevador: '直梯', tipoRolante: '扶梯', tipoFixa: '楼梯', pendente: '尚未测绘。', txtPorta: '号门', txtVagao: '号车厢', accTitle: '无障碍权利', accBtnFala: 'FALA.SP', accBtnClose: '关闭', txtInexistente: '不可用。', gpsBtn: '🎯 在我附近', gpsBusca: '⏳ 搜索中...', gpsFeito: '🎯 完成!', gpsErro: '❌ 未找到车站', freqUsadas: '最常用', freqTodas: '所有车站', avisoRota: '关于此路线', avisoRotaTexto: '此路线侧重于无障碍设施。', btnCalc: '正确的车门是哪个？', configTitle: '设置', setTut: '如何使用', setMap: '已测绘车站', setFont: '字体大小', modoClaro: '亮色模式', modoEscuro: '暗色模式', setLang: '语言' },
+        'ja': { modTitle: 'お知らせ：アクセシビリティ', btnEntrarSplash: 'ガイドへ入る', btnVoltarApp: '⬅ 戻る', lblPref: '希望出口:', optElevador: 'EV', optRolante: 'エスカレーター', optFixa: '階段', titleOrigem: '📍 出発', titleDestino: '🏁 目的', selLinhaOr: '路線', selLinhaDest: '路線', selEstOr: 'まず路線を選択', selEstDest: 'まず路線を選択', selEstAtivo: '次に、駅を選択してください', listTitle: 'マッピング済み', listDesc: '利用可能:', mesmaEstacao: '同じ駅。', trecho: '区間', emBreve: '(準備中)', l1: '1号線', l2: '2号線', l3: '3号線', l4: '4号線', l5: '5号線', l7: '7号線', l8: '8号線', l9: '9号線', l10: '10号線', l11: '11号線', l12: '12号線', l13: '13号線', l15: '15号線', embTrecho: '{est}で乗車:', transfTrecho: '{est}で降りて{linha}に乗換。', saidaFinal: '目的地({est})で{tipo}の前。', tipoElevador: 'EVドア', tipoRolante: 'エスカレーター', tipoFixa: '階段', pendente: 'まだマッピングされていません。', txtPorta: '番ドア', txtVagao: '号車', accTitle: 'アクセシビリティ', accBtnFala: 'FALA.SP', accBtnClose: '閉じる', txtInexistente: '利用不可。', gpsBtn: '🎯 近くの駅', gpsBusca: '⏳ 検索中...', gpsFeito: '🎯 完了!', gpsErro: '❌ 駅なし', freqUsadas: 'よく使う駅', freqTodas: 'すべての駅', avisoRota: 'このルートについて', avisoRotaTexto: 'このルートはアクセシビリティを重視しています。', btnCalc: '正しいドアは？', configTitle: '設定', setTut: '使い方', setMap: 'マッピング済み', setFont: '文字サイズ', modoClaro: 'ライトモード', modoEscuro: 'ダークモード', setLang: '言語' },
+        'ko': { modTitle: '공지: 접근성 및 권리', btnEntrarSplash: '가이드 시작', btnVoltarApp: '⬅ 뒤로', lblPref: '선호 출구:', optElevador: '엘리베이터', optRolante: '에스컬레이터', optFixa: '계단', titleOrigem: '📍 출발', titleDestino: '🏁 도착', selLinhaOr: '노선', selLinhaDest: '노선', selEstOr: '노선 선택', selEstDest: '노선 선택', selEstAtivo: '이제 역을 선택하세요', listTitle: '매핑된 역', listDesc: '사용 가능:', mesmaEstacao: '같은 역.', trecho: '구간', emBreve: '(예정)', l1: '1호선', l2: '2호선', l3: '3호선', l4: '4호선', l5: '5호선', l7: '7호선', l8: '8호선', l9: '9호선', l10: '10호선', l11: '11호선', l12: '12호선', l13: '13호선', l15: '15호선', embTrecho: '{est}에서 탑승:', transfTrecho: '{est}에서 내려 {linha} 환승.', saidaFinal: '도착지({est})에서 {tipo} 앞.', tipoElevador: '엘리베이터', tipoRolante: '에스컬레이터', tipoFixa: '계단', pendente: '아직 매핑되지 않았습니다.', txtPorta: '번 문', txtVagao: '호차', accTitle: '접근성', accBtnFala: 'FALA.SP', accBtnClose: '닫기', txtInexistente: '불가.', gpsBtn: '🎯 내 근처', gpsBusca: '⏳ 검색 중...', gpsFeito: '🎯 완료!', gpsErro: '❌ 역 없음', freqUsadas: '자주 찾는 역', freqTodas: '모든 역', avisoRota: '이 경로에 대하여', avisoRotaTexto: '이 경로는 접근성을 중점으로 합니다.', btnCalc: '정확한 탑승 문은?', configTitle: '설정', setTut: '사용 방법', setMap: '매핑된 역', setFont: '글꼴 크기', modoClaro: '라이트 모드', modoEscuro: '다크 모드', setLang: '언어' },
+        'ar': { modTitle: 'إشعار: إمكانية الوصول والحقوق', btnEntrarSplash: 'أدخل الدليل', btnVoltarApp: '⬅ عودة', lblPref: 'المخرج:', optElevador: 'مصعد', optRolante: 'سلم كهربائي', optFixa: 'سلم', titleOrigem: '📍 الانطلاق', titleDestino: '🏁 الوجهة', selLinhaOr: 'الخط', selLinhaDest: 'الخط', selEstOr: 'اختر الخط', selEstDest: 'اختر الخط', selEstAtivo: 'الآن، اختر المحطة', listTitle: 'المحطات', listDesc: 'متاح في:', mesmaEstacao: 'نفس المحطة.', trecho: 'جزء', emBreve: '(قريباً)', l1: '1', l2: '2', l3: '3', l4: '4', l5: '5', l7: '7', l8: '8', l9: '9', l10: '10', l11: '11', l12: '12', l13: '13', l15: '15', embTrecho: 'في {est} اصعد:', transfTrecho: 'انزل في {est} وانتقل إلى {linha}.', saidaFinal: 'في ({est})، أمام {tipo}.', tipoElevador: 'المصعد', tipoRolante: 'السلم', tipoFixa: 'السلم', pendente: 'لم يتم التعيين بعد.', txtPorta: 'باب', txtVagao: 'عربة', accTitle: 'إمكانية الوصول', accBtnFala: 'FALA.SP', accBtnClose: 'أغلق', txtInexistente: 'غير متوفر.', gpsBtn: '🎯 بالقرب مني', gpsBusca: '⏳ جاري البحث...', gpsFeito: '🎯 تم!', gpsErro: '❌ لا توجد محطات', freqUsadas: 'الأكثر استخداماً', freqTodas: 'جميع المحطات', avisoRota: 'حول هذا المسار', avisoRotaTexto: 'يركز هذا المسار على إمكانية الوصول.', btnCalc: 'الباب الصحيح؟', configTitle: 'إعدادات', setTut: 'كيف تستعمل', setMap: 'المحطات', setFont: 'حجم الخط', modoClaro: 'وضع الضوء', modoEscuro: 'الوضع المظلم', setLang: 'لغة' }
     }
 };
 
@@ -460,7 +517,7 @@ const Router = {
 
 /**
  * ==========================================
- * [BLOCO 6] JS: INTERFACE E TELAS (UI)
+ * [BLOCO 6] JS: INTERFACE, TEMA E TELAS (UI)
  * ==========================================
  */
 const UI = {
@@ -474,6 +531,13 @@ const UI = {
         this.atualizarEstacoes('origem', true); this.atualizarEstacoes('destino', true);
         this.popularListaMapeadas();
         
+        // Verifica Modo Claro/Escuro salvo
+        if(localStorage.getItem('pc_theme') === 'light') {
+            AppData.isLightMode = true;
+            document.body.classList.add('light-mode');
+        }
+        this.updateThemeUI();
+
         if(sessionStorage.getItem('portaCertaModal') === 'lido') {
             this.showView('view-main');
         } else {
@@ -490,6 +554,26 @@ const UI = {
     finishIntro: function() {
         sessionStorage.setItem('portaCertaModal', 'lido');
         this.showView('view-main');
+    },
+
+    toggleTheme: function() {
+        AppData.isLightMode = !AppData.isLightMode;
+        document.body.classList.toggle('light-mode', AppData.isLightMode);
+        localStorage.setItem('pc_theme', AppData.isLightMode ? 'light' : 'dark');
+        this.updateThemeUI();
+    },
+
+    updateThemeUI: function() {
+        const btnIcon = document.getElementById('theme-icon');
+        const btnText = document.getElementById('theme-text');
+        const t = AppData.dicionario[AppData.currentLang];
+        if(AppData.isLightMode) {
+            btnIcon.innerText = '🌙';
+            btnText.innerText = t.modoEscuro || 'Modo Escuro';
+        } else {
+            btnIcon.innerText = '☀️';
+            btnText.innerText = t.modoClaro || 'Modo Claro';
+        }
     },
 
     atualizarEstacoes: function(tipo, forceReset = false) {
@@ -570,9 +654,21 @@ const UI = {
         document.getElementById('opt-elevador').innerText = t.optElevador; document.getElementById('opt-rolante').innerText = t.optRolante;
         document.getElementById('opt-fixa').innerText = t.optFixa; document.getElementById('title-origem').innerText = t.titleOrigem;
         document.getElementById('title-destino').innerText = t.titleDestino; document.getElementById('list-title').innerText = t.listTitle;
-        document.getElementById('list-desc').innerText = t.listDesc; document.getElementById('btn-close-list').innerText = t.btnVoltar;
-        document.getElementById('btn-voltar-map').innerText = t.btnVoltar; document.getElementById('btn-voltar-tut').innerText = t.btnVoltar;
+        document.getElementById('list-desc').innerText = t.listDesc; 
+        
+        // Botões de Voltar
+        document.getElementById('btn-voltar-settings').innerText = t.btnVoltarApp;
+        document.getElementById('btn-voltar-map').innerText = t.btnVoltarApp; 
+        document.getElementById('btn-voltar-tut').innerText = t.btnVoltarApp;
         document.getElementById('btn-entrar-splash').innerText = t.btnEntrarSplash;
+        
+        // Textos da Engrenagem (Configurações)
+        document.getElementById('settings-title').innerText = t.configTitle;
+        document.getElementById('lbl-set-tut').innerText = t.setTut;
+        document.getElementById('lbl-set-map').innerText = t.setMap;
+        document.getElementById('lbl-set-font').innerText = t.setFont;
+        document.getElementById('lbl-set-lang').innerText = t.setLang;
+        this.updateThemeUI(); // Atualiza texto de Claro/Escuro
         
         document.getElementById('mod-acc-title').innerText = t.accTitle; 
         document.getElementById('mod-acc-btn-fala').innerText = t.accBtnFala; document.getElementById('mod-acc-btn-close').innerText = t.accBtnClose;
