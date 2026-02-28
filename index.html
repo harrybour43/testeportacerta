@@ -3,149 +3,522 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PORTA CERTA SP - TESTE DB (v4.8.0)</title>
+    <title>PORTA CERTA SP</title>
+
     <style>
         * { box-sizing: border-box; }
+
         :root {
-            --l3: #EE3E34; --bg-color: #000000; --card-bg: #1A1A1A; 
-            --text-main: #FFFFFF; --text-muted: #CCCCCC; --border-color: #444444; 
-            --btn-color: #EE3E34; --input-bg: #000000; --group-bg: #111111; --train-bg: #050505;
+            /* Cores das Linhas do Metrô/CPTM */
+            --l1: #00539B; --l2: #008061; --l3: #EE3E34; --l4: #F0D200; --l5: #A52182;
+            --l7: #A0184B; --l8: #9E9E93; --l9: #00A88E; --l10: #007C8F; --l11: #F04D22;
+            --l12: #033F88; --l13: #00B352; --l15: #8D8D8D;
+            
+            /* Cores Temáticas Base (Modo Escuro Padrão) */
+            --bg-color: #000000; 
+            --card-bg: #1A1A1A; 
+            --text-main: #FFFFFF;
+            --text-muted: #CCCCCC; 
+            --border-color: #444444; 
+            --btn-color: #EE3E34;
+            --input-bg: #000000;
+            --group-bg: #111111;
+            --train-bg: #050505;
         }
-        body.light-mode {
-            --bg-color: #F0F2F5; --card-bg: #FFFFFF; --text-main: #111111;
-            --text-muted: #555555; --border-color: #DDDDDD; --input-bg: #FFFFFF;
-            --group-bg: #F9F9F9; --train-bg: #EAEAEA;
-        }
-        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 15px; display: flex; justify-content: center; min-height: 100vh; }
-        .app-view { display: none; width: 100%; max-width: 420px; flex-direction: column; }
-        .app-view.active { display: flex; }
-        .container { background-color: var(--card-bg); border-radius: 12px; padding: 24px; border: 1px solid var(--border-color); }
         
-        .hero-header-main { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); }
-        .hero-logo-svg { height: 45px; margin-bottom: 12px; }
-        .hero-title { font-size: 2.2rem; font-weight: 800; margin: 0; }
+        /* OVERRIDES: MODO CLARO */
+        body.light-mode {
+            --bg-color: #F0F2F5;
+            --card-bg: #FFFFFF;
+            --text-main: #111111;
+            --text-muted: #555555;
+            --border-color: #DDDDDD;
+            --input-bg: #FFFFFF;
+            --group-bg: #F9F9F9;
+            --train-bg: #EAEAEA;
+        }
+        
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 15px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; transition: background-color 0.3s ease, color 0.3s ease; direction: ltr; }
+        
+        /* SISTEMA DE TELAS (SPA) */
+        .app-view { display: none; width: 100%; max-width: 420px; flex-direction: column; animation: fadeInView 0.3s ease; }
+        .app-view.active { display: flex; }
+        @keyframes fadeInView { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .container { background-color: var(--card-bg); border-radius: 12px; padding: 24px; width: 100%; box-shadow: 0 8px 16px rgba(0,0,0,0.8); border-top: 6px solid var(--text-muted); border: 1px solid var(--border-color); transition: all 0.3s ease; }
+        body.light-mode .container { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .container-header { display: flex; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
+        .container-header h2 { margin: 0; font-size: 1.4rem; color: var(--text-main); line-height: 1.2; }
+
+        /* SPLASH SCREEN ANIMATION */
+        #view-splash { justify-content: center; align-items: center; min-height: 90vh; text-align: center; }
+        .splash-train { width: 180px; height: auto; animation: trainDriveIn 1s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        @keyframes trainDriveIn { 0% { transform: translateX(-150vw); } 100% { transform: translateX(0); } }
+        .splash-title { font-size: 2.2rem; margin: 20px 0 5px 0; letter-spacing: -1px; }
+        .fade-in-delayed { opacity: 0; animation: fadeIn 0.8s ease forwards 1s; }
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        /* MODAL DE EMERGÊNCIA */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: var(--card-bg); border: 1px solid var(--border-color); border-top: 5px solid #FF3B30; padding: 25px; border-radius: 12px; max-width: 380px; width: 100%; text-align: left; box-shadow: 0 10px 25px rgba(0,0,0,0.5); color: var(--text-main); }
+        .modal-content h2 { margin-top: 0; font-size: 1.4rem; color: #FF3B30; line-height: 1.2;}
+        
+        .checkbox-container { display: flex; align-items: center; gap: 10px; margin-bottom: 25px; cursor: pointer; }
+        .checkbox-container input { width: 22px; height: 22px; accent-color: var(--btn-color); cursor: pointer; }
+        .checkbox-container span { font-weight: bold; font-size: 1.05rem; }
+
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .action-btn { font-size: 1.4rem; font-weight: bold; color: var(--text-main); background: var(--group-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 6px 12px; cursor: pointer; user-select: none; transition: background 0.2s; }
+        .action-btn:hover { background: #333; }
+        body.light-mode .action-btn:hover { background: #E5E5E5; }
+        h1 { font-size: 1.45rem; margin: 0; color: var(--text-main); line-height: 1.1; letter-spacing: -0.5px; }
+        
+        /* HERO HEADER (TELA PRINCIPAL) */
+        .hero-header-main {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero-settings {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .hero-logo-svg {
+            height: 45px; 
+            width: auto;
+            margin-bottom: 12px;
+        }
+
         .logo-door-target { fill: #4CAF50; animation: logoPulse 2s infinite; }
         @keyframes logoPulse { 0%, 100% { filter: drop-shadow(0 0 2px #4CAF50); } 50% { filter: drop-shadow(0 0 8px #4CAF50); } }
+
         body.light-mode .hero-logo-svg rect[fill="#1A1A1A"] { fill: #FFFFFF; }
         body.light-mode .hero-logo-svg rect[fill="#000"] { fill: #E0E0E0; }
         body.light-mode .hero-logo-svg line { stroke: #CCC; }
 
+        .hero-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin: 0;
+            color: var(--text-main);
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        body.large-font .hero-title { font-size: 2.8rem; }
+
         .selection-group { background-color: var(--group-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 15px; }
+        .selection-title { font-size: 1.05rem; font-weight: bold; color: var(--text-main); margin-bottom: 10px; border-left: 4px solid var(--border-color); padding-left: 8px; }
+        .selection-title.origem { border-color: #4CAF50; }
+        .selection-title.destino { border-color: #E91E63; }
         label { display: block; margin-bottom: 5px; font-size: 0.9rem; font-weight: 600; color: var(--text-muted); }
-        select { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 6px; background: var(--input-bg); color: var(--text-main); border: 2px solid var(--border-color); font-size: 1rem; }
-        .btn-action { width: 100%; padding: 16px; background: var(--btn-color); color: #FFF; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.1rem; }
+        select { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 6px; border: 2px solid var(--border-color); background-color: var(--input-bg); color: var(--text-main); font-size: 1rem; appearance: none; cursor: pointer; }
+        select:last-child { margin-bottom: 0; }
+        select:disabled { opacity: 0.5; cursor: not-allowed; }
+        optgroup { font-weight: bold; color: var(--text-muted); background: var(--group-bg); font-style: normal; }
+
+        /* BOTÕES DE CONFIGURAÇÃO (HUB) */
+        .settings-list { display: flex; flex-direction: column; gap: 10px; }
+        .settings-btn { display: flex; align-items: center; background: var(--group-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 15px; border-radius: 8px; cursor: pointer; font-size: 1.05rem; font-weight: bold; transition: background 0.2s; text-align: left; }
+        .settings-btn:hover { background: #333; }
+        body.light-mode .settings-btn:hover { background: #EEEEEE; }
+        .settings-btn .icon { font-size: 1.4rem; width: 40px; text-align: center; margin-right: 10px; }
+
+        .btn-action { display: block; width: 100%; padding: 16px; margin-top: 10px; margin-bottom: 10px; background-color: var(--btn-color); color: #FFF; border: none; border-radius: 8px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: background 0.3s; text-decoration: none; text-align: center; }
+        .btn-action:hover { background-color: #c92f27; }
+        .btn-action:disabled { background-color: #555; color: #888; cursor: not-allowed; }
+        .btn-secondary { background-color: var(--group-bg); color: var(--text-main); margin-top: 0; border: 1px solid var(--border-color); }
+        .btn-gps { background: var(--group-bg); color: #4CAF50; border: 1px solid #4CAF50; border-radius: 6px; padding: 4px 10px; cursor: pointer; font-weight: bold; font-size: 0.85rem; transition: all 0.2s; }
+        .btn-gps:hover { background: #4CAF50; color: #FFF; }
+
+        .result-box { background-color: var(--group-bg); border-radius: 8px; padding: 20px; margin-top: 15px; border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; }
+        .route-step { border-left: 4px solid var(--border-color); padding-left: 15px; margin-bottom: 25px; position: relative; }
+        .route-step:last-child { margin-bottom: 0; }
+        .route-step::before { content: ''; position: absolute; left: -9px; top: 0; width: 14px; height: 14px; border-radius: 50%; background-color: var(--card-bg); border: 4px solid var(--step-color, var(--border-color)); }
         
-        .result-box { background: var(--group-bg); padding: 20px; border-radius: 8px; margin-top: 15px; border: 1px solid var(--border-color); }
-        .result-door { font-size: 1.8rem; font-weight: 900; margin: 8px 0; color: var(--l3); }
-        .info-text { font-size: 1rem; line-height: 1.4; color: var(--text-muted); margin-bottom: 10px; }
-        .alert-warning { font-size: 0.95rem; padding: 12px; border-radius: 6px; color: #FF3B30; border: 1px solid #FF3B30; }
+        .step-title { font-size: 0.95rem; font-weight: bold; color: var(--text-main); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .result-door { font-size: 1.8rem; font-weight: 900; margin: 8px 0; color: var(--text-main); line-height: 1.2; }
+        .info-text { font-size: 1rem; line-height: 1.4; color: var(--text-muted); }
+        .alert-warning { font-size: 0.95rem; margin-top: 10px; padding: 12px; border-radius: 6px; }
+        .alert-info { background-color: rgba(33, 150, 243, 0.1); border: 1px solid rgba(33, 150, 243, 0.3); color: var(--text-main); margin-bottom: 20px; }
+        body.light-mode .alert-info { background-color: rgba(33, 150, 243, 0.05); color: #033F88; }
+        .alert-pendente { background-color: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3); color: #FFC107; }
+        body.light-mode .alert-pendente { color: #E65100; }
 
         /* NOVO TREM VISTO DE CIMA (DUAS FACES) */
         .t-container { width: 100%; height: 95px; background: var(--train-bg); border-radius: 8px; position: relative; overflow: hidden; margin: 10px 0; border: 1px solid var(--border-color); }
         .t-track { position: absolute; height: 100%; width: 100%; background: repeating-linear-gradient(90deg, transparent, transparent 15px, rgba(255,255,255,0.05) 15px, rgba(255,255,255,0.05) 20px); }
         .t-wrapper { position: absolute; top: 15px; display: flex; align-items: center; gap: 6px; padding: 0 10px; height: 65px; transition: transform 1.2s ease; z-index: 1;}
-        .t-car { width: 90px; height: 100%; border: 2px solid var(--l3); background: var(--card-bg); border-radius: 6px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+        .t-car { width: 90px; height: 100%; border: 2px solid; background: var(--card-bg); border-radius: 6px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
         .t-car::after { content: attr(data-label); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.75rem; color: var(--text-muted); font-weight: bold; }
         .t-doors-side { display: flex; justify-content: space-evenly; width: 100%; padding: 0 2px; }
         .t-door { width: 10px; height: 8px; background: var(--group-bg); border: 1px solid var(--border-color); }
         .t-door.top { border-radius: 0 0 3px 3px; border-top: none; }
         .t-door.bottom { border-radius: 3px 3px 0 0; border-bottom: none; }
         .t-door.target { background: #4CAF50; border-color: #FFF; box-shadow: 0 0 10px #4CAF50; z-index: 2; }
+        .t-door.target::before { content: '▼'; position: absolute; left: 50%; transform: translateX(-50%); font-size: 14px; color: #4CAF50; animation: bounce 1s infinite; text-shadow: 0 0 5px rgba(0,0,0,0.5); }
+        .t-door.top.target::before { top: -20px; }
+        .t-door.bottom.target::before { bottom: -20px; transform: translateX(-50%) rotate(180deg); }
+
+        .footer { margin-top: 25px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 20px; }
+        .lang-footer-container { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 15px; }
+        .lang-flag { font-size: 2rem; cursor: pointer; user-select: none; opacity: 0.4; filter: grayscale(50%); transition: all 0.3s ease; }
+        .lang-flag.active { opacity: 1; filter: grayscale(0%); transform: scale(1.15); }
+        .slogan { font-style: italic; margin-bottom: 8px; color: var(--text-main); font-size: 0.85rem;}
+        .signature { font-weight: bold; color: var(--text-muted); letter-spacing: 0.5px; font-size: 0.85rem;}
         
-        .hidden { display: none; }
+        body[dir="rtl"] .selection-title { border-left: none; border-right: 4px solid var(--border-color); padding-left: 0; padding-right: 8px; }
+        body[dir="rtl"] .route-step { border-left: none; border-right: 4px solid var(--border-color); padding-left: 0; padding-right: 15px; }
+        body[dir="rtl"] .route-step::before { left: auto; right: -9px; }
+        
+        .mapped-list { list-style: none; padding: 0; margin: 0; }
+        .mapped-list li { padding: 8px 0; border-bottom: 1px solid var(--border-color); color: var(--text-main); font-size: 0.95rem; }
+        .mapped-list li::before { content: '✔️'; margin-right: 8px; }
+        .help-text p { font-size: 1.05rem; color: var(--text-muted); margin-top: 0; margin-bottom: 15px; line-height: 1.4; }
+        .help-text h3 { margin-bottom: 5px; color: var(--text-main); margin-top: 25px; }
+        .help-text ul { padding-left: 20px; margin-top: 0; color: var(--text-muted); font-size: 1rem; line-height: 1.4; }
+        .help-text li { margin-bottom: 12px; }
+        
+        body.large-font h1 { font-size: 2.2rem; }
+        body.large-font .selection-title { font-size: 1.2rem; }
+        body.large-font label { font-size: 1.1rem; }
+        body.large-font select { font-size: 1.2rem; padding: 14px; }
+        body.large-font .btn-action { font-size: 1.4rem; padding: 18px; }
+        body.large-font .result-door { font-size: 2.2rem; }
+        body.large-font .info-text { font-size: 1.2rem; }
+        body.large-font .help-text p, body.large-font .help-text ul { font-size: 1.1rem; }
     </style>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 40'><rect x='5' y='5' width='110' height='30' rx='4' fill='%231A1A1A' stroke='%23888' stroke-width='2'/><rect x='15' y='12' width='12' height='23' rx='1.5' fill='%23000' stroke='%23444' stroke-width='1.5'/><rect x='40' y='12' width='12' height='23' rx='1.5' fill='%23000' stroke='%23444' stroke-width='1.5'/><rect x='65' y='12' width='12' height='23' rx='1.5' fill='%234CAF50'/><rect x='90' y='12' width='12' height='23' rx='1.5' fill='%23000' stroke='%23444' stroke-width='1.5'/></svg>" type="image/svg+xml">
 </head>
 <body>
 
-<div id="view-main" class="app-view active">
+<div id="view-splash" class="app-view">
+    <svg class="splash-train" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+        <line x1="0" y1="38" x2="120" y2="38" stroke="#444" stroke-width="2" stroke-linecap="round"/>
+        <rect x="5" y="5" width="110" height="30" rx="4" fill="#1A1A1A" stroke="#888" stroke-width="2"/>
+        <rect x="15" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
+        <rect x="40" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
+        <rect x="65" y="12" width="12" height="23" rx="1.5" class="logo-door-target"/>
+        <rect x="90" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
+    </svg>
+    <h1 class="splash-title fade-in-delayed">PORTA CERTA SP</h1>
+    <p class="fade-in-delayed" style="color:var(--text-muted); margin-top:0; margin-bottom: 40px;">Precisão e Autonomia</p>
+    
+    <button class="btn-action fade-in-delayed" id="btn-entrar-splash" onclick="UI.showView('view-warning')" style="max-width: 250px;">Entrar no Guia</button>
+    <div class="fade-in-delayed" style="margin-top: 30px; font-weight: bold; color: #666;">v4.8.0</div>
+</div>
+
+<div id="view-warning" class="app-view">
+    <div class="container" style="border-top-color: var(--btn-color);">
+        <h2 id="mod-title" style="margin-top: 0;">Aviso: Acessibilidade</h2>
+        <p id="mod-text" style="font-size: 1.05rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 25px;">O Porta Certa SP é, antes de tudo, uma ferramenta de ativismo. Nosso principal objetivo é garantir autonomia para pessoas com mobilidade reduzida. Chegar mais rápido é um benefício secundário. O bom senso e a segurança vêm em primeiro lugar.</p>
+        <label class="checkbox-container">
+            <input type="checkbox" id="check-ciencia" onchange="UI.liberarModal()">
+            <span id="mod-check">Li e compreendi</span>
+        </label>
+        <button id="btn-modal" class="btn-action" disabled onclick="UI.finishIntro()">Acessar o Guia</button>
+    </div>
+</div>
+
+<div id="view-main" class="app-view">
     <div class="container">
         
         <div class="hero-header-main">
-            <svg class="hero-logo-svg" viewBox="0 0 120 40">
+            <div class="hero-settings">
+                <span class="action-btn" onclick="UI.showView('view-settings')" title="Configurações">⚙️</span>
+            </div>
+            
+            <svg class="hero-logo-svg" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
                 <rect x="5" y="5" width="110" height="30" rx="4" fill="#1A1A1A" stroke="#888" stroke-width="2"/>
+                <rect x="15" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
+                <rect x="40" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
                 <rect x="65" y="12" width="12" height="23" rx="1.5" class="logo-door-target"/>
+                <rect x="90" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
             </svg>
-            <h1 class="hero-title">PORTA CERTA SP</h1>
-            <p style="color: var(--text-muted); margin-top: 5px; font-size: 0.9rem;">(Módulo Dupla Face L3)</p>
+            
+            <h1 id="app-title" class="hero-title">PORTA CERTA SP</h1>
         </div>
-
-        <label>Sua preferência de saída no destino final:</label>
+        
+        <label for="preferencia" id="lbl-pref">Sua preferência de saída no destino final:</label>
         <select id="preferencia">
-            <option value="rolante">Escada Rolante</option>
-            <option value="fixa">Escada Fixa</option>
-            <option value="elevador">Elevador</option>
+            <option value="elevador" id="opt-elevador" selected>Elevador</option>
+            <option value="rolante" id="opt-rolante">Escada Rolante</option>
+            <option value="fixa" id="opt-fixa">Escada Fixa</option>
         </select>
 
         <div class="selection-group">
-            <label>📍 Origem (Embarque):</label>
-            <select id="estacao-origem" onchange="UI.limpar()"></select>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div class="selection-title origem" id="title-origem" style="margin-bottom: 0; border: none; padding-left: 0;">📍 PONTO DE PARTIDA</div>
+                <button onclick="GeoLocation.findNearest()" class="btn-gps" id="btn-gps">🎯 Perto de mim</button>
+            </div>
+            <select id="linha-origem" onchange="UI.atualizarEstacoes('origem')"></select>
+            <select id="estacao-origem" disabled>
+                <option value="0" disabled selected id="opt-default-est-origem">Primeiro, escolha a linha</option>
+            </select>
         </div>
 
         <div class="selection-group">
-            <label>🏁 Destino (Desembarque):</label>
-            <select id="estacao-destino" onchange="UI.limpar()"></select>
+            <div class="selection-title destino" id="title-destino">🏁 DESTINO FINAL</div>
+            <select id="linha-destino" onchange="UI.atualizarEstacoes('destino')"></select>
+            <select id="estacao-destino" disabled>
+                <option value="0" disabled selected id="opt-default-est-destino">Primeiro, escolha a linha</option>
+            </select>
         </div>
 
-        <button class="btn-action" onclick="UI.iniciarCalculo()">Qual é a Porta Certa?</button>
+        <button id="btn-calcular" class="btn-action" onclick="UI.iniciarCalculo()">Qual é a Porta Certa?</button>
+
+        <div class="result-box" id="resultado-box" style="display: none;"></div>
+
+        <div style="background-color: var(--group-bg); padding: 20px; border-radius: 8px; border: 1px dashed #4CAF50; margin-top: 25px; text-align: center;">
+            <h3 style="color: #4CAF50; margin-top: 0; font-size: 1.1rem; margin-bottom: 8px;">Conhece a porta certa?</h3>
+            <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 0; margin-bottom: 15px; line-height: 1.4;">Ajude a mapear a rede! Sua informação garante a autonomia de outras pessoas.</p>
+            <a href="https://forms.office.com/r/ByJS9dV1rP" target="_blank" class="btn-action" style="background-color: #4CAF50; color: #000;">
+                🤝 Contribuir com o Mapa
+            </a>
+        </div>
+
+        <div class="footer">
+            <div class="slogan" id="slogan-text">Autonomia. Precisão no embarque. Distâncias menores.</div>
+            <div class="signature">Harry Bour | 2026</div>
+        </div>
+    </div>
+</div>
+
+<div id="view-settings" class="app-view">
+    <div class="container">
+        <div class="container-header">
+            <h2 id="settings-title">Configurações</h2>
+        </div>
         
-        <div id="resultado-box" class="result-box" style="display:none"></div>
+        <div class="settings-list">
+            <button class="settings-btn" onclick="UI.showView('view-tutorial')"><span class="icon">❓</span> <span id="lbl-set-tut">Como usar o Guia</span></button>
+            <button class="settings-btn" onclick="UI.showView('view-mapped')"><span class="icon">📋</span> <span id="lbl-set-map">Estações Mapeadas</span></button>
+            <button class="settings-btn" onclick="UI.toggleFontSize()"><span class="icon">A+</span> <span id="lbl-set-font">Tamanho da Letra</span></button>
+            <button class="settings-btn" id="btn-theme" onclick="UI.toggleTheme()"><span class="icon" id="theme-icon">☀️</span> <span id="theme-text">Modo Claro</span></button>
+        </div>
+
+        <div class="selection-group" style="margin-top: 20px;">
+            <div class="selection-title" id="lbl-set-lang" style="border-left: none; padding-left: 0; text-align: center; margin-bottom: 15px;">Idioma / Language</div>
+            <div class="lang-footer-container">
+                <span class="lang-flag active" id="flag-pt" onclick="UI.changeLanguage('pt')">🇧🇷</span>
+                <span class="lang-flag" id="flag-en" onclick="UI.changeLanguage('en')">🇺🇸</span>
+                <span class="lang-flag" id="flag-es" onclick="UI.changeLanguage('es')">🇪🇸</span>
+                <span class="lang-flag" id="flag-fr" onclick="UI.changeLanguage('fr')">🇫🇷</span>
+                <span class="lang-flag" id="flag-zh" onclick="UI.changeLanguage('zh')">🇨🇳</span>
+                <span class="lang-flag" id="flag-ja" onclick="UI.changeLanguage('ja')">🇯🇵</span>
+                <span class="lang-flag" id="flag-ko" onclick="UI.changeLanguage('ko')">🇰🇷</span>
+                <span class="lang-flag" id="flag-ar" onclick="UI.changeLanguage('ar')">🇸🇦</span>
+            </div>
+        </div>
+
+        <button class="btn-action btn-secondary" onclick="UI.showView('view-main')" style="margin-top: 25px;" id="btn-voltar-settings">⬅ Voltar para a PORTA CERTA SP</button>
+    </div>
+</div>
+
+<div id="view-tutorial" class="app-view">
+    <div class="container help-text">
+        <div class="container-header">
+            <h2 style="color: var(--l3);" id="tut-title">Como usar o Guia</h2>
+        </div>
+        
+        <p>O aplicativo calcula em qual porta do trem você deve entrar para sair exatamente de frente para a escada ou elevador que você precisa no destino.</p>
+        <h3>1. O que você precisa?</h3>
+        <p>No topo da tela, escolha a sua preferência para a saída no destino final: Elevador, Escada Rolante ou Escada Fixa.</p>
+        <h3>2. Origem e Destino</h3>
+        <p>Escolha a Linha e a Estação onde você vai embarcar. Você também pode usar o botão <strong>🎯 Perto de mim</strong> para achar a estação mais próxima pelo GPS. Depois, escolha a estação destino. <br><em style="font-size:0.9rem;">Nota: Estações com o aviso "(Em breve)" estão bloqueadas porque ainda não foram mapeadas na origem.</em></p>
+        <h3>3. Calcule a rota</h3>
+        <p>Clique no botão <strong>Qual é a Porta Certa?</strong>. O sistema mostrará o trajeto completo passo a passo. Ele dirá onde você deve embarcar. Exemplo: <strong>Porta 47 (Vagão 4, Porta 2)</strong>.</p>
+        <p>Basta procurar o adesivo 47 no chão ou no alto da porta de vidro. Se a estação não tiver marcação, nosso mapa dinâmico mostrará em qual vagão você deve entrar.</p>
+
+        <h3 style="margin-top: 30px;">Recursos importantes:</h3>
+        <ul>
+            <li><strong>Acessibilidade visual (A+):</strong> Aumenta o tamanho de todas as letras da tela.</li>
+            <li><strong>Modo Claro (☀️):</strong> Troca o fundo preto por um fundo claro para melhor leitura de dia.</li>
+            <li><strong>Estações mapeadas (📋):</strong> Mostra a lista de estações que já funcionam com precisão.</li>
+            <li><strong>Direito ao acesso (FALA.SP):</strong> Se a estação destino não tiver o equipamento que você precisa, o app gera um alerta com um atalho direto para a Ouvidoria do Estado. Cobre seus direitos.</li>
+            <li><strong>Ajude a mapear:</strong> Descobriu a porta exata de uma estação nova? Vá até a tela principal e clique em "Contribuir com o Mapa" para nos enviar a informação.</li>
+        </ul>
+
+        <button class="btn-action btn-secondary" onclick="UI.showView('view-settings')" style="margin-top: 30px;" id="btn-voltar-tut">⬅ Voltar</button>
+    </div>
+</div>
+
+<div id="view-mapped" class="app-view">
+    <div class="container">
+        <div class="container-header">
+            <h2 id="list-title">Estações Mapeadas</h2>
+        </div>
+        <p id="list-desc" style="margin-bottom: 15px; color: var(--text-muted);">A precisão de portas já funciona nestas estações:</p>
+        <div style="background: var(--group-bg); padding: 15px; border-radius: 8px; margin-bottom: 20px; max-height: 400px; overflow-y: auto; border: 1px solid var(--border-color);">
+            <h3 style="color: var(--l3); margin-top: 0; font-size: 1.1rem;">■ Linha 3 - Vermelha</h3>
+            <ul class="mapped-list" id="ul-mapeadas"></ul>
+        </div>
+        <button class="btn-action btn-secondary" onclick="UI.showView('view-settings')" id="btn-voltar-map">⬅ Voltar</button>
+    </div>
+</div>
+
+<div id="acessibilidade-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+        <h2 id="mod-acc-title">Direito à Acessibilidade</h2>
+        <p id="mod-acc-text">A estação selecionada não possui o equipamento de acessibilidade escolhido. O acesso pleno ao transporte público é um direito seu. Exerça sua cidadania e cobre melhorias directamente na Ouvidoria do Governo de São Paulo.</p>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <a href="https://fala.sp.gov.br/" target="_blank" class="btn-action" style="background-color: #FF3B30;" id="mod-acc-btn-fala">Registrar Cobrança no FALA.SP</a>
+            <button class="btn-action btn-secondary" onclick="UI.fecharModalAcessibilidade()" id="mod-acc-btn-close">Entendi</button>
+        </div>
     </div>
 </div>
 
 <script>
 /**
- * DADOS DE TESTE - L3
- * S1 = Itaquera
- * S2 = Barra Funda
+ * ============================================================================
+ * PROJETO: PORTA CERTA SP
+ * DATA: 28/02/2026
+ * VERSÃO: 4.8.0 (Hub Config, Light Mode, DB S1/S2 e Trem Dupla Face)
+ * DESENVOLVEDOR: Harry Bour
+ * ============================================================================
  */
+
 const AppData = {
-    // Ordem geográfica real L3 (Sentido 2 = Da esquerda p/ direita no array)
-    ordemL3: ["ITQ", "ART", "PCA", "TAT", "BEL", "BRE", "BAS", "PSE", "REP", "CEC", "DEO", "BFU"],
+    currentLang: 'pt',
+    isLargeFont: false,
+    isLightMode: false,
+    linhas: [1, 2, 3, 4, 5, 15, 7, 8, 9, 10, 11, 12, 13],
     
+    transferencias: {
+        1: { 2: 'Paraíso', 3: 'Sé', 4: 'Luz', 5: 'Santa Cruz', 10: 'Luz', 11: 'Luz' },
+        2: { 1: 'Paraíso', 4: 'Consolação', 5: 'Chácara Klabin', 10: 'Tamanduateí', 15: 'Vila Prudente' },
+        3: { 1: 'Sé', 4: 'República', 7: 'Barra Funda', 8: 'Barra Funda', 10: 'Brás', 11: 'Brás', 12: 'Brás' },
+        4: { 1: 'Luz', 2: 'Paulista', 3: 'República', 9: 'Pinheiros', 10: 'Luz', 11: 'Luz' },
+        5: { 1: 'Santa Cruz', 2: 'Chácara Klabin', 9: 'Santo Amaro' },
+        7: { 3: 'Barra Funda', 8: 'Barra Funda', 10: 'Barra Funda' },
+        8: { 3: 'Barra Funda', 7: 'Barra Funda', 9: 'Osasco', 10: 'Barra Funda' },
+        9: { 4: 'Pinheiros', 5: 'Santo Amaro', 8: 'Osasco' },
+        10: { 1: 'Luz', 2: 'Tamanduateí', 3: 'Brás', 4: 'Luz', 7: 'Barra Funda', 8: 'Barra Funda', 11: 'Brás', 12: 'Brás' },
+        11: { 1: 'Luz', 3: 'Brás', 4: 'Luz', 10: 'Brás', 12: 'Brás' },
+        12: { 3: 'Brás', 10: 'Brás', 11: 'Brás', 13: 'Engenheiro Goulart' },
+        13: { 12: 'Engenheiro Goulart' },
+        15: { 2: 'Vila Prudente' }
+    },
+
+    ordemL3: ["ITQ", "ART", "PCA", "VPA", "VTD", "PEN", "CAR", "TAT", "BEL", "BRE", "BAS", "PDS", "PSE", "GBU", "REP", "CEC", "DEO", "BFU"],
+
     estacoes: {
-        "ITQ": { nome: "Corinthians-Itaquera", dbStr: "ITAS2E11,ITAS2F44,ITAS2F31,ITAS2R44-I,ITAS2R54-I,ITAS2R31-O,ITAS2R21-I,ITAS2R21-O" },
-        "ART": { nome: "Artur Alvim", dbStr: "ARTS1E64,ARTS1F24,ARTS1F33,ARTS1R24-O,ARTS1R33-I,ARTS1R43-O,ARTS2E65,ARTS2F25,ARTS2F36,ARTS2R25-O,ARTS2R36-I,ARTS2R47-O" },
-        "PCA": { nome: "Patriarca", dbStr: "PCAS1E11,PCAS1F44,PCAS1R34-I,PCAS1R34-O,PCAS1R31-I,PCAS1R31-O,PCAS2E18,PCAS2F45,PCAS2R35-I,PCAS2R35-O,PCAS2R38-I,PCAS2R38-O" },
-        // Adicionadas as novas estações com base nos dados fornecidos
-        "TAT": { nome: "Tatuapé (Espanhola)", dbStr: "TATS2F11,TATS2F44,TATS2R53-I,TATS2R33-I,TATS2R14-I,TATS1F35,TATS1F18,TATS1R55-I,TATS1R45-I,TATS1R15-I" }, // Nota: DB não distinguiu I/O aqui, deixei como I para rolantes
-        "BEL": { nome: "Belém", dbStr: "" },
-        "BRE": { nome: "Bresser-Mooca", dbStr: "" },
-        "BAS": { nome: "Brás (Espanhola)", dbStr: "BASS2F31,BASS2R21-O,BASS2R31-I,BASS2R41-I,BASS1F44,BASS1R48-O,BASS1R28-I" }, // Ex: v3p4 sentido S1 = (3+1=4, logo 48) - Adaptado para o padrão Numérico 
-        "PSE": { nome: "Sé", dbStr: "" },
-        "REP": { nome: "República", dbStr: "REPS1E55,REPS1F62,REPS1R54-O,REPS1R41-O,REPS2E68,REPS2F42,REPS2R53-O,REPS2R44-O,REPS2R32-O" },
-        "CEC": { nome: "Santa Cecília", dbStr: "CECS1E48,CECS1F58,CECS1F38" }, // Sem S2 na DB base
-        "DEO": { nome: "Marechal Deodoro", dbStr: "DEOS1E37,DEOS1F28,DEOS1F45,DEOS1R28-O,DEOS1R45-I" }, // Sem S2 na DB base
-        "BFU": { nome: "Palmeiras-Barra Funda", dbStr: "" }
+        101:{linha:1,nome:"Tucuruvi",lat:-23.4804,lng:-46.6038}, 102:{linha:1,nome:"Parada Inglesa",lat:-23.4877,lng:-46.6080}, 103:{linha:1,nome:"Jardim São Paulo",lat:-23.4922,lng:-46.6166}, 104:{linha:1,nome:"Santana",lat:-23.5026,lng:-46.6250}, 105:{linha:1,nome:"Carandiru",lat:-23.5096,lng:-46.6249}, 106:{linha:1,nome:"Portuguesa-Tietê",lat:-23.5165,lng:-46.6251}, 107:{linha:1,nome:"Armênia",lat:-23.5254,lng:-46.6261}, 108:{linha:1,nome:"Tiradentes",lat:-23.5312,lng:-46.6315}, 109:{linha:1,nome:"Luz",lat:-23.5385,lng:-46.6360}, 110:{linha:1,nome:"São Bento",lat:-23.5434,lng:-46.6333}, 111:{linha:1,nome:"Sé",lat:-23.5492,lng:-46.6334}, 112:{linha:1,nome:"Japão-Liberdade",lat:-23.5555,lng:-46.6359}, 113:{linha:1,nome:"São Joaquim",lat:-23.5618,lng:-46.6388}, 114:{linha:1,nome:"Vergueiro",lat:-23.5689,lng:-46.6397}, 115:{linha:1,nome:"Paraíso",lat:-23.5759,lng:-46.6414}, 116:{linha:1,nome:"Ana Rosa",lat:-23.5813,lng:-46.6383}, 117:{linha:1,nome:"Vila Mariana",lat:-23.5894,lng:-46.6346}, 118:{linha:1,nome:"Santa Cruz",lat:-23.5989,lng:-46.6366}, 119:{linha:1,nome:"Praça da Árvore",lat:-23.6106,lng:-46.6378}, 120:{linha:1,nome:"Saúde",lat:-23.6172,lng:-46.6343}, 121:{linha:1,nome:"São Judas",lat:-23.6253,lng:-46.6394}, 122:{linha:1,nome:"Conceição",lat:-23.6362,lng:-46.6411}, 123:{linha:1,nome:"Jabaquara",lat:-23.6470,lng:-46.6395},
+        201:{linha:2,nome:"Vila Madalena",lat:-23.5445,lng:-46.6900}, 202:{linha:2,nome:"Santuário Sumaré",lat:-23.5513,lng:-46.6778}, 203:{linha:2,nome:"Clínicas",lat:-23.5553,lng:-46.6718}, 204:{linha:2,nome:"Consolação",lat:-23.5580,lng:-46.6601}, 205:{linha:2,nome:"Trianon-Masp",lat:-23.5630,lng:-46.6540}, 206:{linha:2,nome:"Brigadeiro",lat:-23.5687,lng:-46.6465}, 207:{linha:2,nome:"Paraíso",lat:-23.5759,lng:-46.6414}, 208:{linha:2,nome:"Ana Rosa",lat:-23.5813,lng:-46.6383}, 209:{linha:2,nome:"Chácara Klabin",lat:-23.5927,lng:-46.6293}, 210:{linha:2,nome:"Santos-Imigrantes",lat:-23.5955,lng:-46.6200}, 211:{linha:2,nome:"Alto do Ipiranga",lat:-23.6025,lng:-46.6125}, 212:{linha:2,nome:"Sacomã",lat:-23.6021,lng:-46.5927}, 213:{linha:2,nome:"Tamanduateí",lat:-23.5929,lng:-46.5895}, 214:{linha:2,nome:"Vila Prudente",lat:-23.5816,lng:-46.5817},
+        
+        "ITQ":{linha:3,mapeada:true,nome:"Corinthians-Itaquera",lat:-23.5424,lng:-46.4735,dbStr: "ITAS2E11,ITAS2F44,ITAS2F31,ITAS2R44-I,ITAS2R54-I,ITAS2R31-O,ITAS2R21-I,ITAS2R21-O"},
+        "ART":{linha:3,mapeada:true,nome:"Artur Alvim",lat:-23.5404,lng:-46.4845,dbStr: "ARTS1E64,ARTS1F24,ARTS1F33,ARTS1R24-O,ARTS1R33-I,ARTS1R43-O,ARTS2E65,ARTS2F25,ARTS2F36,ARTS2R25-O,ARTS2R36-I,ARTS2R47-O"},
+        "PCA":{linha:3,mapeada:true,nome:"Patriarca-Vila Ré",lat:-23.5311,lng:-46.5015,dbStr: "PCAS1E11,PCAS1F44,PCAS1R34-I,PCAS1R34-O,PCAS1R31-I,PCAS1R31-O,PCAS2E18,PCAS2F45,PCAS2R35-I,PCAS2R35-O,PCAS2R38-I,PCAS2R38-O"},
+        "VPA":{linha:3,nome:"Guilhermina-Esperança",lat:-23.5293,lng:-46.5168},
+        "VTD":{linha:3,nome:"Vila Matilde",lat:-23.5317,lng:-46.5309},
+        "PEN":{linha:3,nome:"Penha",lat:-23.5332,lng:-46.5398},
+        "CAR":{linha:3,nome:"Carrão",lat:-23.5350,lng:-46.5641},
+        "TAT":{linha:3,mapeada:true,nome:"Tatuapé (Espanhola)",lat:-23.5398,lng:-46.5768,dbStr: "TATS2F11,TATS2F44,TATS2R53-I,TATS2R33-I,TATS2R14-I,TATS1F35,TATS1F18,TATS1R55-I,TATS1R45-I,TATS1R15-I"},
+        "BEL":{linha:3,nome:"Belém",lat:-23.5431,lng:-46.5898},
+        "BRE":{linha:3,nome:"Bresser-Mooca",lat:-23.5463,lng:-46.6067},
+        "BAS":{linha:3,mapeada:true,nome:"Brás (Espanhola)",lat:-23.5471,lng:-46.6164,dbStr: "BASS2F31,BASS2R21-O,BASS2R31-I,BASS2R41-I,BASS1F44,BASS1R48-O,BASS1R28-I"},
+        "PDS":{linha:3,nome:"Pedro II",lat:-23.5498,lng:-46.6258},
+        "PSE":{linha:3,nome:"Sé",lat:-23.5492,lng:-46.6334},
+        "GBU":{linha:3,nome:"Anhangabaú",lat:-23.5478,lng:-46.6385},
+        "REP":{linha:3,mapeada:true,nome:"República",lat:-23.5439,lng:-46.6425,dbStr: "REPS1E55,REPS1F62,REPS1R54-O,REPS1R41-O,REPS2E68,REPS2F42,REPS2R53-O,REPS2R44-O,REPS2R32-O"},
+        "CEC":{linha:3,mapeada:true,nome:"Santa Cecília",lat:-23.5384,lng:-46.6492,dbStr: "CECS1E48,CECS1F58,CECS1F38"},
+        "DEO":{linha:3,mapeada:true,nome:"Marechal Deodoro",lat:-23.5328,lng:-46.6558,dbStr: "DEOS1E37,DEOS1F28,DEOS1F45,DEOS1R28-O,DEOS1R45-I"},
+        "BFU":{linha:3,nome:"Palmeiras-Barra Funda",lat:-23.5256,lng:-46.6640},
+
+        401:{linha:4,nome:"Luz",lat:-23.5385,lng:-46.6360}, 402:{linha:4,nome:"República",lat:-23.5439,lng:-46.6425}, 403:{linha:4,nome:"Higienópolis-Mackenzie",lat:-23.5486,lng:-46.6521}, 404:{linha:4,nome:"Paulista",lat:-23.5551,lng:-46.6613}, 405:{linha:4,nome:"Oscar Freire",lat:-23.5606,lng:-46.6719}, 406:{linha:4,nome:"Fradique Coutinho",lat:-23.5661,lng:-46.6841}, 407:{linha:4,nome:"Faria Lima",lat:-23.5674,lng:-46.6934}, 408:{linha:4,nome:"Pinheiros",lat:-23.5665,lng:-46.7029}, 409:{linha:4,nome:"Butantã",lat:-23.5714,lng:-46.7083}, 410:{linha:4,nome:"São Paulo-Morumbi",lat:-23.5866,lng:-46.7237}, 411:{linha:4,nome:"Vila Sônia",lat:-23.5938,lng:-46.7360},
+        501:{linha:5,nome:"Capão Redondo",lat:-23.6593,lng:-46.7753}, 502:{linha:5,nome:"Campo Limpo",lat:-23.6450,lng:-46.7597}, 503:{linha:5,nome:"Vila das Belezas",lat:-23.6393,lng:-46.7451}, 504:{linha:5,nome:"Giovanni Gronchi",lat:-23.6406,lng:-46.7352}, 505:{linha:5,nome:"Santo Amaro",lat:-23.6525,lng:-46.7126}, 506:{linha:5,nome:"Largo Treze",lat:-23.6543,lng:-46.7075}, 507:{linha:5,nome:"Adolfo Pinheiro",lat:-23.6500,lng:-46.7042}, 508:{linha:5,nome:"Alto da Boa Vista",lat:-23.6416,lng:-46.6994}, 509:{linha:5,nome:"Borba Gato",lat:-23.6334,lng:-46.6936}, 510:{linha:5,nome:"Brooklin",lat:-23.6263,lng:-46.6882}, 511:{linha:5,nome:"Campo Belo",lat:-23.6214,lng:-46.6800}, 512:{linha:5,nome:"Eucaliptos",lat:-23.6111,lng:-46.6669}, 513:{linha:5,nome:"Moema",lat:-23.6041,lng:-46.6601}, 514:{linha:5,nome:"AACD-Servidor",lat:-23.5978,lng:-46.6523}, 515:{linha:5,nome:"Hospital São Paulo",lat:-23.5956,lng:-46.6441}, 516:{linha:5,nome:"Santa Cruz",lat:-23.5989,lng:-46.6366}, 517:{linha:5,nome:"Chácara Klabin",lat:-23.5927,lng:-46.6293},
+        701:{linha:7,nome:"Luz",lat:-23.5385,lng:-46.6360}, 702:{linha:7,nome:"Palmeiras-Barra Funda",lat:-23.5256,lng:-46.6640}, 703:{linha:7,nome:"Água Branca",lat:-23.5205,lng:-46.6836}, 704:{linha:7,nome:"Lapa",lat:-23.5186,lng:-46.7011}, 705:{linha:7,nome:"Piqueri",lat:-23.5042,lng:-46.7198}, 706:{linha:7,nome:"Pirituba",lat:-23.4842,lng:-46.7194}, 707:{linha:7,nome:"Vila Clarice",lat:-23.4549,lng:-46.7397}, 708:{linha:7,nome:"Jaraguá",lat:-23.4414,lng:-46.7386}, 709:{linha:7,nome:"Vila Aurora",lat:-23.4182,lng:-46.7410}, 710:{linha:7,nome:"Perus",lat:-23.3871,lng:-46.7483}, 711:{linha:7,nome:"Caieiras",lat:-23.3619,lng:-46.7402}, 712:{linha:7,nome:"Franco da Rocha",lat:-23.3263,lng:-46.7277}, 713:{linha:7,nome:"Baltazar Fidélis",lat:-23.3089,lng:-46.7246}, 714:{linha:7,nome:"Francisco Morato",lat:-23.2825,lng:-46.7431},
+        801:{linha:8,nome:"Júlio Prestes",lat:-23.5358,lng:-46.6385}, 802:{linha:8,nome:"Palmeiras-Barra Funda",lat:-23.5256,lng:-46.6640}, 803:{linha:8,nome:"Lapa",lat:-23.5215,lng:-46.7040}, 804:{linha:8,nome:"Domingos de Moraes",lat:-23.5234,lng:-46.7191}, 805:{linha:8,nome:"Imperatriz Leopoldina",lat:-23.5265,lng:-46.7323}, 806:{linha:8,nome:"Presidente Altino",lat:-23.5273,lng:-46.7588}, 807:{linha:8,nome:"Osasco",lat:-23.5264,lng:-46.7744}, 808:{linha:8,nome:"Comandante Sampaio",lat:-23.5222,lng:-46.7905}, 809:{linha:8,nome:"Quitaúna",lat:-23.5240,lng:-46.8068}, 810:{linha:8,nome:"General Miguel Costa",lat:-23.5255,lng:-46.8189}, 811:{linha:8,nome:"Carapicuíba",lat:-23.5229,lng:-46.8354}, 812:{linha:8,nome:"Santa Terezinha",lat:-23.5240,lng:-46.8480}, 813:{linha:8,nome:"Antonio João",lat:-23.5181,lng:-46.8585}, 814:{linha:8,nome:"Barueri",lat:-23.5097,lng:-46.8741}, 815:{linha:8,nome:"Jardim Belval",lat:-23.5085,lng:-46.8858}, 816:{linha:8,nome:"Jardim Silveira",lat:-23.5152,lng:-46.8978}, 817:{linha:8,nome:"Jandira",lat:-23.5263,lng:-46.9036}, 818:{linha:8,nome:"Sagrado Coração",lat:-23.5359,lng:-46.9189}, 819:{linha:8,nome:"Engenheiro Cardoso",lat:-23.5372,lng:-46.9329}, 820:{linha:8,nome:"Itapevi",lat:-23.5451,lng:-46.9333},
+        901:{linha:9,nome:"Osasco",lat:-23.5264,lng:-46.7744}, 902:{linha:9,nome:"Presidente Altino",lat:-23.5273,lng:-46.7588}, 903:{linha:9,nome:"Ceasa",lat:-23.5323,lng:-46.7419}, 904:{linha:9,nome:"Villa Lobos-Jaguaré",lat:-23.5411,lng:-46.7248}, 905:{linha:9,nome:"Cidade Universitária",lat:-23.5558,lng:-46.7056}, 906:{linha:9,nome:"Pinheiros",lat:-23.5665,lng:-46.7029}, 907:{linha:9,nome:"Hebraica-Rebouças",lat:-23.5824,lng:-46.6896}, 908:{linha:9,nome:"Cidade Jardim",lat:-23.5898,lng:-46.6833}, 909:{linha:9,nome:"Vila Olímpia",lat:-23.5950,lng:-46.6917}, 910:{linha:9,nome:"Berrini",lat:-23.6062,lng:-46.6953}, 911:{linha:9,nome:"Morumbi",lat:-23.6219,lng:-46.7001}, 912:{linha:9,nome:"Granja Julieta",lat:-23.6338,lng:-46.7121}, 913:{linha:9,nome:"João Dias",lat:-23.6429,lng:-46.7188}, 914:{linha:9,nome:"Santo Amaro",lat:-23.6525,lng:-46.7126}, 915:{linha:9,nome:"Socorro",lat:-23.6698,lng:-46.7088}, 916:{linha:9,nome:"Jurubatuba",lat:-23.6872,lng:-46.6961}, 917:{linha:9,nome:"Autódromo",lat:-23.7058,lng:-46.6986}, 918:{linha:9,nome:"Primavera-Interlagos",lat:-23.7165,lng:-46.6964}, 919:{linha:9,nome:"Grajaú",lat:-23.7431,lng:-46.6908}, 920:{linha:9,nome:"Mendes-Vila Natal",lat:-23.7709,lng:-46.6853}, 921:{linha:9,nome:"Varginha",lat:-23.7915,lng:-46.6800},
+        1001:{linha:10,nome:"Luz",lat:-23.5385,lng:-46.6360}, 1002:{linha:10,nome:"Brás",lat:-23.5471,lng:-46.6164}, 1003:{linha:10,nome:"Juventus-Mooca",lat:-23.5574,lng:-46.5986}, 1004:{linha:10,nome:"Ipiranga",lat:-23.5826,lng:-46.5912}, 1005:{linha:10,nome:"Tamanduateí",lat:-23.5929,lng:-46.5895}, 1006:{linha:10,nome:"São Caetano do Sul",lat:-23.6125,lng:-46.5701}, 1007:{linha:10,nome:"Utinga",lat:-23.6268,lng:-46.5492}, 1008:{linha:10,nome:"Prefeito Saladino",lat:-23.6418,lng:-46.5393}, 1009:{linha:10,nome:"Santo André",lat:-23.6558,lng:-46.5273}, 1010:{linha:10,nome:"Capuava",lat:-23.6668,lng:-46.4916}, 1011:{linha:10,nome:"Mauá",lat:-23.6685,lng:-46.4608}, 1012:{linha:10,nome:"Guapituba",lat:-23.6766,lng:-46.4380}, 1013:{linha:10,nome:"Ribeirão Pires",lat:-23.7135,lng:-46.4137}, 1014:{linha:10,nome:"Rio Grande da Serra",lat:-23.7430,lng:-46.3917},
+        1101:{linha:11,nome:"Luz",lat:-23.5385,lng:-46.6360}, 1102:{linha:11,nome:"Brás",lat:-23.5471,lng:-46.6164}, 1103:{linha:11,nome:"Corinthians-Itaquera",lat:-23.5424,lng:-46.4735}, 1104:{linha:11,nome:"Dom Bosco",lat:-23.5401,lng:-46.4526}, 1105:{linha:11,nome:"José Bonifácio",lat:-23.5413,lng:-46.4367}, 1106:{linha:11,nome:"Guaianases",lat:-23.5441,lng:-46.4177}, 1107:{linha:11,nome:"Antônio Gianetti Neto",lat:-23.5411,lng:-46.3908}, 1108:{linha:11,nome:"Ferraz de Vasconcelos",lat:-23.5358,lng:-46.3687}, 1109:{linha:11,nome:"Poá",lat:-23.5284,lng:-46.3458}, 1110:{linha:11,nome:"Calmon Viana",lat:-23.5282,lng:-46.3312}, 1111:{linha:11,nome:"Suzano",lat:-23.5323,lng:-46.3117}, 1112:{linha:11,nome:"Jundiapeba",lat:-23.5397,lng:-46.2570}, 1113:{linha:11,nome:"Braz Cubas",lat:-23.5372,lng:-46.2163}, 1114:{linha:11,nome:"Mogi das Cruzes",lat:-23.5235,lng:-46.1834}, 1115:{linha:11,nome:"Estudantes",lat:-23.5186,lng:-46.1738},
+        1201:{linha:12,nome:"Brás",lat:-23.5471,lng:-46.6164}, 1202:{linha:12,nome:"Tatuapé",lat:-23.5398,lng:-46.5768}, 1203:{linha:12,nome:"Engenheiro Goulart",lat:-23.5015,lng:-46.5204}, 1204:{linha:12,nome:"USP Leste",lat:-23.4862,lng:-46.4950}, 1205:{linha:12,nome:"Comendador Ermelino",lat:-23.4839,lng:-46.4800}, 1206:{linha:12,nome:"São Miguel Paulista",lat:-23.4938,lng:-46.4474}, 1207:{linha:12,nome:"Jardim Helena-Vila Mara",lat:-23.4935,lng:-46.4258}, 1208:{linha:12,nome:"Itaim Paulista",lat:-23.4981,lng:-46.4011}, 1209:{linha:12,nome:"Jardim Romano",lat:-23.4891,lng:-46.3813}, 1210:{linha:12,nome:"Eng. Manoel Feio",lat:-23.4832,lng:-46.3533}, 1211:{linha:12,nome:"Itaquaquecetuba",lat:-23.4866,lng:-46.3406}, 1212:{linha:12,nome:"Aracaré",lat:-23.5065,lng:-46.3311}, 1213:{linha:12,nome:"Calmon Viana",lat:-23.5282,lng:-46.3312},
+        1301:{linha:13,nome:"Engenheiro Goulart",lat:-23.5015,lng:-46.5204}, 1302:{linha:13,nome:"Guarulhos-CECAP",lat:-23.4475,lng:-46.5161}, 1303:{linha:13,nome:"Aeroporto-Guarulhos",lat:-23.4326,lng:-46.4988},
+        1501:{linha:15,nome:"Vila Prudente",lat:-23.5816,lng:-46.5817}, 1502:{linha:15,nome:"Oratório",lat:-23.5855,lng:-46.5647}, 1503:{linha:15,nome:"São Lucas",lat:-23.5898,lng:-46.5518}, 1504:{linha:15,nome:"Camilo Haddad",lat:-23.5936,lng:-46.5422}, 1505:{linha:15,nome:"Vila Tolstói",lat:-23.5977,lng:-46.5312}, 1506:{linha:15,nome:"Vila União",lat:-23.6033,lng:-46.5186}, 1507:{linha:15,nome:"Jardim Planalto",lat:-23.6083,lng:-46.5050}, 1508:{linha:15,nome:"Sapopemba",lat:-23.6141,lng:-46.4896}, 1509:{linha:15,nome:"Fazenda da Juta",lat:-23.6148,lng:-46.4789}, 1510:{linha:15,nome:"São Mateus",lat:-23.6136,lng:-46.4632}, 1511:{linha:15,nome:"Jardim Colonial",lat:-23.6105,lng:-46.4485}
+    },
+
+    dicionario: {
+        'pt': { modTitle: 'Aviso: Acessibilidade e Direitos', btnEntrarSplash: 'Entrar no Guia', btnVoltarApp: '⬅ Voltar para PORTA CERTA SP', lblPref: 'Sua preferência de saída no destino final:', optElevador: 'Elevador', optRolante: 'Escada Rolante', optFixa: 'Escada Fixa', titleOrigem: '📍 PONTO DE PARTIDA', titleDestino: '🏁 DESTINO FINAL', selLinhaOr: 'Escolha a Linha', selLinhaDest: 'Escolha a Linha', selEstOr: 'Primeiro, escolha a linha', selEstDest: 'Primeiro, escolha a linha', selEstAtivo: 'Agora, escolha a estação', listTitle: 'Estações Mapeadas', listDesc: 'A precisão de portas já funciona nestas estações:', mesmaEstacao: 'Você já está na estação de destino.', trecho: 'Trecho', emBreve: '(Em breve)', l1: 'L1-Azul', l2: 'L2-Verde', l3: 'L3-Vermelha', l4: 'L4-Amarela', l5: 'L5-Lilás', l7: 'L7-Rubi', l8: 'L8-Diamante', l9: 'L9-Esmeralda', l10: 'L10-Turquesa', l11: 'L11-Coral', l12: 'L12-Safira', l13: 'L13-Jade', l15: 'L15-Prata', embTrecho: 'Em {est} (Sentido {sentido}), posicione-se na:', transfTrecho: 'Desembarque em {est} e faça transferência para a {linha}.', saidaFinal: 'No destino (<b>{est}</b>), você sairá de frente para a {tipo} de desembarque.', tipoElevador: 'porta do elevador', tipoRolante: 'escada rolante', tipoFixa: 'escada fixa', pendente: 'A estação selecionada ainda não foi mapeada.', txtPorta: 'Porta', txtVagao: 'Vagão', accTitle: 'Direito à Acessibilidade', accBtnFala: 'Registrar Cobrança no FALA.SP', accBtnClose: 'Entendi', txtInexistente: 'Equipamento inexistente nesta estação (Sentido {sentido}).', gpsBtn: '🎯 Perto de mim', gpsBusca: '⏳ Buscando...', gpsFeito: '🎯 Feito!', gpsErro: '❌ Sem estações', freqUsadas: 'Mais Usadas', freqTodas: 'Todas as Estações', avisoRota: 'Sobre esta rota', avisoRotaTexto: 'O foco deste trajeto é garantir sua acessibilidade nas estações. Pode não ser o caminho mais rápido.', btnCalc: 'Qual é a Porta Certa?', configTitle: 'Configurações', setTut: 'Como usar o Guia', setMap: 'Estações Mapeadas', setFont: 'Tamanho da Letra', modoClaro: 'Modo Claro', modoEscuro: 'Modo Escuro', setLang: 'Idioma / Language' }
     }
 };
 
+/**
+ * ==========================================
+ * [BLOCO 5] JS: MOTOR DE ROTEAMENTO (Router)
+ * ==========================================
+ */
 const Router = {
-    calcularSentido: function(idOr, idDest) {
-        let idxOr = AppData.ordemL3.indexOf(idOr);
-        let idxDest = AppData.ordemL3.indexOf(idDest);
-        return idxOr < idxDest ? "S2" : "S1"; 
+    encontrarCaminhoLinhas: function(lOrigem, lDestino) {
+        if (lOrigem === lDestino) return [lOrigem];
+        let fila = [[lOrigem]];
+        let visitados = new Set();
+        visitados.add(lOrigem);
+
+        while (fila.length > 0) {
+            let caminho = fila.shift();
+            let atual = caminho[caminho.length - 1];
+            for (let vizinho in AppData.transferencias[atual]) {
+                vizinho = parseInt(vizinho);
+                if (!visitados.has(vizinho)) {
+                    visitados.add(vizinho);
+                    let novoCaminho = [...caminho, vizinho];
+                    if (vizinho === lDestino) return novoCaminho;
+                    fila.push(novoCaminho);
+                }
+            }
+        }
+        return null;
     },
     
-    extrairPortaAlvo: function(nodeDest, sentido, pref) {
-        if (!nodeDest.dbStr) return null;
+    // Novo cálculo de sentido baseado no array ordemL3
+    calcularSentidoL3: function(idOrigem, idDestino) {
+        let idxOrigem = AppData.ordemL3.indexOf(idOrigem);
+        let idxDestino = AppData.ordemL3.indexOf(idDestino);
+        
+        // Se a origem e o destino estiverem no array da L3 (são os IDs de texto)
+        if (idxOrigem !== -1 && idxDestino !== -1) {
+            return idxOrigem < idxDestino ? "S2" : "S1"; 
+        }
+        
+        // Fallback para IDs numéricos caso sejam de outras linhas (mantendo a compatibilidade do código antigo)
+        return parseInt(idOrigem) < parseInt(idDestino) ? "S2" : "S1"; 
+    },
+    
+    extrairPortaAlvo: function(nodeDestino, sentido, prefSaida) {
+        if (!nodeDestino.dbStr) return null;
 
         let tipo = 'F';
-        if (pref === 'elevador') tipo = 'E';
-        if (pref === 'rolante') tipo = 'R';
+        if (prefSaida === 'elevador') tipo = 'E';
+        if (prefSaida === 'rolante') tipo = 'R';
 
-        let tokens = nodeDest.dbStr.split(',');
-        let prefixoEstacao = nodeDest.dbStr.substring(0,3); 
+        let tokens = nodeDestino.dbStr.split(',');
+        // Usa as 3 primeiras letras do ID para L3, ou o prefixo numérico antigo se for outra linha
+        let prefixoEstacao = typeof nodeDestino.nome === 'string' && AppData.ordemL3.includes(Object.keys(AppData.estacoes).find(key => AppData.estacoes[key] === nodeDestino)) 
+            ? Object.keys(AppData.estacoes).find(key => AppData.estacoes[key] === nodeDestino).substring(0,3) 
+            : nodeDestino.dbStr.substring(0,3); 
+            
         let prefixoBusca = `${prefixoEstacao}${sentido}${tipo}`; 
 
         let match = null;
 
         if (tipo === 'R') {
+            // Prioriza Saída (-O)
             match = tokens.find(t => t.startsWith(prefixoBusca) && t.endsWith('-O'));
-            // Se não achar saída (O), e for plataforma espanhola, pode não haver marcação O, pega genérica
+            // Fallback 1: Pega genérica que não seja Entrada (-I)
             if (!match) match = tokens.find(t => t.startsWith(prefixoBusca) && !t.endsWith('-I'));
-            // Se ainda não achar, pega o que tiver (ex: tatuapé que só mandou "R:53;33;14")
+            // Fallback 2: Se a DB foi mal anotada e só tem entrada ou número cru, pega o que tiver
             if (!match) match = tokens.find(t => t.startsWith(prefixoBusca));
         } else {
+            // Fixa e Elevador
             match = tokens.find(t => t.startsWith(prefixoBusca));
         }
 
@@ -157,16 +530,15 @@ const Router = {
         return null;
     },
     
-    // Novo parser: Entende de qual lado do trem a porta fica, para plotar corretamente
+    // Parser que entende os dois lados do trem
     parseVagaoPorta: function(rawNumStr, sentido) {
         if (!rawNumStr || rawNumStr.length !== 2) return null;
-        let pOriginal = parseInt(rawNumStr);
-        let d1 = parseInt(rawNumStr.charAt(0)); // dezena
-        let d2 = parseInt(rawNumStr.charAt(1)); // unidade
+        let d1 = parseInt(rawNumStr.charAt(0)); 
+        let d2 = parseInt(rawNumStr.charAt(1)); 
         
         let v, p_esquerda, p_direita;
 
-        if (sentido === "S2") { // Sentido Barra Funda
+        if (sentido === "S2") { // Barra Funda
             v = d1;
             if (d2 >= 1 && d2 <= 4) {
                 p_esquerda = d2;
@@ -175,7 +547,7 @@ const Router = {
                 p_direita = d2;
                 p_esquerda = (p_direita === 8) ? 1 : (p_direita === 7) ? 2 : (p_direita === 6) ? 3 : 4;
             }
-        } else { // Sentido Itaquera
+        } else { // Itaquera
             v = 7 - d1;
             if (d2 >= 1 && d2 <= 4) {
                 p_esquerda = d2;
@@ -186,7 +558,6 @@ const Router = {
             }
         }
         
-        // Determina se a porta alvo lida no DB estava na face Esquerda (1-4) ou Direita (5-8) original
         let isFaceDireita = (d2 >= 5 && d2 <= 8);
 
         return { 
@@ -199,81 +570,209 @@ const Router = {
     }
 };
 
+/**
+ * ==========================================
+ * [BLOCO 6] JS: INTERFACE, TEMA E TELAS (UI)
+ * ==========================================
+ */
 const UI = {
     init: function() {
-        const selOr = document.getElementById('estacao-origem');
-        const selDest = document.getElementById('estacao-destino');
-        selOr.innerHTML = ""; selDest.innerHTML = "";
+        const selLO = document.getElementById('linha-origem'); const selLD = document.getElementById('linha-destino');
+        const t = AppData.dicionario[AppData.currentLang];
+        selLO.options.length = 0; selLD.options.length = 0;
+        selLO.add(new Option(t.selLinhaOr, "0", true, true)); selLO.options[0].disabled = true;
+        selLD.add(new Option(t.selLinhaDest, "0", true, true)); selLD.options[0].disabled = true;
+        AppData.linhas.forEach(l => { selLO.add(new Option(t['l'+l] || `Linha ${l}`, l)); selLD.add(new Option(t['l'+l] || `Linha ${l}`, l)); });
+        this.atualizarEstacoes('origem', true); this.atualizarEstacoes('destino', true);
+        this.popularListaMapeadas();
         
-        AppData.ordemL3.forEach(id => {
-            if(AppData.estacoes[id].dbStr) {
-                selOr.add(new Option(AppData.estacoes[id].nome, id));
-                selDest.add(new Option(AppData.estacoes[id].nome, id));
-            }
-        });
-        selOr.value = "ITQ";
-        selDest.value = "ART";
-    },
-
-    limpar: () => document.getElementById('resultado-box').style.display = 'none',
-    
-    iniciarCalculo: function() {
-        const or = document.getElementById('estacao-origem').value;
-        const dest = document.getElementById('estacao-destino').value;
-        const pref = document.getElementById('preferencia').value;
-        const box = document.getElementById('resultado-box');
-        
-        if (or === dest) {
-            box.innerHTML = `<div class="info-text" style="text-align:center;">Você já está na estação de destino.</div>`;
-            box.style.display = 'block';
-            return;
+        if(localStorage.getItem('pc_theme') === 'light') {
+            AppData.isLightMode = true;
+            document.body.classList.add('light-mode');
         }
+        this.updateThemeUI();
 
-        const sentido = Router.calcularSentido(or, dest);
-        const portaStr = Router.extrairPortaAlvo(AppData.estacoes[dest], sentido, pref);
-        
-        let htmlFinal = `<div class="info-text">Em <b>${AppData.estacoes[or].nome}</b> (Sentido ${sentido === 'S1' ? 'Itaquera' : 'Barra Funda'}), posicione-se na:</div>`;
-        
-        if (portaStr) {
-            let parsed = Router.parseVagaoPorta(portaStr, sentido);
-            
-            // O texto sempre mostra a porta correspondente para o usuário EMBARCAR.
-            // (Mesmo que o desembarque em plataforma espanhola mude a numeração, 
-            // a posição física do vagão é a mesma).
-            htmlFinal += `<div class="result-door">Porta ${parsed.rawStr}</div>`;
-            htmlFinal += `<div class="info-text" style="font-size: 0.9rem;">(Vagão ${parsed.v})</div>`;
-            
-            // Renderiza o trem visto de cima
-            htmlFinal += this.gerarTremDuplaFace(parsed);
-            
-            let txtPref = pref === 'rolante' ? 'escada rolante' : (pref === 'elevador' ? 'porta do elevador' : 'escada fixa');
-            htmlFinal += `<div class="info-text" style="margin-top:15px; padding-top:10px; border-top: 1px dashed #444;">No destino (<b>${AppData.estacoes[dest].nome}</b>), você sairá de frente para a ${txtPref}.</div>`;
+        if(sessionStorage.getItem('portaCertaModal') === 'lido') {
+            this.showView('view-main');
         } else {
-            htmlFinal += `<div class="alert-warning">🚫 Equipamento não mapeado ou inexistente (Sentido ${sentido}).</div>`;
+            this.showView('view-splash');
         }
-
-        box.innerHTML = htmlFinal;
-        box.style.display = 'block';
-        this.ajustarTrem();
     },
-    
+
+    showView: function(viewId) {
+        document.querySelectorAll('.app-view').forEach(view => view.classList.remove('active'));
+        document.getElementById(viewId).classList.add('active');
+        window.scrollTo(0, 0);
+    },
+
+    finishIntro: function() {
+        sessionStorage.setItem('portaCertaModal', 'lido');
+        this.showView('view-main');
+    },
+
+    toggleTheme: function() {
+        AppData.isLightMode = !AppData.isLightMode;
+        document.body.classList.toggle('light-mode', AppData.isLightMode);
+        localStorage.setItem('pc_theme', AppData.isLightMode ? 'light' : 'dark');
+        this.updateThemeUI();
+    },
+
+    updateThemeUI: function() {
+        const btnIcon = document.getElementById('theme-icon');
+        const btnText = document.getElementById('theme-text');
+        const t = AppData.dicionario[AppData.currentLang];
+        if(AppData.isLightMode) {
+            btnIcon.innerText = '🌙';
+            btnText.innerText = t.modoEscuro || 'Modo Escuro';
+        } else {
+            btnIcon.innerText = '☀️';
+            btnText.innerText = t.modoClaro || 'Modo Claro';
+        }
+    },
+
+    atualizarEstacoes: function(tipo, forceReset = false) {
+        const selLinha = document.getElementById(`linha-${tipo}`); 
+        const selEstacao = document.getElementById(`estacao-${tipo}`);
+        const t = AppData.dicionario[AppData.currentLang];
+        selLinha.style.borderColor = (selLinha.value != "0") ? `var(--l${selLinha.value})` : '';
+        selEstacao.innerHTML = ''; 
+        
+        if (selLinha.value === "0" || forceReset) { 
+            selEstacao.add(new Option(t[tipo === 'origem' ? 'selEstOr' : 'selEstDest'], "0", true, true)); 
+            selEstacao.disabled = true; 
+            return; 
+        }
+        
+        selEstacao.disabled = false; 
+        selEstacao.add(new Option(t.selEstAtivo, "0", true, true)); 
+        selEstacao.options[0].disabled = true;
+        
+        if (tipo === 'origem') {
+            let freqs = {};
+            try { freqs = JSON.parse(localStorage.getItem('pc_freq_origem')) || {}; } catch(e) {}
+
+            // Pega as estações da linha selecionada (considerando tanto os IDs numéricos antigos quanto os de texto da L3)
+            let estacoesLinha = Object.keys(AppData.estacoes).filter(id => AppData.estacoes[id].linha == selLinha.value);
+            
+            // Ordena estacoesLinha se for L3 para exibir na ordem correta no select
+            if (selLinha.value == 3) {
+                estacoesLinha.sort((a, b) => AppData.ordemL3.indexOf(a) - AppData.ordemL3.indexOf(b));
+            }
+
+            let estacoesFreq = estacoesLinha.filter(id => freqs[id] > 0).sort((a, b) => freqs[b] - freqs[a]).slice(0, 3);
+            
+            if (estacoesFreq.length > 0) {
+                let groupFreq = document.createElement('optgroup');
+                groupFreq.label = t.freqUsadas || "Mais Usadas";
+                estacoesFreq.forEach(id => {
+                    let node = AppData.estacoes[id];
+                    let isOrigemBloqueada = !node.mapeada;
+                    let opt = new Option(node.nome + (isOrigemBloqueada ? ` ${t.emBreve}` : ""), id);
+                    if (isOrigemBloqueada) opt.disabled = true;
+                    groupFreq.appendChild(opt);
+                });
+                selEstacao.appendChild(groupFreq);
+                
+                let groupAll = document.createElement('optgroup');
+                groupAll.label = t.freqTodas || "Todas as Estações";
+                estacoesLinha.forEach(id => {
+                    let node = AppData.estacoes[id];
+                    let isOrigemBloqueada = !node.mapeada;
+                    let opt = new Option(node.nome + (isOrigemBloqueada ? ` ${t.emBreve}` : ""), id);
+                    if (isOrigemBloqueada) opt.disabled = true;
+                    groupAll.appendChild(opt);
+                });
+                selEstacao.appendChild(groupAll);
+            } else {
+                estacoesLinha.forEach(id => {
+                    let node = AppData.estacoes[id];
+                    let isOrigemBloqueada = !node.mapeada;
+                    let opt = new Option(node.nome + (isOrigemBloqueada ? ` ${t.emBreve}` : ""), id);
+                    if (isOrigemBloqueada) opt.disabled = true;
+                    selEstacao.add(opt);
+                });
+            }
+        } else {
+            let estacoesLinha = Object.keys(AppData.estacoes).filter(id => AppData.estacoes[id].linha == selLinha.value);
+            if (selLinha.value == 3) {
+                estacoesLinha.sort((a, b) => AppData.ordemL3.indexOf(a) - AppData.ordemL3.indexOf(b));
+            }
+            estacoesLinha.forEach(id => {
+                selEstacao.add(new Option(AppData.estacoes[id].nome, id));
+            });
+        }
+        document.getElementById('resultado-box').style.display = 'none';
+    },
+
+    changeLanguage: function(langCode) {
+        let isResultVisible = document.getElementById('resultado-box').style.display === 'block';
+        AppData.currentLang = langCode; const t = AppData.dicionario[langCode];
+        if(!t) return; // Proteção para línguas não carregadas
+        document.body.setAttribute('dir', langCode === 'ar' ? 'rtl' : 'ltr');
+        document.querySelectorAll('.lang-flag').forEach(el => el.classList.remove('active'));
+        let flagEl = document.getElementById('flag-' + langCode);
+        if(flagEl) flagEl.classList.add('active');
+
+        document.getElementById('mod-title').innerText = t.modTitle; document.getElementById('btn-modal').innerText = t.btnCalc; 
+        document.getElementById('btn-calcular').innerText = t.btnCalc; document.getElementById('lbl-pref').innerText = t.lblPref;
+        document.getElementById('opt-elevador').innerText = t.optElevador; document.getElementById('opt-rolante').innerText = t.optRolante;
+        document.getElementById('opt-fixa').innerText = t.optFixa; document.getElementById('title-origem').innerText = t.titleOrigem;
+        document.getElementById('title-destino').innerText = t.titleDestino; document.getElementById('list-title').innerText = t.listTitle;
+        document.getElementById('list-desc').innerText = t.listDesc; 
+        
+        document.getElementById('btn-voltar-settings').innerText = t.btnVoltarApp;
+        document.getElementById('btn-voltar-map').innerText = t.btnVoltarApp; 
+        document.getElementById('btn-voltar-tut').innerText = t.btnVoltarApp;
+        document.getElementById('btn-entrar-splash').innerText = t.btnEntrarSplash;
+        
+        document.getElementById('settings-title').innerText = t.configTitle;
+        document.getElementById('lbl-set-tut').innerText = t.setTut;
+        document.getElementById('lbl-set-map').innerText = t.setMap;
+        document.getElementById('lbl-set-font').innerText = t.setFont;
+        document.getElementById('lbl-set-lang').innerText = t.setLang;
+        this.updateThemeUI(); 
+        
+        document.getElementById('mod-acc-title').innerText = t.accTitle; 
+        document.getElementById('mod-acc-btn-fala').innerText = t.accBtnFala; document.getElementById('mod-acc-btn-close').innerText = t.accBtnClose;
+        document.getElementById('btn-gps').innerText = t.gpsBtn;
+
+        const valLO = document.getElementById('linha-origem').value; const valEO = document.getElementById('estacao-origem').value;
+        const valLD = document.getElementById('linha-destino').value; const valED = document.getElementById('estacao-destino').value;
+        this.init();
+        document.getElementById('linha-origem').value = valLO; if(valLO != "0") this.atualizarEstacoes('origem'); document.getElementById('estacao-origem').value = valEO;
+        document.getElementById('linha-destino').value = valLD; if(valLD != "0") this.atualizarEstacoes('destino'); document.getElementById('estacao-destino').value = valED;
+        if(isResultVisible) this.iniciarCalculo();
+    },
+
+    toggleFontSize: function() { AppData.isLargeFont = !AppData.isLargeFont; document.body.classList.toggle('large-font', AppData.isLargeFont); },
+    liberarModal: function() { document.getElementById('btn-modal').disabled = !document.getElementById('check-ciencia').checked; },
+    abrirModalAcessibilidade: function() { document.getElementById('acessibilidade-modal').style.display = 'flex'; },
+    fecharModalAcessibilidade: function() { document.getElementById('acessibilidade-modal').style.display = 'none'; },
+
+    popularListaMapeadas: function() {
+        const ul = document.getElementById('ul-mapeadas'); ul.innerHTML = "";
+        for (let id in AppData.estacoes) {
+            if (AppData.estacoes[id].mapeada) {
+                let li = document.createElement('li'); li.innerText = AppData.estacoes[id].nome; ul.appendChild(li);
+            }
+        }
+    },
+
     gerarTremDuplaFace: function(parsedData) {
         let html = '<div class="t-container"><div class="t-track"></div><div class="t-wrapper">';
         
         for(let v=1; v<=6; v++) {
             html += `<div class="t-car" data-label="V${v}">`;
             
-            // Face Superior (Portas 5 a 8 na representação da Tabela)
+            // Face Superior
             html += `<div class="t-doors-side top">`;
             for(let p=1; p<=4; p++) {
-                // Na face superior direita, a contagem na tabela é inversa dependendo do sentido.
-                // Mas graficamente, é a face de "cima" do desenho.
                 let isTarget = (v === parsedData.v && parsedData.isDir && parsedData.p_esq === p);
                 html += `<div class="t-door top ${isTarget ? 'target' : ''}"></div>`;
             }
             html += `</div>`;
 
-            // Face Inferior (Portas 1 a 4 na representação da Tabela)
+            // Face Inferior
             html += `<div class="t-doors-side bottom">`;
             for(let p=1; p<=4; p++) {
                 let isTarget = (v === parsedData.v && !parsedData.isDir && parsedData.p_esq === p);
@@ -281,30 +780,174 @@ const UI = {
             }
             html += `</div>`;
 
-            html += `</div>`; // Fecha Car
+            html += `</div>`; 
         }
         return html + '</div></div>';
     },
-    
-    ajustarTrem: function() {
+
+    iniciarCalculo: function() {
+        const estOr = document.getElementById('estacao-origem').value; 
+        const estDest = document.getElementById('estacao-destino').value;
+        const pref = document.getElementById('preferencia').value; 
+        const box = document.getElementById('resultado-box');
+        const t = AppData.dicionario[AppData.currentLang] || AppData.dicionario['pt'];
+
+        if (estOr == "0" || estDest == "0") { 
+            box.innerHTML = `<div class="alert-warning" style="text-align:center; color:#FFC107; border-color:rgba(255, 193, 7, 0.3); border: 1px solid;">⚠️ Por favor, escolha a estação de <b>Origem</b> e de <b>Destino</b> para calcular a rota.</div>`; 
+            box.style.display = 'block'; 
+            return; 
+        }
+        
+        try {
+            let freqs = JSON.parse(localStorage.getItem('pc_freq_origem')) || {};
+            freqs[estOr] = (freqs[estOr] || 0) + 1;
+            localStorage.setItem('pc_freq_origem', JSON.stringify(freqs));
+        } catch(e) {}
+
+        if (estOr === estDest) { box.innerHTML = `<div class="info-text" style="text-align:center;">${t.mesmaEstacao}</div>`; box.style.display = 'block'; return; }
+
+        const origem = AppData.estacoes[estOr]; 
+        const destino = AppData.estacoes[estDest];
+        
+        // Esta versão foca no cálculo de trecho único (mesma linha)
+        if(origem.linha !== destino.linha) {
+            box.innerHTML = `<div class="alert-warning">⚠️ No momento, o cálculo entre linhas diferentes está desativado para testes do banco de dados L3. Escolha estações da mesma linha.</div>`; 
+            box.style.display = 'block'; 
+            return; 
+        }
+
+        let lAtual = origem.linha;
+        let corVar = `var(--l${lAtual})`;
+        
+        let htmlFinal = "";
+        let ativouFaltaAcessibilidade = false;
+        
+        htmlFinal += `<div class="route-step" style="border-color: ${corVar}; --step-color: ${corVar};">`;
+        htmlFinal += `<div class="step-title" style="color: ${corVar};">📍 Rota: Linha ${lAtual}</div>`;
+
+        let portaRawStr = null; 
+        let sentidoCalculado = Router.calcularSentidoL3(estOr, estDest);
+        let nomeSentido = sentidoCalculado === 'S1' ? 'Itaquera' : 'Barra Funda';
+        
+        // Verifica se o destino está mapeado na base
+        if(destino.dbStr !== undefined) {
+            portaRawStr = Router.extrairPortaAlvo(destino, sentidoCalculado, pref);
+        } else {
+            portaRawStr = "Pendente";
+        }
+
+        if (portaRawStr === null) {
+            portaRawStr = "Inexistente";
+            ativouFaltaAcessibilidade = true;
+        }
+
+        let txtEmb = t.embTrecho.replace('{est}', `<b>${origem.nome}</b>`).replace('{sentido}', nomeSentido);
+        htmlFinal += `<div class="info-text">${txtEmb}</div>`;
+        
+        if (portaRawStr === "Inexistente") {
+            let txtInexistente = t.txtInexistente.replace('{sentido}', nomeSentido);
+            htmlFinal += `<div class="alert-warning" style="color:#FF3B30; border-color:#FF3B30;">🚫 ${txtInexistente}</div>`;
+        } else if (portaRawStr !== "Pendente") {
+            let parsed = Router.parseVagaoPorta(portaRawStr, sentidoCalculado);
+            if (parsed) {
+                htmlFinal += `<div class="result-door" style="color:${corVar};">Porta ${parsed.rawStr}</div>`;
+                htmlFinal += `<div class="info-text" style="font-size: 0.9rem;">(${t.txtVagao} ${parsed.v})</div>`;
+                htmlFinal += UI.gerarTremDuplaFace(parsed);
+            }
+        } else {
+            htmlFinal += `<div class="alert-warning alert-pendente" style="margin-top:8px;">⏳ ${t.pendente}</div>`;
+        }
+
+        let tipoPrefTexto = pref === 'elevador' ? t.tipoElevador : (pref === 'rolante' ? t.tipoRolante : t.tipoFixa);
+        let txtSaida = t.saidaFinal.replace('{est}', destino.nome).replace('{tipo}', tipoPrefTexto);
+        htmlFinal += `<div class="info-text" style="margin-top:15px; border-top: 1px dashed #333; padding-top: 10px;">${txtSaida}</div>`;
+        htmlFinal += `</div>`;
+
+        box.innerHTML = htmlFinal;
+        box.style.display = 'block';
+
+        if (ativouFaltaAcessibilidade) {
+            setTimeout(() => { UI.abrirModalAcessibilidade(); }, 300);
+        }
+
         setTimeout(() => {
             let target = document.querySelector('.t-door.target');
             let wrapper = document.querySelector('.t-wrapper');
             let container = document.querySelector('.t-container');
             if (target && wrapper && container) {
-                // Para pegar a posição correta, pegamos o parente (o Vagão) do target
                 let car = target.closest('.t-car');
                 let cWidth = container.offsetWidth;
                 let tOffset = car.getBoundingClientRect().left - wrapper.getBoundingClientRect().left;
-                
-                // Precisamos calcular a posição exata da porta dentro do vagão
                 let portaOffsetDentroVagao = target.offsetLeft;
                 let deslocamentoTotal = tOffset + portaOffsetDentroVagao;
-
                 let translateX = (cWidth / 2) - deslocamentoTotal - (target.offsetWidth / 2);
                 wrapper.style.transform = `translateX(${translateX}px)`;
             }
         }, 50);
+    }
+};
+
+const GeoLocation = {
+    findNearest: function() {
+        const btn = document.getElementById('btn-gps');
+        const t = AppData.dicionario[AppData.currentLang] || AppData.dicionario['pt'];
+        
+        if (!navigator.geolocation) {
+            btn.innerText = t.gpsErro;
+            setTimeout(() => { btn.innerText = t.gpsBtn; }, 2000);
+            return;
+        }
+
+        btn.innerText = t.gpsBusca;
+        
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                let userLat = position.coords.latitude;
+                let userLng = position.coords.longitude;
+                
+                let closest = null;
+                let minDist = Infinity;
+                let RAIO_MAXIMO_KM = 8; 
+
+                for (let id in AppData.estacoes) {
+                    let st = AppData.estacoes[id];
+                    if (st.lat && st.lng && st.mapeada) {
+                        let dist = GeoLocation.haversine(userLat, userLng, st.lat, st.lng);
+                        if (dist < minDist) {
+                            minDist = dist;
+                            closest = { id: id, linha: st.linha };
+                        }
+                    }
+                }
+
+                if (closest && minDist <= RAIO_MAXIMO_KM) {
+                    document.getElementById('linha-origem').value = closest.linha;
+                    UI.atualizarEstacoes('origem');
+                    document.getElementById('estacao-origem').value = closest.id;
+                    btn.innerText = t.gpsFeito;
+                    setTimeout(() => { btn.innerText = t.gpsBtn; }, 2000);
+                } else {
+                    btn.innerText = t.gpsErro;
+                    setTimeout(() => { btn.innerText = t.gpsBtn; }, 2000);
+                }
+            },
+            (error) => {
+                btn.innerText = t.gpsErro;
+                setTimeout(() => { btn.innerText = t.gpsBtn; }, 2000);
+            },
+            { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+        );
+    },
+
+    haversine: function(lat1, lon1, lat2, lon2) {
+        const R = 6371;
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                  Math.sin(dLon/2) * Math.sin(dLon/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
     }
 };
 
