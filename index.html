@@ -113,6 +113,15 @@
         .help-text h3 { margin-bottom: 5px; color: #FFF; margin-top: 25px; }
         .help-text ul { padding-left: 20px; margin-top: 0; color: #CCC; font-size: 1rem; line-height: 1.4; }
         .help-text li { margin-bottom: 12px; }
+        
+        body.large-font h1 { font-size: 2.2rem; }
+        body.large-font .selection-title { font-size: 1.2rem; }
+        body.large-font label { font-size: 1.1rem; }
+        body.large-font select { font-size: 1.2rem; padding: 14px; }
+        body.large-font .btn-action { font-size: 1.4rem; padding: 18px; }
+        body.large-font .result-door { font-size: 2.2rem; }
+        body.large-font .info-text { font-size: 1.2rem; }
+        body.large-font .help-text p, body.large-font .help-text ul { font-size: 1.1rem; }
     </style>
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 40'><rect x='5' y='5' width='110' height='30' rx='4' fill='%231A1A1A' stroke='%23888' stroke-width='2'/><rect x='15' y='12' width='12' height='23' rx='1.5' fill='%23000' stroke='%23444' stroke-width='1.5'/><rect x='40' y='12' width='12' height='23' rx='1.5' fill='%23000' stroke='%23444' stroke-width='1.5'/><rect x='65' y='12' width='12' height='23' rx='1.5' fill='%234CAF50'/><rect x='90' y='12' width='12' height='23' rx='1.5' fill='%23000' stroke='%23444' stroke-width='1.5'/></svg>" type="image/svg+xml">
@@ -132,7 +141,7 @@
     <p class="fade-in-delayed" style="color:var(--text-muted); margin-top:0; margin-bottom: 40px;">Precisão e Autonomia</p>
     
     <button class="btn-action fade-in-delayed" id="btn-entrar-splash" onclick="UI.showView('view-warning')" style="max-width: 250px;">Entrar no Guia</button>
-    <div class="fade-in-delayed" style="margin-top: 30px; font-weight: bold; color: #666;">v4.5.1</div>
+    <div class="fade-in-delayed" style="margin-top: 30px; font-weight: bold; color: #666;">v4.5.2</div>
 </div>
 
 <div id="view-warning" class="app-view">
@@ -163,6 +172,7 @@
             <div class="header-actions">
                 <span class="action-btn" onclick="UI.showView('view-tutorial')" title="Como usar">❓</span>
                 <span class="action-btn" onclick="UI.showView('view-mapped')" title="Estações Mapeadas">📋</span>
+                <span class="action-btn" id="btn-font" onclick="UI.toggleFontSize()" title="Acessibilidade Visual">A+</span>
             </div>
         </div>
         
@@ -268,7 +278,7 @@
 <div id="acessibilidade-modal" class="modal-overlay" style="display: none;">
     <div class="modal-content">
         <h2 id="mod-acc-title">Direito à Acessibilidade</h2>
-        <p id="mod-acc-text">A estação selecionada não possui o equipamento de acessibilidade escolhido. O acesso pleno ao transporte público é um direito seu. Exerça sua cidadania e cobre melhorias diretamente na Ouvidoria do Governo de São Paulo.</p>
+        <p id="mod-acc-text">A estação selecionada não possui o equipamento de acessibilidade escolhido. O acesso pleno ao transporte público é um direito seu. Exerça sua cidadania e cobre melhorias directamente na Ouvidoria do Governo de São Paulo.</p>
         <div style="display: flex; flex-direction: column; gap: 10px;">
             <a href="https://fala.sp.gov.br/" target="_blank" class="btn-action" style="background-color: #FF3B30;" id="mod-acc-btn-fala">Registrar Cobrança no FALA.SP</a>
             <button class="btn-action btn-secondary" onclick="UI.fecharModalAcessibilidade()" id="mod-acc-btn-close">Entendi</button>
@@ -281,21 +291,16 @@
  * ============================================================================
  * PROJETO: PORTA CERTA SP
  * DATA: 27/02/2026
- * VERSÃO: 4.5.1 (Ajuste de Conteúdo Institucional)
+ * VERSÃO: 4.5.2 (Fix: Botão de Acessibilidade Visual A+)
  * DESENVOLVEDOR: Harry Bour
- * MOTIVO DA VERSÃO: Restauração do texto completo do tutorial (detalhando as
- * integrações com Ouvidoria FALA.SP e ferramentas de acessibilidade) e fixação
- * do nome oficial completo "PORTA CERTA SP" na tela principal.
+ * MOTIVO DA VERSÃO: Restauração da função de aumento de fonte (A+) no header
+ * da aplicação, que havia sido ocultada na mudança de arquitetura de telas.
  * ============================================================================
  */
 
-/**
- * ==========================================
- * [BLOCO 3] JS: BANCO DE DADOS (AppData)
- * ==========================================
- */
 const AppData = {
     currentLang: 'pt',
+    isLargeFont: false,
     linhas: [1, 2, 3, 4, 5, 15, 7, 8, 9, 10, 11, 12, 13],
     
     transferencias: {
@@ -320,10 +325,9 @@ const AppData = {
     },
 
     estacoes: {
-        /* Base de Dados Compactada */
         101:{linha:1,nome:"Tucuruvi",lat:-23.4804,lng:-46.6038}, 102:{linha:1,nome:"Parada Inglesa",lat:-23.4877,lng:-46.6080}, 103:{linha:1,nome:"Jardim São Paulo",lat:-23.4922,lng:-46.6166}, 104:{linha:1,nome:"Santana",lat:-23.5026,lng:-46.6250}, 105:{linha:1,nome:"Carandiru",lat:-23.5096,lng:-46.6249}, 106:{linha:1,nome:"Portuguesa-Tietê",lat:-23.5165,lng:-46.6251}, 107:{linha:1,nome:"Armênia",lat:-23.5254,lng:-46.6261}, 108:{linha:1,nome:"Tiradentes",lat:-23.5312,lng:-46.6315}, 109:{linha:1,nome:"Luz",lat:-23.5385,lng:-46.6360}, 110:{linha:1,nome:"São Bento",lat:-23.5434,lng:-46.6333}, 111:{linha:1,nome:"Sé",lat:-23.5492,lng:-46.6334}, 112:{linha:1,nome:"Japão-Liberdade",lat:-23.5555,lng:-46.6359}, 113:{linha:1,nome:"São Joaquim",lat:-23.5618,lng:-46.6388}, 114:{linha:1,nome:"Vergueiro",lat:-23.5689,lng:-46.6397}, 115:{linha:1,nome:"Paraíso",lat:-23.5759,lng:-46.6414}, 116:{linha:1,nome:"Ana Rosa",lat:-23.5813,lng:-46.6383}, 117:{linha:1,nome:"Vila Mariana",lat:-23.5894,lng:-46.6346}, 118:{linha:1,nome:"Santa Cruz",lat:-23.5989,lng:-46.6366}, 119:{linha:1,nome:"Praça da Árvore",lat:-23.6106,lng:-46.6378}, 120:{linha:1,nome:"Saúde",lat:-23.6172,lng:-46.6343}, 121:{linha:1,nome:"São Judas",lat:-23.6253,lng:-46.6394}, 122:{linha:1,nome:"Conceição",lat:-23.6362,lng:-46.6411}, 123:{linha:1,nome:"Jabaquara",lat:-23.6470,lng:-46.6395},
         201:{linha:2,nome:"Vila Madalena",lat:-23.5445,lng:-46.6900}, 202:{linha:2,nome:"Santuário Sumaré",lat:-23.5513,lng:-46.6778}, 203:{linha:2,nome:"Clínicas",lat:-23.5553,lng:-46.6718}, 204:{linha:2,nome:"Consolação",lat:-23.5580,lng:-46.6601}, 205:{linha:2,nome:"Trianon-Masp",lat:-23.5630,lng:-46.6540}, 206:{linha:2,nome:"Brigadeiro",lat:-23.5687,lng:-46.6465}, 207:{linha:2,nome:"Paraíso",lat:-23.5759,lng:-46.6414}, 208:{linha:2,nome:"Ana Rosa",lat:-23.5813,lng:-46.6383}, 209:{linha:2,nome:"Chácara Klabin",lat:-23.5927,lng:-46.6293}, 210:{linha:2,nome:"Santos-Imigrantes",lat:-23.5955,lng:-46.6200}, 211:{linha:2,nome:"Alto do Ipiranga",lat:-23.6025,lng:-46.6125}, 212:{linha:2,nome:"Sacomã",lat:-23.6021,lng:-46.5927}, 213:{linha:2,nome:"Tamanduateí",lat:-23.5929,lng:-46.5895}, 214:{linha:2,nome:"Vila Prudente",lat:-23.5816,lng:-46.5817},
-        /* L3 MAPEADA COMPLETA */
+        
         301:{linha:3,mapeada:true,nome:"Corinthians-Itaquera",lat:-23.5424,lng:-46.4735,elevadorBF:"Porta 11",elevadorIT:"-",rolanteBF:"Porta 21",rolanteIT:"-",fixaBF:"Porta 31",fixaIT:"-"},
         302:{linha:3,mapeada:true,nome:"Artur Alvim",lat:-23.5404,lng:-46.4845,elevadorBF:"Porta 65",elevadorIT:"Porta 64",rolanteBF:"Porta 47",rolanteIT:"Porta 43",fixaBF:"Porta 25",fixaIT:"Porta 24"},
         303:{linha:3,mapeada:true,nome:"Patriarca",lat:-23.5311,lng:-46.5015,elevadorBF:"Porta 18",elevadorIT:"Porta 11",rolanteBF:"Porta 35",rolanteIT:"Porta 34",fixaBF:"Porta 45",fixaIT:"Porta 44"},
@@ -362,7 +366,7 @@ const AppData = {
         'fr': { modTitle: 'Avis : Accessibilité', btnEntrarSplash: 'Entrer dans le Guide', btnVoltar: '⬅ Retour', lblPref: 'Sortie:', optElevador: 'Ascenseur', optRolante: 'Escalator', optFixa: 'Escaliers', titleOrigem: '📍 DÉPART', titleDestino: '🏁 DESTINATION', selLinhaOr: 'Ligne', selLinhaDest: 'Ligne', selEstOr: 'Ligne d\'abord', selEstDest: 'Ligne d\'abord', selEstAtivo: 'Maintenant, choisissez la station', listTitle: 'Stations', listDesc: 'Disponibles:', mesmaEstacao: 'Même station.', trecho: 'Trajet', emBreve: '(Bientôt)', l1: 'L1-Bleue', l2: 'L2-Verte', l3: 'L3-Rouge', l4: 'L4-Jaune', l5: 'L5-Lilas', l7: 'L7-Rubis', l8: 'L8-Diamant', l9: 'L9-Émeraude', l10: 'L10-Turquoise', l11: 'L11-Corail', l12: 'L12-Saphir', l13: 'L13-Jade', l15: 'L15-Argent', embTrecho: 'À {est}, montez à:', transfTrecho: 'À {est}, prenez {linha}.', saidaFinal: 'À {est}, face à {tipo}.', tipoElevador: 'porte de l\'ascenseur', tipoRolante: 'escalator', tipoFixa: 'escaliers', pendente: 'Non cartographiée.', txtPorta: 'Porte', txtVagao: 'Voiture', accTitle: 'Accessibilité', accBtnFala: 'FALA.SP', accBtnClose: 'Fermer', txtInexistente: 'Indisponible.', gpsBtn: '🎯 Près de moi', gpsBusca: '⏳ Recherche...', gpsFeito: '🎯 Fait!', gpsErro: '❌ Aucune station', freqUsadas: 'Plus Utilisées', freqTodas: 'Toutes les Stations', avisoRota: 'À propos de cet itinéraire', avisoRotaTexto: 'Cet itinéraire privilégie l\'accessibilité.', btnCalc: 'Quelle est la bonne porte ?' },
         'zh': { modTitle: '提示：无障碍与权利', btnEntrarSplash: '进入指南', btnVoltar: '⬅ 返回', lblPref: '首选出口:', optElevador: '直梯', optRolante: '扶梯', optFixa: '楼梯', titleOrigem: '📍 起点', titleDestino: '🏁 终点', selLinhaOr: '线', selLinhaDest: '线', selEstOr: '先选线', selEstDest: '先选线', selEstAtivo: '现在，请选择车站', listTitle: '已测绘车站', listDesc: '目前可用:', mesmaEstacao: '已在终点。', trecho: '路段', emBreve: '(即将)', l1: '1号线', l2: '2号线', l3: '3号线', l4: '4号线', l5: '5号线', l7: '7号线', l8: '8号线', l9: '9号线', l10: '10号线', l11: '11号线', l12: '12号线', l13: '13号线', l15: '15号线', embTrecho: '在 {est} 上车:', transfTrecho: '在 {est} 换乘 {linha}。', saidaFinal: '在终点 ({est})，正对{tipo}。', tipoElevador: '直梯', tipoRolante: '扶梯', tipoFixa: '楼梯', pendente: '尚未测绘。', txtPorta: '号门', txtVagao: '号车厢', accTitle: '无障碍权利', accBtnFala: 'FALA.SP', accBtnClose: '关闭', txtInexistente: '不可用。', gpsBtn: '🎯 在我附近', gpsBusca: '⏳ 搜索中...', gpsFeito: '🎯 完成!', gpsErro: '❌ 未找到车站', freqUsadas: '最常用', freqTodas: '所有车站', avisoRota: '关于此路线', avisoRotaTexto: '此路线侧重于无障碍设施。', btnCalc: '正确的车门是哪个？' },
         'ja': { modTitle: 'お知らせ：アクセシビリティ', btnEntrarSplash: 'ガイドへ入る', btnVoltar: '⬅ 戻る', lblPref: '希望出口:', optElevador: 'EV', optRolante: 'エスカレーター', optFixa: '階段', titleOrigem: '📍 出発', titleDestino: '🏁 目的', selLinhaOr: '路線', selLinhaDest: '路線', selEstOr: 'まず路線を選択', selEstDest: 'まず路線を選択', selEstAtivo: '次に、駅を選択してください', listTitle: 'マッピング済み', listDesc: '利用可能:', mesmaEstacao: '同じ駅。', trecho: '区間', emBreve: '(準備中)', l1: '1号線', l2: '2号線', l3: '3号線', l4: '4号線', l5: '5号線', l7: '7号線', l8: '8号線', l9: '9号線', l10: '10号線', l11: '11号線', l12: '12号線', l13: '13号線', l15: '15号線', embTrecho: '{est}で乗車:', transfTrecho: '{est}で降りて{linha}に乗換。', saidaFinal: '目的地({est})で{tipo}の前。', tipoElevador: 'EVドア', tipoRolante: 'エスカレーター', tipoFixa: '階段', pendente: 'まだマッピングされていません。', txtPorta: '番ドア', txtVagao: '号車', accTitle: 'アクセシビリティ', accBtnFala: 'FALA.SP', accBtnClose: '閉じる', txtInexistente: '利用不可。', gpsBtn: '🎯 近くの駅', gpsBusca: '⏳ 検索中...', gpsFeito: '🎯 完了!', gpsErro: '❌ 駅が見つかりません', freqUsadas: 'よく使う駅', freqTodas: 'すべての駅', avisoRota: 'このルートについて', avisoRotaTexto: 'このルートはアクセシビリティを重視しています。', btnCalc: '正しいドアは？' },
-        'ko': { modTitle: '공지: 접근성 및 권리', btnEntrarSplash: '가이드 시작', btnVoltar: '⬅ 뒤로', lblPref: '선호 출구:', optElevador: '엘리베이터', optRolante: '에스컬레이터', optFixa: '계단', titleOrigem: '📍 출발', titleDestino: '🏁 도착', selLinhaOr: '노선', 단어: '노선', selEstOr: '노선 선택', selEstDest: '노선 선택', selEstAtivo: '이제 역을 선택하세요', listTitle: '매핑된 역', listDesc: '사용 가능:', mesmaEstacao: '같은 역.', trecho: '구간', emBreve: '(예정)', l1: '1호선', l2: '2호선', l3: '3호선', l4: '4호선', l5: '5호선', l7: '7호선', l8: '8호선', l9: '9호선', l10: '10호선', l11: '11호선', l12: '12호선', l13: '13호선', l15: '15호선', embTrecho: '{est}에서 탑승:', transfTrecho: '{est}에서 내려 {linha} 환승.', saidaFinal: '도착지({est})에서 {tipo} 앞.', tipoElevador: '엘리베이터', tipoRolante: '에스컬레이터', tipoFixa: '계단', pendente: '아직 매핑되지 않았습니다.', txtPorta: '번 문', txtVagao: '호차', accTitle: '접근성', accBtnFala: 'FALA.SP', accBtnClose: '닫기', txtInexistente: '불가.', gpsBtn: '🎯 내 근처', gpsBusca: '⏳ 검색 중...', gpsFeito: '🎯 완료!', gpsErro: '❌ 역 없음', freqUsadas: '자주 찾는 역', freqTodas: '모든 역', avisoRota: '이 경로에 대하여', avisoRotaTexto: '이 경로는 접근성을 중점으로 합니다.', btnCalc: '정확한 탑승 문은?' },
+        'ko': { modTitle: '공지: 접근성 및 권리', btnEntrarSplash: '가이드 시작', btnVoltar: '⬅ 뒤로', lblPref: '선호 출구:', optElevador: '엘리베이터', optRolante: '에스컬레이터', optFixa: '계단', titleOrigem: '📍 출발', titleDestino: '🏁 도착', selLinhaOr: '노선', selLinhaDest: '노선', selEstOr: '노선 선택', selEstDest: '노선 선택', selEstAtivo: '이제 역을 선택하세요', listTitle: '매핑된 역', listDesc: '사용 가능:', mesmaEstacao: '같은 역.', trecho: '구간', emBreve: '(예정)', l1: '1호선', l2: '2호선', l3: '3호선', l4: '4호선', l5: '5호선', l7: '7호선', l8: '8호선', l9: '9호선', l10: '10호선', l11: '11호선', l12: '12호선', l13: '13호선', l15: '15호선', embTrecho: '{est}에서 탑승:', transfTrecho: '{est}에서 내려 {linha} 환승.', saidaFinal: '도착지({est})에서 {tipo} 앞.', tipoElevador: '엘리베이터', tipoRolante: '에스컬레이터', 타입고정: '계단', pendente: '아직 매핑되지 않았습니다.', txtPorta: '번 문', txtVagao: '호차', accTitle: '접근성', accBtnFala: 'FALA.SP', accBtnClose: '닫기', txtInexistente: '불가.', gpsBtn: '🎯 내 근처', gpsBusca: '⏳ 검색 중...', gpsFeito: '🎯 완료!', gpsErro: '❌ 역 없음', freqUsadas: '자주 찾는 역', freqTodas: '모든 역', avisoRota: '이 경로에 대하여', avisoRotaTexto: '이 경로는 접근성을 중점으로 합니다.', btnCalc: '정확한 탑승 문은?' },
         'ar': { modTitle: 'إشعار: إمكانية الوصول والحقوق', btnEntrarSplash: 'أدخل الدليل', btnVoltar: '⬅ عودة', lblPref: 'المخرج:', optElevador: 'مصعد', optRolante: 'سلم كهربائي', optFixa: 'سلم', titleOrigem: '📍 الانطلاق', titleDestino: '🏁 الوجهة', selLinhaOr: 'الخط', selLinhaDest: 'الخط', selEstOr: 'اختر الخط', selEstDest: 'اختر الخط', selEstAtivo: 'الآن، اختر المحطة', listTitle: 'المحطات', listDesc: 'متاح في:', mesmaEstacao: 'نفس المحطة.', trecho: 'جزء', emBreve: '(قريباً)', l1: '1', l2: '2', l3: '3', l4: '4', l5: '5', l7: '7', l8: '8', l9: '9', l10: '10', l11: '11', l12: '12', l13: '13', l15: '15', embTrecho: 'في {est} اصعد:', transfTrecho: 'انزل في {est} وانتقل إلى {linha}.', saidaFinal: 'في ({est})، أمام {tipo}.', tipoElevador: 'المصعد', tipoRolante: 'السلم', tipoFixa: 'السلم', pendente: 'لم يتم التعيين بعد.', txtPorta: 'باب', txtVagao: 'عربة', accTitle: 'إمكانية الوصول', accBtnFala: 'FALA.SP', accBtnClose: 'أغلق', txtInexistente: 'غير متوفر.', gpsBtn: '🎯 بالقرب مني', gpsBusca: '⏳ جاري البحث...', gpsFeito: '🎯 تم!', gpsErro: '❌ لا توجد محطات', freqUsadas: 'الأكثر استخداماً', freqTodas: 'جميع المحطات', avisoRota: 'حول هذا المسار', avisoRotaTexto: 'يركز هذا المسار على إمكانية الوصول.', btnCalc: 'الباب الصحيح؟' }
     }
 };
