@@ -37,11 +37,11 @@
 
         /* LOGOTIPO SVG HEADER */
         .logo-container { display: flex; align-items: center; gap: 10px; }
-        .logo-svg { height: 28px; width: auto; }
+        .logo-svg { height: 26px; width: auto; flex-shrink: 0; }
         .logo-door-target { fill: #4CAF50; animation: logoPulse 2s infinite; }
         @keyframes logoPulse { 0%, 100% { filter: drop-shadow(0 0 2px #4CAF50); } 50% { filter: drop-shadow(0 0 8px #4CAF50); } }
 
-        /* MODAL DE EMERGÊNCIA (Mantido apenas para o FALA.SP) */
+        /* MODAL DE EMERGÊNCIA */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: #1A1A1A; border: 1px solid var(--border-color); border-top: 5px solid #FF3B30; padding: 25px; border-radius: 12px; max-width: 380px; width: 100%; text-align: left; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
         .modal-content h2 { margin-top: 0; font-size: 1.4rem; color: #FF3B30; line-height: 1.2;}
@@ -51,9 +51,9 @@
         .checkbox-container span { font-weight: bold; color: #FFF; font-size: 1.05rem; }
 
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .header-actions { display: flex; gap: 8px; }
+        .header-actions { display: flex; gap: 8px; flex-shrink: 0; }
         .action-btn { font-size: 1.2rem; font-weight: bold; color: var(--text-main); background: #333; border: 1px solid var(--border-color); border-radius: 6px; padding: 4px 10px; cursor: pointer; user-select: none; }
-        h1 { font-size: 1.6rem; margin: 0; color: var(--text-main); line-height: 1.2; letter-spacing: -0.5px; }
+        h1 { font-size: 1.45rem; margin: 0; color: var(--text-main); line-height: 1.1; letter-spacing: -0.5px; }
         
         .selection-group { background-color: #111; padding: 15px; border-radius: 8px; border: 1px solid #333; margin-bottom: 15px; }
         .selection-title { font-size: 1.05rem; font-weight: bold; color: #FFF; margin-bottom: 10px; border-left: 4px solid var(--border-color); padding-left: 8px; }
@@ -102,11 +102,17 @@
         .slogan { font-style: italic; margin-bottom: 8px; color: var(--text-main); font-size: 0.85rem;}
         .signature { font-weight: bold; color: var(--text-muted); letter-spacing: 0.5px; font-size: 0.85rem;}
         
+        body[dir="rtl"] .selection-title { border-left: none; border-right: 4px solid var(--border-color); padding-left: 0; padding-right: 8px; }
+        body[dir="rtl"] .route-step { border-left: none; border-right: 4px solid var(--border-color); padding-left: 0; padding-right: 15px; }
+        body[dir="rtl"] .route-step::before { left: auto; right: -9px; }
+        
         .mapped-list { list-style: none; padding: 0; margin: 0; }
         .mapped-list li { padding: 8px 0; border-bottom: 1px solid #333; color: #FFF; font-size: 0.95rem; }
         .mapped-list li::before { content: '✔️'; margin-right: 8px; }
         .help-text p { font-size: 1.05rem; color: #CCC; margin-top: 0; margin-bottom: 15px; line-height: 1.4; }
-        .help-text h3 { margin-bottom: 5px; color: #FFF; }
+        .help-text h3 { margin-bottom: 5px; color: #FFF; margin-top: 25px; }
+        .help-text ul { padding-left: 20px; margin-top: 0; color: #CCC; font-size: 1rem; line-height: 1.4; }
+        .help-text li { margin-bottom: 12px; }
     </style>
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 40'><rect x='5' y='5' width='110' height='30' rx='4' fill='%231A1A1A' stroke='%23888' stroke-width='2'/><rect x='15' y='12' width='12' height='23' rx='1.5' fill='%23000' stroke='%23444' stroke-width='1.5'/><rect x='40' y='12' width='12' height='23' rx='1.5' fill='%23000' stroke='%23444' stroke-width='1.5'/><rect x='65' y='12' width='12' height='23' rx='1.5' fill='%234CAF50'/><rect x='90' y='12' width='12' height='23' rx='1.5' fill='%23000' stroke='%23444' stroke-width='1.5'/></svg>" type="image/svg+xml">
@@ -126,7 +132,7 @@
     <p class="fade-in-delayed" style="color:var(--text-muted); margin-top:0; margin-bottom: 40px;">Precisão e Autonomia</p>
     
     <button class="btn-action fade-in-delayed" id="btn-entrar-splash" onclick="UI.showView('view-warning')" style="max-width: 250px;">Entrar no Guia</button>
-    <div class="fade-in-delayed" style="margin-top: 30px; font-weight: bold; color: #666;">v4.5.0</div>
+    <div class="fade-in-delayed" style="margin-top: 30px; font-weight: bold; color: #666;">v4.5.1</div>
 </div>
 
 <div id="view-warning" class="app-view">
@@ -152,7 +158,7 @@
                     <rect x="65" y="12" width="12" height="23" rx="1.5" class="logo-door-target"/>
                     <rect x="90" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
                 </svg>
-                <h1 id="app-title">PORTA CERTA</h1>
+                <h1 id="app-title">PORTA CERTA SP</h1>
             </div>
             <div class="header-actions">
                 <span class="action-btn" onclick="UI.showView('view-tutorial')" title="Como usar">❓</span>
@@ -220,12 +226,27 @@
         <div class="container-header">
             <h2 style="color: var(--l3);">Como usar o Guia</h2>
         </div>
+        
+        <p>O aplicativo calcula em qual porta do trem você deve entrar para sair exatamente de frente para a escada ou elevador que você precisa no destino.</p>
+
         <h3>1. O que você precisa?</h3>
-        <p>No topo da tela, escolha a sua preferência para a saída no destino final.</p>
+        <p>No topo da tela, escolha a sua preferência para a saída no destino final: Elevador, Escada Rolante ou Escada Fixa.</p>
+
         <h3>2. Origem e Destino</h3>
-        <p>Escolha a Linha e a Estação onde você vai embarcar. Você também pode usar o botão <strong>🎯 Perto de mim</strong> para achar a estação pelo GPS.</p>
+        <p>Escolha a Linha e a Estação onde você vai embarcar. Você também pode usar o botão <strong>🎯 Perto de mim</strong> para achar a estação mais próxima pelo GPS. Depois, escolha a estação destino. <br><em style="font-size:0.9rem;">Nota: Estações com o aviso "(Em breve)" estão bloqueadas porque ainda não foram mapeadas na origem.</em></p>
+
         <h3>3. Calcule a rota</h3>
-        <p>O sistema mostrará o trajeto modular. Exemplo: <strong>Porta 47 (Vagão 4, Porta 2)</strong>. Nosso mapa mostrará em qual vagão você deve entrar.</p>
+        <p>Clique no botão <strong>Qual é a Porta Certa?</strong>. O sistema mostrará o trajeto completo passo a passo. Ele dirá onde você deve embarcar. Exemplo: <strong>Porta 47 (Vagão 4, Porta 2)</strong>.</p>
+        <p>Basta procurar o adesivo 47 no chão ou no alto da porta de vidro. Se a estação não tiver marcação, nosso mapa dinâmico mostrará em qual vagão você deve entrar.</p>
+
+        <h3 style="margin-top: 30px;">Recursos importantes:</h3>
+        <ul>
+            <li><strong>Acessibilidade visual (A+):</strong> Aumenta o tamanho de todas as letras da tela (botão no topo).</li>
+            <li><strong>Estações mapeadas (📋):</strong> Mostra a lista de estações que já funcionam com precisão.</li>
+            <li><strong>Direito ao acesso (FALA.SP):</strong> Se a estação destino não tiver o equipamento que você precisa, o app gera um alerta com um atalho direto para a Ouvidoria do Estado. Cobre seus direitos.</li>
+            <li><strong>Ajude a mapear:</strong> Descobriu a porta exata de uma estação nova? Vá até a tela principal e clique em "Contribuir com o Mapa" para nos enviar a informação.</li>
+        </ul>
+
         <button class="btn-action btn-secondary" onclick="UI.showView('view-main')" style="margin-top: 30px;" id="btn-voltar-tut">⬅ Voltar</button>
     </div>
 </div>
@@ -260,10 +281,11 @@
  * ============================================================================
  * PROJETO: PORTA CERTA SP
  * DATA: 27/02/2026
- * VERSÃO: 4.5.0 (Single Page Application UX)
+ * VERSÃO: 4.5.1 (Ajuste de Conteúdo Institucional)
  * DESENVOLVEDOR: Harry Bour
- * MOTIVO DA VERSÃO: Substituição de modais por telas dedicadas (Views).
- * Implementada Splash Screen com animação do logotipo SVG (Porta Iluminada).
+ * MOTIVO DA VERSÃO: Restauração do texto completo do tutorial (detalhando as
+ * integrações com Ouvidoria FALA.SP e ferramentas de acessibilidade) e fixação
+ * do nome oficial completo "PORTA CERTA SP" na tela principal.
  * ============================================================================
  */
 
@@ -340,7 +362,7 @@ const AppData = {
         'fr': { modTitle: 'Avis : Accessibilité', btnEntrarSplash: 'Entrer dans le Guide', btnVoltar: '⬅ Retour', lblPref: 'Sortie:', optElevador: 'Ascenseur', optRolante: 'Escalator', optFixa: 'Escaliers', titleOrigem: '📍 DÉPART', titleDestino: '🏁 DESTINATION', selLinhaOr: 'Ligne', selLinhaDest: 'Ligne', selEstOr: 'Ligne d\'abord', selEstDest: 'Ligne d\'abord', selEstAtivo: 'Maintenant, choisissez la station', listTitle: 'Stations', listDesc: 'Disponibles:', mesmaEstacao: 'Même station.', trecho: 'Trajet', emBreve: '(Bientôt)', l1: 'L1-Bleue', l2: 'L2-Verte', l3: 'L3-Rouge', l4: 'L4-Jaune', l5: 'L5-Lilas', l7: 'L7-Rubis', l8: 'L8-Diamant', l9: 'L9-Émeraude', l10: 'L10-Turquoise', l11: 'L11-Corail', l12: 'L12-Saphir', l13: 'L13-Jade', l15: 'L15-Argent', embTrecho: 'À {est}, montez à:', transfTrecho: 'À {est}, prenez {linha}.', saidaFinal: 'À {est}, face à {tipo}.', tipoElevador: 'porte de l\'ascenseur', tipoRolante: 'escalator', tipoFixa: 'escaliers', pendente: 'Non cartographiée.', txtPorta: 'Porte', txtVagao: 'Voiture', accTitle: 'Accessibilité', accBtnFala: 'FALA.SP', accBtnClose: 'Fermer', txtInexistente: 'Indisponible.', gpsBtn: '🎯 Près de moi', gpsBusca: '⏳ Recherche...', gpsFeito: '🎯 Fait!', gpsErro: '❌ Aucune station', freqUsadas: 'Plus Utilisées', freqTodas: 'Toutes les Stations', avisoRota: 'À propos de cet itinéraire', avisoRotaTexto: 'Cet itinéraire privilégie l\'accessibilité.', btnCalc: 'Quelle est la bonne porte ?' },
         'zh': { modTitle: '提示：无障碍与权利', btnEntrarSplash: '进入指南', btnVoltar: '⬅ 返回', lblPref: '首选出口:', optElevador: '直梯', optRolante: '扶梯', optFixa: '楼梯', titleOrigem: '📍 起点', titleDestino: '🏁 终点', selLinhaOr: '线', selLinhaDest: '线', selEstOr: '先选线', selEstDest: '先选线', selEstAtivo: '现在，请选择车站', listTitle: '已测绘车站', listDesc: '目前可用:', mesmaEstacao: '已在终点。', trecho: '路段', emBreve: '(即将)', l1: '1号线', l2: '2号线', l3: '3号线', l4: '4号线', l5: '5号线', l7: '7号线', l8: '8号线', l9: '9号线', l10: '10号线', l11: '11号线', l12: '12号线', l13: '13号线', l15: '15号线', embTrecho: '在 {est} 上车:', transfTrecho: '在 {est} 换乘 {linha}。', saidaFinal: '在终点 ({est})，正对{tipo}。', tipoElevador: '直梯', tipoRolante: '扶梯', tipoFixa: '楼梯', pendente: '尚未测绘。', txtPorta: '号门', txtVagao: '号车厢', accTitle: '无障碍权利', accBtnFala: 'FALA.SP', accBtnClose: '关闭', txtInexistente: '不可用。', gpsBtn: '🎯 在我附近', gpsBusca: '⏳ 搜索中...', gpsFeito: '🎯 完成!', gpsErro: '❌ 未找到车站', freqUsadas: '最常用', freqTodas: '所有车站', avisoRota: '关于此路线', avisoRotaTexto: '此路线侧重于无障碍设施。', btnCalc: '正确的车门是哪个？' },
         'ja': { modTitle: 'お知らせ：アクセシビリティ', btnEntrarSplash: 'ガイドへ入る', btnVoltar: '⬅ 戻る', lblPref: '希望出口:', optElevador: 'EV', optRolante: 'エスカレーター', optFixa: '階段', titleOrigem: '📍 出発', titleDestino: '🏁 目的', selLinhaOr: '路線', selLinhaDest: '路線', selEstOr: 'まず路線を選択', selEstDest: 'まず路線を選択', selEstAtivo: '次に、駅を選択してください', listTitle: 'マッピング済み', listDesc: '利用可能:', mesmaEstacao: '同じ駅。', trecho: '区間', emBreve: '(準備中)', l1: '1号線', l2: '2号線', l3: '3号線', l4: '4号線', l5: '5号線', l7: '7号線', l8: '8号線', l9: '9号線', l10: '10号線', l11: '11号線', l12: '12号線', l13: '13号線', l15: '15号線', embTrecho: '{est}で乗車:', transfTrecho: '{est}で降りて{linha}に乗換。', saidaFinal: '目的地({est})で{tipo}の前。', tipoElevador: 'EVドア', tipoRolante: 'エスカレーター', tipoFixa: '階段', pendente: 'まだマッピングされていません。', txtPorta: '番ドア', txtVagao: '号車', accTitle: 'アクセシビリティ', accBtnFala: 'FALA.SP', accBtnClose: '閉じる', txtInexistente: '利用不可。', gpsBtn: '🎯 近くの駅', gpsBusca: '⏳ 検索中...', gpsFeito: '🎯 完了!', gpsErro: '❌ 駅が見つかりません', freqUsadas: 'よく使う駅', freqTodas: 'すべての駅', avisoRota: 'このルートについて', avisoRotaTexto: 'このルートはアクセシビリティを重視しています。', btnCalc: '正しいドアは？' },
-        'ko': { modTitle: '공지: 접근성 및 권리', btnEntrarSplash: '가이드 시작', btnVoltar: '⬅ 뒤로', lblPref: '선호 출구:', optElevador: '엘리베이터', optRolante: '에스컬레이터', optFixa: '계단', titleOrigem: '📍 출발', titleDestino: '🏁 도착', selLinhaOr: '노선', selLinhaDest: '노선', selEstOr: '노선 선택', selEstDest: '노선 선택', selEstAtivo: '이제 역을 선택하세요', listTitle: '매핑된 역', listDesc: '사용 가능:', mesmaEstacao: '같은 역.', trecho: '구간', emBreve: '(예정)', l1: '1호선', l2: '2호선', l3: '3호선', l4: '4호선', l5: '5호선', l7: '7호선', l8: '8호선', l9: '9호선', l10: '10호선', l11: '11호선', l12: '12호선', l13: '13호선', l15: '15호선', embTrecho: '{est}에서 탑승:', transfTrecho: '{est}에서 내려 {linha} 환승.', saidaFinal: '도착지({est})에서 {tipo} 앞.', tipoElevador: '엘리베이터', tipoRolante: '에스컬레이터', tipoFixa: '계단', pendente: '아직 매핑되지 않았습니다.', txtPorta: '번 문', txtVagao: '호차', accTitle: '접근성', accBtnFala: 'FALA.SP', accBtnClose: '닫기', txtInexistente: '불가.', gpsBtn: '🎯 내 근처', gpsBusca: '⏳ 검색 중...', gpsFeito: '🎯 완료!', gpsErro: '❌ 역 없음', freqUsadas: '자주 찾는 역', freqTodas: '모든 역', avisoRota: '이 경로에 대하여', avisoRotaTexto: '이 경로는 접근성을 중점으로 합니다.', btnCalc: '정확한 탑승 문은?' },
+        'ko': { modTitle: '공지: 접근성 및 권리', btnEntrarSplash: '가이드 시작', btnVoltar: '⬅ 뒤로', lblPref: '선호 출구:', optElevador: '엘리베이터', optRolante: '에스컬레이터', optFixa: '계단', titleOrigem: '📍 출발', titleDestino: '🏁 도착', selLinhaOr: '노선', 단어: '노선', selEstOr: '노선 선택', selEstDest: '노선 선택', selEstAtivo: '이제 역을 선택하세요', listTitle: '매핑된 역', listDesc: '사용 가능:', mesmaEstacao: '같은 역.', trecho: '구간', emBreve: '(예정)', l1: '1호선', l2: '2호선', l3: '3호선', l4: '4호선', l5: '5호선', l7: '7호선', l8: '8호선', l9: '9호선', l10: '10호선', l11: '11호선', l12: '12호선', l13: '13호선', l15: '15호선', embTrecho: '{est}에서 탑승:', transfTrecho: '{est}에서 내려 {linha} 환승.', saidaFinal: '도착지({est})에서 {tipo} 앞.', tipoElevador: '엘리베이터', tipoRolante: '에스컬레이터', tipoFixa: '계단', pendente: '아직 매핑되지 않았습니다.', txtPorta: '번 문', txtVagao: '호차', accTitle: '접근성', accBtnFala: 'FALA.SP', accBtnClose: '닫기', txtInexistente: '불가.', gpsBtn: '🎯 내 근처', gpsBusca: '⏳ 검색 중...', gpsFeito: '🎯 완료!', gpsErro: '❌ 역 없음', freqUsadas: '자주 찾는 역', freqTodas: '모든 역', avisoRota: '이 경로에 대하여', avisoRotaTexto: '이 경로는 접근성을 중점으로 합니다.', btnCalc: '정확한 탑승 문은?' },
         'ar': { modTitle: 'إشعار: إمكانية الوصول والحقوق', btnEntrarSplash: 'أدخل الدليل', btnVoltar: '⬅ عودة', lblPref: 'المخرج:', optElevador: 'مصعد', optRolante: 'سلم كهربائي', optFixa: 'سلم', titleOrigem: '📍 الانطلاق', titleDestino: '🏁 الوجهة', selLinhaOr: 'الخط', selLinhaDest: 'الخط', selEstOr: 'اختر الخط', selEstDest: 'اختر الخط', selEstAtivo: 'الآن، اختر المحطة', listTitle: 'المحطات', listDesc: 'متاح في:', mesmaEstacao: 'نفس المحطة.', trecho: 'جزء', emBreve: '(قريباً)', l1: '1', l2: '2', l3: '3', l4: '4', l5: '5', l7: '7', l8: '8', l9: '9', l10: '10', l11: '11', l12: '12', l13: '13', l15: '15', embTrecho: 'في {est} اصعد:', transfTrecho: 'انزل في {est} وانتقل إلى {linha}.', saidaFinal: 'في ({est})، أمام {tipo}.', tipoElevador: 'المصعد', tipoRolante: 'السلم', tipoFixa: 'السلم', pendente: 'لم يتم التعيين بعد.', txtPorta: 'باب', txtVagao: 'عربة', accTitle: 'إمكانية الوصول', accBtnFala: 'FALA.SP', accBtnClose: 'أغلق', txtInexistente: 'غير متوفر.', gpsBtn: '🎯 بالقرب مني', gpsBusca: '⏳ جاري البحث...', gpsFeito: '🎯 تم!', gpsErro: '❌ لا توجد محطات', freqUsadas: 'الأكثر استخداماً', freqTodas: 'جميع المحطات', avisoRota: 'حول هذا المسار', avisoRotaTexto: 'يركز هذا المسار على إمكانية الوصول.', btnCalc: 'الباب الصحيح؟' }
     }
 };
@@ -448,7 +470,6 @@ const UI = {
         this.atualizarEstacoes('origem', true); this.atualizarEstacoes('destino', true);
         this.popularListaMapeadas();
         
-        // Setup Inicial de Telas via SessionStorage
         if(sessionStorage.getItem('portaCertaModal') === 'lido') {
             this.showView('view-main');
         } else {
@@ -540,7 +561,7 @@ const UI = {
         document.querySelectorAll('.lang-flag').forEach(el => el.classList.remove('active'));
         document.getElementById('flag-' + langCode).classList.add('active');
 
-        document.getElementById('mod-title').innerText = t.modTitle; document.getElementById('btn-modal').innerText = t.btnCalc; // Reusing translated text
+        document.getElementById('mod-title').innerText = t.modTitle; document.getElementById('btn-modal').innerText = t.btnCalc; 
         document.getElementById('btn-calcular').innerText = t.btnCalc; document.getElementById('lbl-pref').innerText = t.lblPref;
         document.getElementById('opt-elevador').innerText = t.optElevador; document.getElementById('opt-rolante').innerText = t.optRolante;
         document.getElementById('opt-fixa').innerText = t.optFixa; document.getElementById('title-origem').innerText = t.titleOrigem;
