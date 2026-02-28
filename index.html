@@ -156,18 +156,45 @@
         .alert-pendente { background-color: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3); color: #FFC107; }
         body.light-mode .alert-pendente { color: #E65100; }
 
-        .t-container { width: 100%; height: 85px; background-color: var(--train-bg); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; position: relative; margin-top: 10px; margin-bottom: 10px; box-shadow: inset 0 0 10px rgba(0,0,0,0.4); }
-        body.light-mode .t-container { box-shadow: inset 0 0 5px rgba(0,0,0,0.05); }
-        .t-track { position: absolute; height: 2px; width: 100%; bottom: 15px; background: var(--border-color); z-index: 0; }
-        .t-wrapper { position: absolute; top: 0; left: 0; height: 100%; display: flex; align-items: center; gap: 6px; transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); z-index: 1; padding: 0 10px; }
-        .t-car { width: 85px; height: 32px; border: 2px solid; background: var(--card-bg); border-radius: 3px; display: flex; justify-content: space-evenly; align-items: flex-end; padding-bottom: 2px; position: relative; }
-        .t-car.front { border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
-        .t-car.back { border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
-        .t-car::after { content: attr(data-label); position: absolute; top: -20px; font-size: 0.65rem; color: #888; font-weight: bold; width: 100%; text-align: center; }
-        .t-door { width: 10px; height: 16px; background: var(--group-bg); border: 1px solid var(--border-color); border-radius: 2px 2px 0 0; position: relative; }
-        .t-door.target { background: #4CAF50; border-color: #FFF; box-shadow: 0 0 8px #4CAF50; }
-        .t-door.target::before { content: '▼'; position: absolute; top: -22px; left: -3px; color: #4CAF50; font-size: 14px; animation: bounce 1s infinite; text-shadow: 0 0 5px rgba(0,0,0,0.5); }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+        /* ========================================== */
+        /* NOVO MOTOR GRÁFICO (VISÃO TOP-DOWN)        */
+        /* ========================================== */
+        .t-topdown-container { width: 100%; margin: 15px 0; display: flex; flex-direction: column; overflow: hidden; position: relative; border-radius: 8px; background: var(--train-bg); border: 1px solid var(--border-color); box-shadow: inset 0 0 10px rgba(0,0,0,0.4); padding: 15px 0 20px 0; }
+        body.light-mode .t-topdown-container { box-shadow: inset 0 0 5px rgba(0,0,0,0.05); }
+        
+        .t-direction { text-align: center; font-weight: 800; font-size: 0.85rem; margin-bottom: 12px; letter-spacing: 1px; text-transform: uppercase; }
+        
+        .t-track-topdown { position: relative; height: 50px; width: 100%; display: flex; align-items: center; }
+        .t-track-topdown::before, .t-track-topdown::after { content: ''; position: absolute; left: 0; width: 100%; height: 2px; background: var(--border-color); z-index: 0; }
+        .t-track-topdown::before { top: 8px; }
+        .t-track-topdown::after { bottom: 8px; }
+        
+        .t-wrapper-topdown { display: flex; gap: 8px; padding: 0 20px; position: absolute; transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); z-index: 1; }
+        
+        .t-car-topdown { width: 85px; height: 36px; border: 2px solid; background: var(--card-bg); border-radius: 4px; position: relative; display: flex; flex-direction: column; justify-content: space-between; padding: 0 4px; }
+        
+        .car-row { display: flex; justify-content: space-evenly; width: 100%; }
+        .car-row.top { margin-top: -2px; }
+        .car-row.bottom { margin-bottom: -2px; }
+        
+        .t-door-topdown { width: 10px; height: 6px; background: var(--group-bg); border: 1px solid var(--border-color); }
+        .t-door-topdown.top { border-top: none; border-radius: 0 0 2px 2px; }
+        .t-door-topdown.bottom { border-bottom: none; border-radius: 2px 2px 0 0; }
+        
+        .t-door-topdown.target { background: #4CAF50; border-color: #FFF; box-shadow: 0 0 8px #4CAF50; z-index: 2; position: relative; }
+        
+        .t-door-topdown.target.top::before { content: '▼'; position: absolute; top: -20px; left: -3px; color: #4CAF50; font-size: 14px; animation: bounceTop 1s infinite; text-shadow: 0 0 5px rgba(0,0,0,0.8); }
+        .t-door-topdown.target.bottom::before { content: '▲'; position: absolute; bottom: -20px; left: -3px; color: #4CAF50; font-size: 14px; animation: bounceBottom 1s infinite; text-shadow: 0 0 5px rgba(0,0,0,0.8); }
+        
+        @keyframes bounceTop { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+        @keyframes bounceBottom { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+        
+        .car-center-label { text-align: center; font-size: 0.65rem; color: var(--text-muted); font-weight: bold; margin: auto 0; }
+        
+        .t-cab { position: absolute; top: 50%; transform: translateY(-50%); height: 70%; width: 12px; border-radius: 4px; z-index: -1; }
+        .cab-left { left: -10px; border-top-right-radius: 0; border-bottom-right-radius: 0; }
+        .cab-right { right: -10px; border-top-left-radius: 0; border-bottom-left-radius: 0; }
+        /* ========================================== */
 
         .footer { margin-top: 25px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 20px; }
         .lang-footer-container { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 15px; }
@@ -215,7 +242,7 @@
     <p class="fade-in-delayed" style="color:var(--text-muted); margin-top:0; margin-bottom: 40px;">Precisão e Autonomia</p>
     
     <button class="btn-action fade-in-delayed" id="btn-entrar-splash" onclick="UI.showView('view-warning')" style="max-width: 250px;">Entrar no Guia</button>
-    <div class="fade-in-delayed" style="margin-top: 30px; font-weight: bold; color: #666;">v4.6.2</div>
+    <div class="fade-in-delayed" style="margin-top: 30px; font-weight: bold; color: #666;">v4.7.0</div>
 </div>
 
 <div id="view-warning" class="app-view">
@@ -338,10 +365,11 @@
         <p>Escolha a Linha e a Estação onde você vai embarcar. Você também pode usar o botão <strong>🎯 Perto de mim</strong> para achar a estação mais próxima pelo GPS. Depois, escolha a estação destino. <br><em style="font-size:0.9rem;">Nota: Estações com o aviso "(Em breve)" estão bloqueadas porque ainda não foram mapeadas na origem.</em></p>
         <h3>3. Calcule a rota</h3>
         <p>Clique no botão <strong>Qual é a Porta Certa?</strong>. O sistema mostrará o trajeto completo passo a passo. Ele dirá onde você deve embarcar. Exemplo: <strong>Porta 47 (Vagão 4, Porta 2)</strong>.</p>
-        <p>Basta procurar o adesivo 47 no chão ou no alto da porta de vidro. Se a estação não tiver marcação, nosso mapa dinâmico mostrará em qual vagão você deve entrar.</p>
+        <p>Basta procurar o adesivo 47 no chão ou no alto da porta de vidro. Se a estação não tiver marcação, nosso mapa dinâmico mostrará em qual vagão você deve entrar e em qual porta exata.</p>
 
         <h3 style="margin-top: 30px;">Recursos importantes:</h3>
         <ul>
+            <li><strong>Visão Top-Down:</strong> A interface agora exibe o vagão de cima. O ponto verde vai piscar no exato lado (esquerdo ou direito) onde a porta se abrirá.</li>
             <li><strong>Acessibilidade visual (A+):</strong> Aumenta o tamanho de todas as letras da tela.</li>
             <li><strong>Modo Claro (☀️):</strong> Troca o fundo preto por um fundo claro para melhor leitura de dia.</li>
             <li><strong>Estações mapeadas (📋):</strong> Mostra a lista de estações que já funcionam com precisão.</li>
@@ -382,7 +410,7 @@
 /**
  * ============================================================================
  * PROJETO: PORTA CERTA SP
- * VERSÃO: 4.6.2 (Atualização L3: Marechal, Brás, Tatuapé, Pedro II, Santa Cecília)
+ * VERSÃO: 4.7.0 (Top-Down Animation Engine)
  * ============================================================================
  */
 
@@ -554,7 +582,6 @@ const AppData = {
 const Formatter = {
     formatarPorta: function(raw, sentido) {
         if (!raw || raw === "-" || raw === "Pendente" || raw === "Inexistente") return raw;
-        let map = AppData.mapaPortas[sentido] || {};
         let t = AppData.dicionario[AppData.currentLang];
         let parsed = Router.parseVagaoPorta(raw, sentido);
         
@@ -629,8 +656,15 @@ const Router = {
             if (sentido === "BF") { v = d1; p = (d2 >= 5 && d2 <= 8) ? (9 - d2) : 0; } 
             else { v = 7 - d1; p = (d2 >= 1 && d2 <= 4) ? d2 : 0; }
         }
+
+        // Lógica para Top-Down: Determinar Lado A ou B baseado no número absoluto da porta
+        let side = null;
+        if (numPorta) {
+            let d2 = parseInt(numPorta.charAt(1));
+            side = (d2 <= 4) ? 'A' : 'B'; // A = Topo na UI, B = Base na UI
+        }
         
-        return (v >= 1 && v <= 6 && p >= 1 && p <= 4) ? {v, p} : null;
+        return (v >= 1 && v <= 6 && p >= 1 && p <= 4) ? {v, p, side} : null;
     }
 };
 
@@ -815,21 +849,58 @@ const UI = {
         }
     },
 
-    gerarTremHtml: function(linhaId, vTarget, pTarget) {
+    gerarTremHtml: function(linhaId, parsed, sentidoCalculado) {
         let corVar = `var(--l${linhaId})`;
-        let html = `<div class="t-container"><div class="t-track"></div><div class="t-wrapper">`;
+        let vTarget = parsed ? parsed.v : 0;
+        let pTarget = parsed ? parsed.p : 0;
+        let sTarget = parsed ? parsed.side : null;
+
+        let html = `<div class="t-topdown-container">`;
+        
+        html += `<div class="t-direction" style="color: ${corVar}">`;
+        if (sentidoCalculado === "BF") {
+            html += `◀ SENTIDO DA VIAGEM`;
+        } else {
+            html += `SENTIDO DA VIAGEM ▶`;
+        }
+        html += `</div>`;
+
+        html += `<div class="t-track-topdown">`;
+        html += `<div class="t-wrapper-topdown">`;
+        
         for(let v=1; v<=6; v++) {
-            let carClass = "t-car";
-            if(v === 1) carClass += " front";
-            if(v === 6) carClass += " back";
-            html += `<div class="${carClass}" data-label="C${v}" style="border-color: ${corVar};">`;
+            let isCab = (sentidoCalculado === "BF" && v === 1) || (sentidoCalculado === "IT" && v === 6);
+            
+            html += `<div class="t-car-topdown" style="border-color: ${corVar};">`;
+            
+            // LADO A (Topo da tela)
+            html += `<div class="car-row top">`;
             for(let p=1; p<=4; p++) {
-                let isTarget = (v === vTarget && p === pTarget);
-                html += `<div class="t-door ${isTarget ? 'target' : ''}"></div>`;
+                let isTarget = (v === vTarget && p === pTarget && (sTarget === 'A' || sTarget === null));
+                html += `<div class="t-door-topdown top ${isTarget ? 'target' : ''}"></div>`;
             }
             html += `</div>`;
+
+            // RÓTULO CENTRAL
+            html += `<div class="car-center-label">C${v}</div>`;
+
+            // LADO B (Base da tela)
+            html += `<div class="car-row bottom">`;
+            for(let p=1; p<=4; p++) {
+                let isTarget = (v === vTarget && p === pTarget && (sTarget === 'B' || sTarget === null));
+                html += `<div class="t-door-topdown bottom ${isTarget ? 'target' : ''}"></div>`;
+            }
+            html += `</div>`;
+
+            // INDICADOR DA CABINE (Frente do trem)
+            if (isCab) {
+                let cabClass = sentidoCalculado === "BF" ? "cab-left" : "cab-right";
+                html += `<div class="t-cab ${cabClass}" style="background-color: ${corVar}"></div>`;
+            }
+
+            html += `</div>`; 
         }
-        html += `</div></div>`;
+        html += `</div></div></div>`;
         return html;
     },
 
@@ -906,7 +977,7 @@ const UI = {
             } else if (portaRaw && portaRaw !== "-" && portaRaw !== "Pendente") {
                 htmlFinal += `<div class="result-door" style="color:${corVar};">${Formatter.formatarPorta(portaRaw, sentidoCalculado)}</div>`;
                 let parsed = Router.parseVagaoPorta(portaRaw, sentidoCalculado);
-                if (parsed) htmlFinal += UI.gerarTremHtml(lAtual, parsed.v, parsed.p);
+                if (parsed) htmlFinal += UI.gerarTremHtml(lAtual, parsed, sentidoCalculado);
             } else {
                 htmlFinal += `<div class="alert-warning alert-pendente" style="margin-top:8px;">⏳ ${t.pendente}</div>`;
             }
@@ -929,8 +1000,8 @@ const UI = {
         }
 
         setTimeout(() => {
-            document.querySelectorAll('.t-wrapper').forEach(wrapper => {
-                let target = wrapper.querySelector('.t-door.target');
+            document.querySelectorAll('.t-wrapper-topdown').forEach(wrapper => {
+                let target = wrapper.querySelector('.t-door-topdown.target');
                 if(target) {
                     let container = wrapper.parentElement;
                     let cWidth = container.offsetWidth;
