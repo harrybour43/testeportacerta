@@ -215,7 +215,7 @@
     <p class="fade-in-delayed" style="color:var(--text-muted); margin-top:0; margin-bottom: 40px;">Precisão e Autonomia</p>
     
     <button class="btn-action fade-in-delayed" id="btn-entrar-splash" onclick="UI.showView('view-warning')" style="max-width: 250px;">Entrar no Guia</button>
-    <div class="fade-in-delayed" style="margin-top: 30px; font-weight: bold; color: #666;">v4.6.1</div>
+    <div class="fade-in-delayed" style="margin-top: 30px; font-weight: bold; color: #666;">v4.6.2</div>
 </div>
 
 <div id="view-warning" class="app-view">
@@ -382,7 +382,7 @@
 /**
  * ============================================================================
  * PROJETO: PORTA CERTA SP
- * VERSÃO: 4.6.1 (Banco de dados de Portas L3 Atualizado e Expansão do Motor)
+ * VERSÃO: 4.6.2 (Atualização L3: Marechal, Brás, Tatuapé, Pedro II, Santa Cecília)
  * ============================================================================
  */
 
@@ -510,16 +510,16 @@ const AppData = {
         305:{linha:3,mapeada:true,nome:"Vila Matilde",lat:-23.5317,lng:-46.5309,sigla:"VTD",elevadorBF:"Porta 66",elevadorIT:"Porta 64",rolanteBF:"Porta 47",rolanteIT:"Porta 42",fixaBF:"Porta 25",fixaIT:"Porta 24"},
         306:{linha:3,mapeada:true,nome:"Penha",lat:-23.5332,lng:-46.5398,sigla:"PEN",elevadorBF:"Porta 18",elevadorIT:"Porta 11",rolanteBF:"Porta 36",rolanteIT:"Porta 33",fixaBF:"Porta 47",fixaIT:"Porta 42"},
         307:{linha:3,mapeada:true,nome:"Carrão",lat:-23.5350,lng:-46.5641,sigla:"CAR",elevadorBF:"Porta 18",elevadorIT:"Porta 11",rolanteBF:"Porta 36",rolanteIT:"Porta 33",fixaBF:"Porta 58",fixaIT:"Porta 51"},
-        308:{linha:3,mapeada:true,nome:"Tatuapé",lat:-23.5398,lng:-46.5768,sigla:"TAT",elevadorBF:"Porta 66",elevadorIT:"Porta 63",rolanteBF:"Porta 35",rolanteIT:"Porta 34",fixaBF:"Porta 45",fixaIT:"Porta 44"},
+        308:{linha:3,mapeada:true,nome:"Tatuapé",lat:-23.5398,lng:-46.5768,sigla:"TAT",elevadorBF:"Inexistente",elevadorIT:"Inexistente",rolanteBF:"Porta 53",rolanteIT:"Porta 55",fixaBF:"Porta 11",fixaIT:"Porta 35"},
         309:{linha:3,mapeada:true,nome:"Belém",lat:-23.5431,lng:-46.5898,sigla:"BEL",elevadorBF:"Porta 65",elevadorIT:"Porta 63",rolanteBF:"Porta 47",rolanteIT:"Porta 42",fixaBF:"Porta 37",fixaIT:"Porta 32"},
         310:{linha:3,mapeada:true,nome:"Bresser-Mooca",lat:-23.5463,lng:-46.6067,sigla:"BRE",elevadorBF:"Porta 65",elevadorIT:"Porta 63",rolanteBF:"Porta 47",rolanteIT:"Porta 42",fixaBF:"Porta 37",fixaIT:"Porta 32"},
-        311:{linha:3,mapeada:true,nome:"Brás",lat:-23.5471,lng:-46.6164,sigla:"BAS",elevadorBF:"Vagão 5, Porta 3",elevadorIT:"Vagão 2, Porta 2",rolanteBF:"Vagão 6, Porta 3",rolanteIT:"Vagão 1, Porta 2",fixaBF:"Vagão 4, Porta 1",fixaIT:"Vagão 3, Porta 4"},
-        312:{linha:3,mapeada:true,nome:"Pedro II",lat:-23.5498,lng:-46.6258,sigla:"PDS",elevadorBF:"Porta 32",elevadorIT:"Pendente",rolanteBF:"Porta 14",rolanteIT:"Pendente",fixaBF:"Porta 61",fixaIT:"Pendente"},
+        311:{linha:3,mapeada:true,nome:"Brás",lat:-23.5471,lng:-46.6164,sigla:"BAS",elevadorBF:"Inexistente",elevadorIT:"Inexistente",rolanteBF:"Porta 31",rolanteIT:"Porta 28",fixaBF:"Porta 31",fixaIT:"Porta 31"},
+        312:{linha:3,mapeada:true,nome:"Pedro II",lat:-23.5498,lng:-46.6258,sigla:"PDS",elevadorBF:"Porta 32",elevadorIT:"Porta 46",rolanteBF:"Porta 14",rolanteIT:"Porta 68",fixaBF:"Porta 61",fixaIT:"Porta 68"},
         313:{linha:3,mapeada:true,nome:"Sé",lat:-23.5492,lng:-46.6334,sigla:"PSE",elevadorBF:"Porta 25",elevadorIT:"Porta 33",rolanteBF:"Porta 57",rolanteIT:"Porta 52",fixaBF:"Porta 57",fixaIT:"Porta 52"},
         314:{linha:3,mapeada:true,nome:"Anhangabaú",lat:-23.5478,lng:-46.6385,sigla:"GBU",elevadorBF:"Vagão 6, Porta 4",elevadorIT:"Vagão 1, Porta 1",rolanteBF:"Vagão 1, Porta 1",rolanteIT:"Vagão 6, Porta 4",fixaBF:"Vagão 1, Porta 1",fixaIT:"Vagão 6, Porta 4"},
         315:{linha:3,mapeada:true,nome:"República",lat:-23.5439,lng:-46.6425,sigla:"REP",elevadorBF:"Vagão 1, Porta 1",elevadorIT:"Vagão 6, Porta 4",rolanteBF:"Vagão 6, Porta 1",rolanteIT:"Vagão 1, Porta 4",fixaBF:"Vagão 6, Porta 4",fixaIT:"Vagão 1, Porta 1"},
-        316:{linha:3,mapeada:true,nome:"Santa Cecília",lat:-23.5384,lng:-46.6492,sigla:"CEC",elevadorBF:"Porta 45",elevadorIT:"Pendente",rolanteBF:"Inexistente",rolanteIT:"Inexistente",fixaBF:"Porta 33",fixaIT:"Pendente"},
-        317:{linha:3,mapeada:true,nome:"Marechal Deodoro",lat:-23.5328,lng:-46.6558,sigla:"DEO",elevadorBF:"Porta 37",elevadorIT:"Porta 37",rolanteBF:"Porta 36",rolanteIT:"Porta 36",fixaBF:"Porta 36",fixaIT:"Porta 36"},
+        316:{linha:3,mapeada:true,nome:"Santa Cecília",lat:-23.5384,lng:-46.6492,sigla:"CEC",elevadorBF:"Porta 45",elevadorIT:"Porta 48",rolanteBF:"Inexistente",rolanteIT:"Inexistente",fixaBF:"Porta 33",fixaIT:"Porta 58"},
+        317:{linha:3,mapeada:true,nome:"Marechal Deodoro",lat:-23.5328,lng:-46.6558,sigla:"DEO",elevadorBF:"Porta 37",elevadorIT:"Porta 37",rolanteBF:"Porta 36",rolanteIT:"Porta 45",fixaBF:"Porta 36",fixaIT:"Porta 28"},
         318:{linha:3,mapeada:true,nome:"Palmeiras-Barra Funda",lat:-23.5256,lng:-46.6640,sigla:"BFU",elevadorBF:"-",elevadorIT:"Porta 44",rolanteBF:"-",rolanteIT:"Porta 34",fixaBF:"-",fixaIT:"Porta 61"},
 
         401:{linha:4,nome:"Luz",lat:-23.5385,lng:-46.6360,sigla:"LUZ"}, 402:{linha:4,nome:"República",lat:-23.5439,lng:-46.6425,sigla:"REP"}, 403:{linha:4,nome:"Higienópolis-Mackenzie",lat:-23.5486,lng:-46.6521}, 404:{linha:4,nome:"Paulista",lat:-23.5551,lng:-46.6613}, 405:{linha:4,nome:"Oscar Freire",lat:-23.5606,lng:-46.6719}, 406:{linha:4,nome:"Fradique Coutinho",lat:-23.5661,lng:-46.6841}, 407:{linha:4,nome:"Faria Lima",lat:-23.5674,lng:-46.6934}, 408:{linha:4,nome:"Pinheiros",lat:-23.5665,lng:-46.7029}, 409:{linha:4,nome:"Butantã",lat:-23.5714,lng:-46.7083}, 410:{linha:4,nome:"São Paulo-Morumbi",lat:-23.5866,lng:-46.7237}, 411:{linha:4,nome:"Vila Sônia",lat:-23.5938,lng:-46.7360},
