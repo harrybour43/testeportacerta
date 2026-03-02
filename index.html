@@ -4,13 +4,337 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PORTA CERTA SP</title>
-
-    <link rel="stylesheet" href="style.css">
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 40'><rect x='5' y='5' width='110' height='30' rx='4' fill='%231A1A1A' stroke='%23888' stroke-width='2'/><rect x='15' y='12' width='12' height='23' rx='1.5' fill='%23000' stroke='%23444' stroke-width='1.5'/><rect x='40' y='12' width='12' height='23' rx='1.5' fill='%23000' stroke='%23444' stroke-width='1.5'/><rect x='65' y='12' width='12' height='23' rx='1.5' fill='%234CAF50'/><rect x='90' y='12' width='12' height='23' rx='1.5' fill='%23000' stroke='%23444' stroke-width='1.5'/></svg>" type="image/svg+xml">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        :root {
+            /* Cores das Linhas do Metrô/CPTM */
+            --l1: #00539B; --l2: #008061; --l3: #EE3E34; --l4: #F0D200; --l5: #A52182;
+            --l7: #A0184B; --l8: #9E9E93; --l9: #00A88E; --l10: #007C8F; --l11: #F04D22;
+            --l12: #033F88; --l13: #00B352; --l15: #8D8D8D;
+            
+            /* Cores Temáticas Base (Modo Escuro Padrão) */
+            --bg-color: #000000; 
+            --card-bg: #1A1A1A; 
+            --text-main: #FFFFFF;
+            --text-muted: #CCCCCC; 
+            --border-color: #444444; 
+            --btn-color: #00539B; /* Cor L1 como destaque atual */
+            --input-bg: #000000; 
+            --group-bg: #111111; 
+            --train-bg: #050505;
+        }
+
+        /* OVERRIDES: MODO CLARO */
+        body.light-mode {
+            --bg-color: #F0F2F5; 
+            --card-bg: #FFFFFF; 
+            --text-main: #111111;
+            --text-muted: #555555; 
+            --border-color: #DDDDDD; 
+            --input-bg: #FFFFFF;
+            --group-bg: #F9F9F9; 
+            --train-bg: #EAEAEA;
+        }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            margin: 0; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: flex-start; 
+            min-height: 100vh; 
+            transition: background-color 0.3s ease, color 0.3s ease; 
+            direction: ltr; 
+        }
+
+        /* SISTEMA DE TELAS (SPA) */
+        .app-view { display: none; width: 100%; max-width: 420px; flex-direction: column; animation: fadeInView 0.3s ease; }
+        .app-view.active { display: flex; }
+        @keyframes fadeInView { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .container { 
+            background-color: var(--card-bg); 
+            border-radius: 12px; 
+            padding: 24px; 
+            width: 100%; 
+            box-shadow: 0 8px 16px rgba(0,0,0,0.8); 
+            border-top: 6px solid var(--l1); 
+            border: 1px solid var(--border-color); 
+            transition: all 0.3s ease; 
+        }
+        body.light-mode .container { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+
+        .container-header { display: flex; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
+        .container-header h2 { margin: 0; font-size: 1.4rem; color: var(--text-main); line-height: 1.2; }
+
+        /* SPLASH SCREEN */
+        #view-splash { justify-content: center; align-items: center; min-height: 90vh; text-align: center; }
+        .splash-train { width: 180px; height: auto; animation: trainDriveIn 1s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        @keyframes trainDriveIn { 0% { transform: translateX(-150vw); } 100% { transform: translateX(0); } }
+        .splash-title { font-size: 2.2rem; margin: 20px 0 5px 0; letter-spacing: -1px; }
+        .fade-in-delayed { opacity: 0; animation: fadeIn 0.8s ease forwards 1s; }
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        /* MODAL DE EMERGÊNCIA */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: var(--card-bg); border: 1px solid var(--border-color); border-top: 5px solid #FF3B30; padding: 25px; border-radius: 12px; max-width: 380px; width: 100%; text-align: left; box-shadow: 0 10px 25px rgba(0,0,0,0.5); color: var(--text-main); }
+        .modal-content h2 { margin-top: 0; font-size: 1.4rem; color: #FF3B30; line-height: 1.2;}
+
+        .checkbox-container { display: flex; align-items: center; gap: 10px; margin-bottom: 25px; cursor: pointer; }
+        .checkbox-container input { width: 22px; height: 22px; accent-color: var(--btn-color); cursor: pointer; }
+        .checkbox-container span { font-weight: bold; font-size: 1.05rem; }
+
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .action-btn { font-size: 1.4rem; font-weight: bold; color: var(--text-main); background: var(--group-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 6px 12px; cursor: pointer; user-select: none; transition: background 0.2s; }
+        .action-btn:hover { background: #333; }
+        body.light-mode .action-btn:hover { background: #E5E5E5; }
+        h1 { font-size: 1.45rem; margin: 0; color: var(--text-main); line-height: 1.1; letter-spacing: -0.5px; }
+
+        /* HERO HEADER (TELA PRINCIPAL) */
+        .hero-header-main { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); }
+        .hero-settings { position: absolute; top: 0; right: 0; }
+        .hero-logo-svg { height: 45px; width: auto; margin-bottom: 12px; }
+        .logo-door-target { fill: #4CAF50; animation: logoPulse 2s infinite; }
+        @keyframes logoPulse { 0%, 100% { filter: drop-shadow(0 0 2px #4CAF50); } 50% { filter: drop-shadow(0 0 8px #4CAF50); } }
+        body.light-mode .hero-logo-svg rect[fill="#1A1A1A"] { fill: #FFFFFF; }
+        body.light-mode .hero-logo-svg rect[fill="#000"] { fill: #E0E0E0; }
+        body.light-mode .hero-logo-svg line { stroke: #CCC; }
+        .hero-title { font-size: 2.2rem; font-weight: 800; margin: 0; color: var(--text-main); letter-spacing: -1px; line-height: 1; }
+        body.large-font .hero-title { font-size: 2.8rem; }
+
+        /* FORMS E SELEÇÕES */
+        .selection-group { background-color: var(--group-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 15px; }
+        .selection-title { font-size: 1.05rem; font-weight: bold; color: var(--text-main); margin-bottom: 10px; border-left: 4px solid var(--border-color); padding-left: 8px; }
+        .selection-title.origem { border-color: #4CAF50; }
+        .selection-title.destino { border-color: #E91E63; }
+        label { display: block; margin-bottom: 5px; font-size: 0.9rem; font-weight: 600; color: var(--text-muted); }
+        select { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 6px; border: 2px solid var(--border-color); background-color: var(--input-bg); color: var(--text-main); font-size: 1rem; appearance: none; cursor: pointer; }
+        select:last-child { margin-bottom: 0; }
+        select:disabled { opacity: 0.5; cursor: not-allowed; }
+        optgroup { font-weight: bold; color: var(--text-muted); background: var(--group-bg); font-style: normal; }
+
+        /* HUB DE CONFIGURAÇÕES (BOTÕES) */
+        .settings-list { display: flex; flex-direction: column; gap: 10px; }
+        .settings-btn { display: flex; align-items: center; background: var(--group-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 15px; border-radius: 8px; cursor: pointer; font-size: 1.05rem; font-weight: bold; transition: background 0.2s; text-align: left; }
+        .settings-btn:hover { background: #333; }
+        body.light-mode .settings-btn:hover { background: #EEEEEE; }
+        .settings-btn .icon { font-size: 1.4rem; width: 40px; text-align: center; margin-right: 10px; }
+
+        .btn-action { display: block; width: 100%; padding: 16px; margin-top: 10px; margin-bottom: 10px; background-color: var(--btn-color); color: #FFF; border: none; border-radius: 8px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: background 0.3s; text-decoration: none; text-align: center; }
+        .btn-action:hover { filter: brightness(1.2); }
+        .btn-action:disabled { background-color: #555; color: #888; cursor: not-allowed; }
+        .btn-secondary { background-color: var(--group-bg); color: var(--text-main); margin-top: 0; border: 1px solid var(--border-color); }
+        .btn-gps { background: var(--group-bg); color: #4CAF50; border: 1px solid #4CAF50; border-radius: 6px; padding: 4px 10px; cursor: pointer; font-weight: bold; font-size: 0.85rem; transition: all 0.2s; }
+        .btn-gps:hover { background: #4CAF50; color: #FFF; }
+
+        /* CAIXA DE RESULTADOS */
+        .result-box { background-color: var(--group-bg); border-radius: 8px; padding: 20px; margin-top: 15px; border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; }
+        .route-step { border-left: 4px solid var(--border-color); padding-left: 15px; margin-bottom: 25px; position: relative; }
+        .route-step:last-child { margin-bottom: 0; }
+        .route-step::before { content: ''; position: absolute; left: -9px; top: 0; width: 14px; height: 14px; border-radius: 50%; background-color: var(--card-bg); border: 4px solid var(--step-color, var(--border-color)); }
+
+        .step-title { font-size: 0.95rem; font-weight: bold; color: var(--text-main); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .result-door { font-size: 1.8rem; font-weight: 900; margin: 8px 0; color: var(--text-main); line-height: 1.2; }
+        .info-text { font-size: 1rem; line-height: 1.4; color: var(--text-muted); margin-bottom: 10px; }
+        .alert-warning { font-size: 0.95rem; margin-top: 10px; padding: 12px; border-radius: 6px; color: #FF3B30; border: 1px solid #FF3B30; }
+        .alert-info { background-color: rgba(33, 150, 243, 0.1); border: 1px solid rgba(33, 150, 243, 0.3); color: var(--text-main); margin-bottom: 20px; }
+        body.light-mode .alert-info { background-color: rgba(33, 150, 243, 0.05); color: #033F88; }
+        .alert-pendente { background-color: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3); color: #FFC107; }
+        body.light-mode .alert-pendente { color: #E65100; }
+
+        /* ========================================== */
+        /* MOTOR GRÁFICO: TREM TOP-DOWN (DUPLA FACE)  */
+        /* ========================================== */
+
+        /* Container Principal do Trem */
+        .t-topdown-container { 
+            width: 100%; 
+            height: 120px; 
+            background-color: var(--train-bg); 
+            border-radius: 8px; 
+            position: relative; 
+            overflow: hidden; 
+            margin: 15px 0; 
+            border: 1px solid var(--border-color); 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        /* Faixa de Sentido da Viagem */
+        .t-direction { 
+            width: 100%; 
+            text-align: center; 
+            font-size: 0.75rem; 
+            font-weight: bold; 
+            letter-spacing: 1px; 
+            padding: 6px 0; 
+            background: rgba(0,0,0,0.4); 
+            z-index: 2; 
+        }
+
+        body.light-mode .t-direction {
+            background: rgba(255,255,255,0.6);
+        }
+
+        /* Trilho ao fundo */
+        .t-track-topdown { 
+            position: relative; 
+            height: 100%; 
+            width: 100%; 
+            background: repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(255,255,255,0.05) 20px, rgba(255,255,255,0.05) 25px); 
+            display: flex; 
+            align-items: center; 
+        }
+
+        body.light-mode .t-track-topdown {
+            background: repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(0,0,0,0.05) 20px, rgba(0,0,0,0.05) 25px);
+        }
+
+        /* Wrapper que movimenta o trem para centralizar a porta */
+        .t-wrapper-topdown { 
+            position: absolute; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; /* Espaço entre os vagões */
+            padding: 0 20px; 
+            height: 65px; 
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); 
+            z-index: 1; 
+        }
+
+        /* Vagão */
+        .t-car-topdown { 
+            width: 90px; 
+            height: 100%; 
+            border: 2px solid; 
+            background: var(--card-bg); 
+            border-radius: 4px; 
+            position: relative; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+        }
+
+        /* Label Central do Vagão (Ex: C1, C2) */
+        .car-center-label { 
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            font-size: 0.8rem; 
+            color: var(--text-muted); 
+            font-weight: bold; 
+        }
+
+        /* Linha das portas (Face A e Face B) */
+        .car-row { 
+            display: flex; 
+            justify-content: space-evenly; 
+            width: 100%; 
+            padding: 0 2px; 
+        }
+
+        /* Portas Individuais */
+        .t-door-topdown { 
+            width: 12px; 
+            height: 8px; 
+            background: var(--group-bg); 
+            border: 1px solid var(--border-color); 
+        }
+        .t-door-topdown.top { border-radius: 0 0 4px 4px; border-top: none; }
+        .t-door-topdown.bottom { border-radius: 4px 4px 0 0; border-bottom: none; }
+
+        /* Porta Alvo (Seta Verde e Brilho) */
+        .t-door-topdown.target { 
+            background: #4CAF50; 
+            border-color: #FFF; 
+            box-shadow: 0 0 10px #4CAF50; 
+            position: relative; 
+            z-index: 5; 
+        }
+        .t-door-topdown.target::before { 
+            content: '▼'; 
+            position: absolute; 
+            left: 50%; 
+            font-size: 14px; 
+            color: #4CAF50; 
+            animation: bounce 1s infinite; 
+            text-shadow: 0 0 5px rgba(0,0,0,0.8); 
+        }
+        body.light-mode .t-door-topdown.target::before {
+            text-shadow: 0 0 3px rgba(255,255,255,0.8);
+        }
+        .t-door-topdown.top.target::before { top: -20px; transform: translateX(-50%); }
+        .t-door-topdown.bottom.target::before { bottom: -20px; transform: translateX(-50%) rotate(180deg); }
+
+        /* Animação da Seta */
+        @keyframes bounce { 
+            0%, 100% { transform: translateX(-50%) translateY(0); } 
+            50% { transform: translateX(-50%) translateY(-4px); } 
+        }
+
+        /* Cabine (Frente/Trás do Trem) */
+        .t-cab { 
+            position: absolute; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            width: 12px; 
+            height: 80%; 
+        }
+        .t-cab.cab-left { 
+            left: -14px; 
+            border-top-left-radius: 12px; 
+            border-bottom-left-radius: 12px; 
+        }
+        .t-cab.cab-right { 
+            right: -14px; 
+            border-top-right-radius: 12px; 
+            border-bottom-right-radius: 12px; 
+        }
+
+        /* RODAPÉ & IDIOMAS & ACESSIBILIDADE */
+        .footer { margin-top: 25px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 20px; }
+        .lang-footer-container { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 15px; }
+        .lang-flag { font-size: 2rem; cursor: pointer; user-select: none; opacity: 0.4; filter: grayscale(50%); transition: all 0.3s ease; }
+        .lang-flag.active { opacity: 1; filter: grayscale(0%); transform: scale(1.15); }
+        .slogan { font-style: italic; margin-bottom: 8px; color: var(--text-main); font-size: 0.85rem;}
+        .signature { font-weight: bold; color: var(--text-muted); letter-spacing: 0.5px; font-size: 0.85rem;}
+
+        body[dir="rtl"] .selection-title { border-left: none; border-right: 4px solid var(--border-color); padding-left: 0; padding-right: 8px; }
+        body[dir="rtl"] .route-step { border-left: none; border-right: 4px solid var(--border-color); padding-left: 0; padding-right: 15px; }
+        body[dir="rtl"] .route-step::before { left: auto; right: -9px; }
+
+        .mapped-list { list-style: none; padding: 0; margin: 0; }
+        .mapped-list li { padding: 8px 0; border-bottom: 1px solid var(--border-color); color: var(--text-main); font-size: 0.95rem; }
+        .mapped-list li::before { content: '✔️'; margin-right: 8px; }
+
+        .help-text p { font-size: 1.05rem; color: var(--text-muted); margin-top: 0; margin-bottom: 15px; line-height: 1.4; }
+        .help-text h3 { margin-bottom: 5px; color: var(--text-main); margin-top: 25px; }
+        .help-text ul { padding-left: 20px; margin-top: 0; color: var(--text-muted); font-size: 1rem; line-height: 1.4; }
+        .help-text li { margin-bottom: 12px; }
+
+        /* LARGE FONT (A+) */
+        body.large-font h1 { font-size: 2.2rem; }
+        body.large-font .selection-title { font-size: 1.2rem; }
+        body.large-font label { font-size: 1.1rem; }
+        body.large-font select { font-size: 1.2rem; padding: 14px; }
+        body.large-font .btn-action { font-size: 1.4rem; padding: 18px; }
+        body.large-font .result-door { font-size: 2.2rem; }
+        body.large-font .info-text { font-size: 1.2rem; }
+        body.large-font .help-text p, body.large-font .help-text ul { font-size: 1.1rem; }
+
+        .hidden { display: none !important; }
+    </style>
 </head>
 <body>
- 
+
     <div id="view-splash" class="app-view">
         <svg class="splash-train" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
             <line x1="0" y1="38" x2="120" y2="38" stroke="#444" stroke-width="2" stroke-linecap="round"/>
@@ -24,7 +348,7 @@
         <p class="fade-in-delayed" style="color:var(--text-muted); margin-top:0; margin-bottom: 40px;">Precisão e Autonomia</p>
         
         <button class="btn-action fade-in-delayed" id="btn-entrar-splash" onclick="UI.showView('view-warning')" style="max-width: 250px;">Entrar no Guia</button>
-        <div class="fade-in-delayed" style="margin-top: 30px; font-weight: bold; color: #666;">v5.0.0</div>
+        <div class="fade-in-delayed" style="margin-top: 30px; font-weight: bold; color: #666;">v5.1.0 - Supercódigo Monolítico</div>
     </div>
 
     <div id="view-warning" class="app-view">
@@ -41,7 +365,7 @@
         </div>
     </div>
 
-    <div id="view-main" class="app-view">
+    <div id="view-main" class="app-view active">
         <div class="container">
             
             <div class="hero-header-main">
@@ -58,7 +382,7 @@
                 </svg>
                 
                 <h1 id="app-title" class="hero-title">PORTA CERTA SP</h1>
-                <p style="color: var(--l1); margin-top: 5px; font-size: 0.9rem; font-weight: bold;">Módulo Inteligente</p>
+                <p style="color: var(--l1); margin-top: 5px; font-size: 0.9rem; font-weight: bold;">Módulo Inteligente L1 / L3</p>
             </div>
 
             <label for="preferencia" id="lbl-pref">Sua preferência de saída no destino final:</label>
@@ -173,7 +497,6 @@
             <div style="background: var(--group-bg); padding: 15px; border-radius: 8px; margin-bottom: 20px; max-height: 400px; overflow-y: auto; border: 1px solid var(--border-color);">
                 <h3 style="color: var(--l1); margin-top: 0; font-size: 1.1rem;">■ Linha 1 - Azul</h3>
                 <ul class="mapped-list" id="ul-mapeadas-l1"></ul>
-                
                 <h3 style="color: var(--l3); margin-top: 20px; font-size: 1.1rem;">■ Linha 3 - Vermelha</h3>
                 <ul class="mapped-list" id="ul-mapeadas-l3"></ul>
             </div>
@@ -184,7 +507,7 @@
     <div id="acessibilidade-modal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <h2 id="mod-acc-title">Direito à Acessibilidade</h2>
-            <p id="mod-acc-text">A estação selecionada não possui o equipamento de acessibilidade escolhido ou o dado está pendente. O acesso pleno ao transporte público é um direito seu. Exerça sua cidadania e cobre melhorias diretamente na Ouvidoria do Governo de São Paulo.</p>
+            <p id="mod-acc-text">A estação selecionada não possui o equipamento de acessibilidade escolhido ou o dado está pendente. O acesso pleno ao transporte público é um direito seu. Exerça sua cidadania e cobre melhorias directamente na Ouvidoria do Governo de São Paulo.</p>
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <a href="https://fala.sp.gov.br/" target="_blank" class="btn-action" style="background-color: #FF3B30; text-decoration: none;" id="mod-acc-btn-fala">Registrar Cobrança no FALA.SP</a>
                 <button class="btn-action btn-secondary" onclick="UI.fecharModalAcessibilidade()" id="mod-acc-btn-close">Entendi</button>
@@ -192,9 +515,629 @@
         </div>
     </div>
 
-    <script src="data.js"></script> 
-    <script src="app.js"></script>
+    <script>
+    const AppData = {
+        currentLang: 'pt',
+        isLargeFont: false,
+        isLightMode: false,
+        linhas: [1, 2, 3, 4, 5, 15, 7, 8, 9, 10, 11, 12, 13],
+        
+        transferencias: {
+            1: { 2: 'Paraíso', 3: 'Sé', 4: 'Luz', 5: 'Santa Cruz', 10: 'Luz', 11: 'Luz' },
+            2: { 1: 'Paraíso', 4: 'Consolação', 5: 'Chácara Klabin', 10: 'Tamanduateí', 15: 'Vila Prudente' },
+            3: { 1: 'Sé', 4: 'República', 7: 'Barra Funda', 8: 'Barra Funda', 10: 'Brás', 11: 'Brás', 12: 'Brás' },
+            4: { 1: 'Luz', 2: 'Paulista', 3: 'República', 9: 'Pinheiros', 10: 'Luz', 11: 'Luz' },
+            5: { 1: 'Santa Cruz', 2: 'Chácara Klabin', 9: 'Santo Amaro' },
+            7: { 3: 'Barra Funda', 8: 'Barra Funda', 10: 'Barra Funda' },
+            8: { 3: 'Barra Funda', 7: 'Barra Funda', 9: 'Osasco', 10: 'Barra Funda' },
+            9: { 4: 'Pinheiros', 5: 'Santo Amaro', 8: 'Osasco' },
+            10: { 1: 'Luz', 2: 'Tamanduateí', 3: 'Brás', 4: 'Luz', 7: 'Barra Funda', 8: 'Barra Funda', 11: 'Brás', 12: 'Brás' },
+            11: { 1: 'Luz', 3: 'Brás', 4: 'Luz', 10: 'Brás', 12: 'Brás' },
+            12: { 3: 'Brás', 10: 'Brás', 11: 'Brás', 13: 'Engenheiro Goulart' },
+            13: { 12: 'Engenheiro Goulart' },
+            15: { 2: 'Vila Prudente' }
+        },
 
+        ordemL1: ["TUC", "PIG", "JPA", "SAN", "CDU", "TTE", "PPQ", "TRD", "LUZ", "BTO", "PSE", "LIB", "JQM", "VGO", "PSO", "ANR", "VMN", "SCZ", "ARV", "SAU", "JUD", "CON", "JAB"],
+        ordemL3: ["ITQ", "ART", "PCA", "VPA", "VTD", "PEN", "CAR", "TAT", "BEL", "BRE", "BAS", "PDS", "PSE", "GBU", "REP", "CEC", "DEO", "BFU"],
+
+        estacoes: {
+            /* === L1 AZUL === */
+            "TUC": { linha: 1, mapeada: true, nome: "Tucuruvi", lat: -23.4804, lng: -46.6038, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "TUCS1E43,TUCS1F23,TUCS1F34,TUCS1F52", dbS2: "" },
+            "PIG": { linha: 1, mapeada: true, nome: "Parada Inglesa", lat: -23.4877, lng: -46.6080, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "PIGS1E41,PIGS1F51", dbS2: "PIGS2E48,PIGS2F58" },
+            "JPA": { linha: 1, mapeada: true, nome: "Jardim São Paulo", lat: -23.4922, lng: -46.6166, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "JPAS1E35,JPAS1F37,JPAS1F45,JPAS1R45-I,JPAS1R45-O", dbS2: "JPAS2E34,JPAS2F44,JPAS2F32,JPAS2R44-I,JPAS2R44-O" },
+            "SAN": { linha: 1, mapeada: true, nome: "Santana", lat: -23.5026, lng: -46.6250, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "SANS1E34,SANS1F32,SANS1F44,SANS1R32-I,SANS1R44-I,SANS1R32-O,SANS1R44-O", dbS2: "SANS2E48,SANS2F37,SANS2F45,SANS2R37-I,SANS2R45-I,SANS2R37-O,SANS2R45-O" },
+            "CDU": { linha: 1, mapeada: true, nome: "Carandiru", lat: -23.5096, lng: -46.6249, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "CDUS1E33,CDUS1F33,CDUS1R33-I,CDUS1R33-O", dbS2: "CDUS2E36,CDUS2F36,CDUS2R36-I,CDUS2R36-O" },
+            "TTE": { linha: 1, mapeada: true, nome: "Portuguesa-Tietê", lat: -23.5165, lng: -46.6251, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "TTES1E43,TTES1F43,TTES1R43-I,TTES1R43-O", dbS2: "TTES2E46,TTES2F46,TTES2R46-I,TTES2R46-O" },
+            "PPQ": { linha: 1, mapeada: true, nome: "Armênia", lat: -23.5254, lng: -46.6261, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "PPQS1E63,PPQS1F64,PPQS1F11", dbS2: "PPQS2E66,PPQS2F18,PPQS2F65" },
+            "TRD": { linha: 1, mapeada: true, nome: "Tiradentes", lat: -23.5312, lng: -46.6315, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "TRDS1E47,TRDS1F68,TRDS1F15,TRDS1R68-I,TRDS1R47-O,TRDS1R15-O", dbS2: "TRDS2E42,TRDS2F14,TRDS2F61,TRDS2R61-I,TRDS2R14-O,TRDS2R42-O" },
+            "LUZ": { linha: 1, mapeada: true, nome: "Luz", lat: -23.5385, lng: -46.6360, embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd', dbS1: "", dbS2: "LUZS2F46,LUZS2F25,LUZS2R57-O,LUZS2R25-O,LUZS2R28-O" }, 
+            "BTO": { linha: 1, mapeada: true, nome: "São Bento", lat: -23.5434, lng: -46.6333, embS1: 'e', desS1: 'e', embS2: 'd', desS2: 'd', dbS1: "BTOS1E38,BTOS1F45,BTOS1R68-I,BTOS1R38-I,BTOS1R55-O,BTOS1R38-O", dbS2: "BTOS2E36,BTOS2F37,BTOS2R37-I,BTOS2R37-O" },
+            "PSE": { linha: 1, mapeada: true, nome: "Sé", lat: -23.5492, lng: -46.6334, embS1: 'd', desS1: 'e', embS2: 'd', desS2: 'e', dbS1: "PSES1F16-T3,PSES1R27-T3", dbS2: "PSES2F13-T3,PSES2R22-T3" },
+            "LIB": { linha: 1, mapeada: true, nome: "Japão-Liberdade", lat: -23.5555, lng: -46.6359, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "LIBS1E31,LIBS1F23,LIBS1R52-I,LIBS1R23-O,LIBS1R52-O", dbS2: "LIBS2E38,LIBS2F57,LIBS2R26-I,LIBS2R57-O,LIBS2R26-O" },
+            "JQM": { linha: 1, mapeada: true, nome: "São Joaquim", lat: -23.5618, lng: -46.6388, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "JQMS1E31,JQMS1F51,JQMS1R51-I,JQMS1R21-O", dbS2: "JQMS2E38,JQMS2F45,JQMS2R28-O" },
+            "VGO": { linha: 1, mapeada: true, nome: "Vergueiro", lat: -23.5689, lng: -46.6397, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "VGOS1E42,VGOS1F23,VGOS1F52,VGOS1R52-I,VGOS1R23-O", dbS2: "VGOS2E47,VGOS2F57,VGOS2F26,VGOS2R26-I,VGOS2R57-O" },
+            "PSO": { linha: 1, mapeada: true, nome: "Paraíso", lat: -23.5759, lng: -46.6414, embS1: 'e', desS1: 'e', embS2: 'd', desS2: 'd', dbS1: "PSOS1E35,PSOS1F47,PSOS1F55,PSOS1F67-T2,PSOS1F58,PSOS1F38,PSOS1R55-I,PSOS1R58-I,PSOS1R47-I,PSOS1R38-I,PSOS1R58-O,PSOS1R47-O,PSOS1R37-T2", dbS2: "" },
+            "ANR": { linha: 1, mapeada: true, nome: "Ana Rosa", lat: -23.5813, lng: -46.6383, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "ANRS1E48,ANRS1F45,ANRS1F15,ANRS1R26-I,ANRS1R45-O,ANRS1R36-O", dbS2: "ANRS2E41,ANRS2F14,ANRS2F44,ANRS2R23-I,ANRS2R33-O,ANRS2R44-O" },
+            "VMN": { linha: 1, mapeada: true, nome: "Vila Mariana", lat: -23.5894, lng: -46.6346, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "VMNS1E33,VMNS1F23,VMNS1F52,VMNS1R52-I,VMNS1R23-O", dbS2: "VMNS2E36,VMNS2F26,VMNS2F57,VMNS2R26-I,VMNS2R57-O" },
+            "SCZ": { linha: 1, mapeada: true, nome: "Santa Cruz", lat: -23.5989, lng: -46.6366, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "SCZS1E31-O,SCZS1E14-T5,SCZS1F44,SCZS1F22,SCZS1R44-I,SCZS1R41-I,SCZS1R11-I,SCZS1R41-O,SCZS1R22-O,SCZS1R12-O", dbS2: "SCZS2E38-O,SCZS2F45,SCZS2F28,SCZS2R28-I,SCZS2R45-O,SCZS2R17-T5" },
+            "ARV": { linha: 1, mapeada: true, nome: "Praça da Árvore", lat: -23.6106, lng: -46.6378, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "ARVS1F52", dbS2: "" },
+            "SAU": { linha: 1, mapeada: true, nome: "Saúde", lat: -23.6172, lng: -46.6343, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "SAUS1E51,SAUS1F53", dbS2: "SAUS2E58,SAUS2F56,SAUS2R56-O" },
+            "JUD": { linha: 1, nome: "São Judas", lat: -23.6253, lng: -46.6394, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "", dbS2: "" },
+            "CON": { linha: 1, nome: "Conceição", lat: -23.6362, lng: -46.6411, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "", dbS2: "" },
+            "JAB": { linha: 1, nome: "Jabaquara", lat: -23.6470, lng: -46.6395, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "", dbS2: "" },
+
+            /* === L3 VERMELHA === */
+            "ITQ":{ linha:3, mapeada:true, nome:"Corinthians-Itaquera", lat:-23.5424, lng:-46.4735, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "", dbS2: "ITQS2E11,ITQS2F44,ITQS2F31,ITQS2R44-I,ITQS2R54-I,ITQS2R31-O,ITQS2R21-I,ITQS2R21-O" },
+            "ART":{ linha:3, mapeada:true, nome:"Artur Alvim", lat:-23.5404, lng:-46.4845, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "ARTS1E64,ARTS1F24,ARTS1F33,ARTS1R24-O,ARTS1R33-I,ARTS1R43-O", dbS2: "ARTS2E65,ARTS2F25,ARTS2F36,ARTS2R25-O,ARTS2R36-I,ARTS2R47-O" },
+            "PCA":{ linha:3, mapeada:true, nome:"Patriarca", lat:-23.5311, lng:-46.5015, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "PCAS1E11,PCAS1F44,PCAS1R34-I,PCAS1R34-O,PCAS1R31-I,PCAS1R31-O", dbS2: "PCAS2E18,PCAS2F45,PCAS2R35-I,PCAS2R35-O,PCAS2R38-I,PCAS2R38-O" },
+            "VPA":{ linha:3, mapeada:true, nome:"Guilhermina", lat:-23.5293, lng:-46.5168, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "VPAS1E12,VPAS1F51,VPAS1R33-O", dbS2: "VPAS2E17,VPAS2F58,VPAS2R36-O" },
+            "VTD":{ linha:3, mapeada:true, nome:"Vila Matilde", lat:-23.5317, lng:-46.5309, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "VTDS1E64,VTDS1F24,VTDS1R42-O", dbS2: "VTDS2E66,VTDS2F25,VTDS2R47-O" },
+            "PEN":{ linha:3, mapeada:true, nome:"Penha", lat:-23.5332, lng:-46.5398, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "PENS1E11,PENS1F42,PENS1R33-O", dbS2: "PENS2E18,PENS2F47,PENS2R36-O" },
+            "CAR":{ linha:3, mapeada:true, nome:"Carrão", lat:-23.5350, lng:-46.5641, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "CARS1E11,CARS1F51,CARS1R33-O", dbS2: "CARS2E18,CARS2F58,CARS2R36-O" },
+            "TAT":{ linha:3, mapeada:true, nome:"Tatuapé", lat:-23.5398, lng:-46.5768, embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd', dbS1: "TATS1F35,TATS1F18,TATS1R55-I,TATS1R45-I,TATS1R15-I,TATS1R63-O,TATS1R34-O", dbS2: "TATS2F11,TATS2F44,TATS2R53-I,TATS2R33-I,TATS2R14-I,TATS2R66-O,TATS2R35-O" },
+            "BEL":{ linha:3, mapeada:true, nome:"Belém", lat:-23.5431, lng:-46.5898, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "BELS1E63,BELS1F32,BELS1R42-O", dbS2: "BELS2E65,BELS2F37,BELS2R47-O" },
+            "BRE":{ linha:3, mapeada:true, nome:"Bresser-Mooca", lat:-23.5463, lng:-46.6067, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "BRES1E63,BRES1F32,BRES1R42-O", dbS2: "BRES2E65,BRES2F37,BRES2R47-O" },
+            "BAS":{ linha:3, mapeada:true, nome:"Brás", lat:-23.5471, lng:-46.6164, embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd', dbS1: "BASS1F44,BASS1R48-O,BASS1R28-I,BASS1R12-O", dbS2: "BASS2F31,BASS2R21-O,BASS2R31-I,BASS2R41-I,BASS2R63-O" },
+            "PDS":{ linha:3, mapeada:true, nome:"Pedro II", lat:-23.5498, lng:-46.6258, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "PDS1F61", dbS2: "PDS2E32,PDS2F61,PDS2R14-O" },
+            "PSE":{ linha:3, mapeada:true, nome:"Sé", lat:-23.5492, lng:-46.6334, embS1: 'e', desS1: 'd', embS2: 'd', desS2: 'e', dbS1: "PSES1E33,PSES1F52,PSES1R52-O", dbS2: "PSES2E25,PSES2F57,PSES2R57-O" },
+            "GBU":{ linha:3, mapeada:true, nome:"Anhangabaú", lat:-23.5478, lng:-46.6385, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "GBUS1E11,GBUS1F64,GBUS1R64-O", dbS2: "GBUS2E64,GBUS2F11,GBUS2R11-O" },
+            "REP":{ linha:3, mapeada:true, nome:"República", lat:-23.5439, lng:-46.6425, embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd', dbS1: "REPS1E55,REPS1F62,REPS1R54-O,REPS1R41-O,REPS1E11,REPS1R14-O", dbS2: "REPS2E68,REPS2F42,REPS2R53-O,REPS2R44-O,REPS2R32-O,REPS2R61-O" },
+            "CEC":{ linha:3, mapeada:true, nome:"Santa Cecília", lat:-23.5384, lng:-46.6492, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "CECS1E48,CECS1F58,CECS1F38", dbS2: "CECS2E45,CECS2F33" },
+            "DEO":{ linha:3, mapeada:true, nome:"Marechal Deodoro", lat:-23.5328, lng:-46.6558, embS1: 'e', desS1: 'e', embS2: 'd', desS2: 'd', dbS1: "DEOS1E37,DEOS1F28,DEOS1F45,DEOS1R28-O,DEOS1R45-I", dbS2: "DEOS2E37,DEOS2F36,DEOS2R36-O" },
+            "BFU":{ linha:3, mapeada:true, nome:"Barra Funda", lat:-23.5256, lng:-46.6640, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "BFUS1E44,BFUS1F61,BFUS1R34-O", dbS2: "" },
+
+            // Outras linhas (Esqueleto)
+            401:{linha:4,nome:"Luz"}, 402:{linha:4,nome:"República"}, 404:{linha:4,nome:"Paulista"}, 408:{linha:4,nome:"Pinheiros"},
+            505:{linha:5,nome:"Santo Amaro"}, 516:{linha:5,nome:"Santa Cruz"}, 517:{linha:5,nome:"Chácara Klabin"}
+        },
+
+        dicionario: {
+            'pt': { modTitle: 'Aviso: Acessibilidade e Direitos', btnEntrarSplash: 'Entrar no Guia', btnVoltarApp: '⬅ Voltar', lblPref: 'Sua preferência de saída no destino final:', optElevador: 'Elevador', optRolante: 'Escada Rolante', optFixa: 'Escada Fixa', titleOrigem: '📍 PONTO DE PARTIDA', titleDestino: '🏁 DESTINO FINAL', selLinhaOr: 'Escolha a Linha', selLinhaDest: 'Escolha a Linha', selEstOr: 'Primeiro, escolha a linha', selEstDest: 'Primeiro, escolha a linha', selEstAtivo: 'Agora, escolha a estação', listTitle: 'Estações Mapeadas', listDesc: 'A precisão de portas já funciona nestas estações:', mesmaEstacao: 'Você já está na estação de destino.', trecho: 'Trecho', emBreve: '(Em breve)', l1: 'L1-Azul', l2: 'L2-Verde', l3: 'L3-Vermelha', l4: 'L4-Amarela', l5: 'L5-Lilás', l7: 'L7-Rubi', l8: 'L8-Diamante', l9: 'L9-Esmeralda', l10: 'L10-Turquesa', l11: 'L11-Coral', l12: 'L12-Safira', l13: 'L13-Jade', l15: 'L15-Prata', embTrecho: 'Em {est} (Sentido {sentido}), posicione-se na:', transfTrecho: 'Desembarque em {est} e faça transferência para a {linha}.', saidaFinal: 'No destino (<b>{est}</b>), você sairá de frente para a {tipo}.', tipoElevador: 'porta do elevador', tipoRolante: 'escada rolante', tipoFixa: 'escada fixa', pendente: 'A estação selecionada ainda não foi mapeada.', txtPorta: 'Porta', txtVagao: 'Vagão', accTitle: 'Direito à Acessibilidade', accBtnFala: 'Registrar Cobrança no FALA.SP', accBtnClose: 'Entendi', txtInexistente: 'Equipamento inexistente nesta estação (Sentido {sentido}).', gpsBtn: '🎯 Perto de mim', gpsBusca: '⏳ Buscando...', gpsFeito: '🎯 Feito!', gpsErro: '❌ Sem estações', freqUsadas: 'Mais Usadas', freqTodas: 'Todas as Estações', avisoRota: 'Sobre esta rota', avisoRotaTexto: 'O foco deste trajeto é garantir sua acessibilidade nas estações.', btnCalc: 'Qual é a Porta Certa?', configTitle: 'Configurações', setTut: 'Como usar o Guia', setMap: 'Estações Mapeadas', setFont: 'Tamanho da Letra', modoClaro: 'Modo Claro', modoEscuro: 'Modo Escuro', setLang: 'Idioma' }
+        }
+    };
+    </script>
+
+    <script>
+    const Formatter = {
+        formatarPorta: function(raw, sentido) {
+            if (!raw || raw === "-" || raw === "Pendente" || raw === "Inexistente") return raw;
+            let t = AppData.dicionario[AppData.currentLang];
+            let parsed = Router.parseVagaoPorta(raw, sentido); 
+            let res = [];
+            
+            let numeroCravadoNoBanco = null;
+            let numMatch = raw.match(/\d{2}/);
+            if (numMatch) numeroCravadoNoBanco = numMatch[0]; 
+
+            if (parsed) {
+                let numeroExibido = numeroCravadoNoBanco ? numeroCravadoNoBanco : (sentido === "BF" ? `${parsed.v}${9 - parsed.p}` : `${7 - parsed.v}${parsed.p}`);
+                res.push(['zh', 'ja', 'ko'].includes(AppData.currentLang) ? `${numeroExibido}${t.txtPorta}` : `${t.txtPorta} ${numeroExibido}`);
+                
+                let tradVagao = `(${t.txtVagao} ${parsed.v}, ${t.txtPorta} ${parsed.p})`;
+                if (AppData.currentLang === 'zh' || AppData.currentLang === 'ja' || AppData.currentLang === 'ko') {
+                    tradVagao = `(${parsed.v}${t.txtVagao} ${parsed.p}${t.txtPorta})`;
+                }
+                res.push(tradVagao);
+            } else if (raw.includes("Porta")) {
+                res.push(raw.replace("Porta", t.txtPorta));
+            } else {
+                res.push(raw);
+            }
+            return res.length > 0 ? res.join(" ") : raw;
+        }
+    };
+
+    const Router = {
+        encontrarCaminhoLinhas: function(lOrigem, lDestino) {
+            if (lOrigem === lDestino) return [lOrigem];
+            let fila = [[lOrigem]];
+            let visitados = new Set();
+            visitados.add(lOrigem);
+
+            while (fila.length > 0) {
+                let caminho = fila.shift();
+                let atual = caminho[caminho.length - 1];
+                for (let vizinho in AppData.transferencias[atual]) {
+                    vizinho = parseInt(vizinho);
+                    if (!visitados.has(vizinho)) {
+                        visitados.add(vizinho);
+                        let novoCaminho = [...caminho, vizinho];
+                        if (vizinho === lDestino) return novoCaminho;
+                        fila.push(novoCaminho);
+                    }
+                }
+            }
+            return null;
+        },
+        
+        calcularSentido: function(idOrigem, idDestino, lAtual) { 
+            let ordemArray = lAtual == 1 ? AppData.ordemL1 : (lAtual == 3 ? AppData.ordemL3 : []);
+            let idxOrigem = ordemArray.indexOf(idOrigem);
+            let idxDestino = ordemArray.indexOf(idDestino);
+            
+            if (idxOrigem !== -1 && idxDestino !== -1) {
+                return idxOrigem < idxDestino ? "S2" : "S1"; 
+            }
+            return parseInt(idOrigem) < parseInt(idDestino) ? "S2" : "S1"; 
+        },
+        
+        extrairPortasAlvo: function(nodeDestino, sentido, prefSaida) {
+            let dbStr = sentido === "S1" ? nodeDestino.dbS1 : nodeDestino.dbS2;
+            if (!dbStr && nodeDestino.dbStr) dbStr = nodeDestino.dbStr;
+            if (!dbStr) return [];
+
+            let tipo = prefSaida === 'elevador' ? 'E' : (prefSaida === 'rolante' ? 'R' : 'F');
+            let tokens = dbStr.split(',');
+            
+            let prefixoEstacao = typeof nodeDestino.nome === 'string' && (AppData.ordemL1.includes(idDestinoParaLetras(nodeDestino)) || AppData.ordemL3.includes(idDestinoParaLetras(nodeDestino))) 
+                ? idDestinoParaLetras(nodeDestino) 
+                : dbStr.substring(0,3);
+
+            let prefixoBusca = `${prefixoEstacao}${sentido}${tipo}`; 
+            let matches = [];
+
+            tokens.forEach(t => {
+                if (t.startsWith(prefixoBusca)) {
+                    if (tipo === 'R') {
+                        if (t.endsWith('-O') || t.includes('-T')) matches.push(t);
+                        else if (!t.includes('-')) matches.push(t); 
+                    } else {
+                        matches.push(t); 
+                    }
+                }
+            });
+            return matches;
+        },
+
+        parseVagaoPorta: function(raw, sentido) {
+            if(!raw || raw === "-" || raw === "Pendente" || raw === "Inexistente") return null;
+            let numMatch = raw.match(/\d{2}/);
+            if (!numMatch) return null;
+            
+            let numPorta = numMatch[0];
+            let d1 = parseInt(numPorta.charAt(0)); let d2 = parseInt(numPorta.charAt(1));
+            let v = 0, p = 0;
+
+            if (sentido === "S2") { v = d1; p = (d2 >= 5 && d2 <= 8) ? (9 - d2) : 0; } 
+            else { v = 7 - d1; p = (d2 >= 1 && d2 <= 4) ? d2 : 0; }
+
+            let side = (d2 <= 4) ? 'A' : 'B'; 
+            
+            return (v >= 1 && v <= 6 && p >= 1 && p <= 4) ? {v, p, side} : null;
+        }
+    };
+
+    function idDestinoParaLetras(node) {
+        return Object.keys(AppData.estacoes).find(k => AppData.estacoes[k] === node);
+    }
+
+    const UI = {
+        init: function() {
+            const selLO = document.getElementById('linha-origem'); const selLD = document.getElementById('linha-destino');
+            const t = AppData.dicionario[AppData.currentLang];
+            selLO.options.length = 0; selLD.options.length = 0;
+            selLO.add(new Option(t.selLinhaOr, "0", true, true)); selLO.options[0].disabled = true;
+            selLD.add(new Option(t.selLinhaDest, "0", true, true)); selLD.options[0].disabled = true;
+            AppData.linhas.forEach(l => { selLO.add(new Option(t['l'+l] || `Linha ${l}`, l)); selLD.add(new Option(t['l'+l] || `Linha ${l}`, l)); });
+            
+            selLO.value = "1";
+            selLD.value = "1";
+            
+            this.atualizarEstacoes('origem', false); this.atualizarEstacoes('destino', false);
+            this.popularListaMapeadas();
+            
+            if(localStorage.getItem('pc_theme') === 'light') {
+                AppData.isLightMode = true;
+                document.body.classList.add('light-mode');
+            }
+            this.updateThemeUI();
+
+            if(sessionStorage.getItem('portaCertaModal') === 'lido') {
+                this.showView('view-main');
+            } else {
+                this.showView('view-splash');
+            }
+        },
+
+        showView: function(viewId) {
+            document.querySelectorAll('.app-view').forEach(view => view.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            window.scrollTo(0, 0);
+        },
+
+        finishIntro: function() {
+            sessionStorage.setItem('portaCertaModal', 'lido');
+            this.showView('view-main');
+        },
+
+        toggleTheme: function() {
+            AppData.isLightMode = !AppData.isLightMode;
+            document.body.classList.toggle('light-mode', AppData.isLightMode);
+            localStorage.setItem('pc_theme', AppData.isLightMode ? 'light' : 'dark');
+            this.updateThemeUI();
+        },
+
+        updateThemeUI: function() {
+            const btnIcon = document.getElementById('theme-icon');
+            const btnText = document.getElementById('theme-text');
+            const t = AppData.dicionario[AppData.currentLang];
+            if(AppData.isLightMode) {
+                btnIcon.innerText = '🌙';
+                btnText.innerText = t.modoEscuro || 'Modo Escuro';
+            } else {
+                btnIcon.innerText = '☀️';
+                btnText.innerText = t.modoClaro || 'Modo Claro';
+            }
+        },
+
+        atualizarEstacoes: function(tipo, forceReset = false) {
+            const selLinha = document.getElementById(`linha-${tipo}`); 
+            const selEstacao = document.getElementById(`estacao-${tipo}`);
+            const t = AppData.dicionario[AppData.currentLang];
+            selLinha.style.borderColor = (selLinha.value != "0") ? `var(--l${selLinha.value})` : '';
+            
+            // Troca a cor do botão principal para combinar com a linha de origem
+            if (tipo === 'origem' && selLinha.value != "0") {
+                document.documentElement.style.setProperty('--btn-color', `var(--l${selLinha.value})`);
+                document.querySelector('.container').style.borderTopColor = `var(--l${selLinha.value})`;
+            }
+
+            selEstacao.innerHTML = ''; 
+            
+            if (selLinha.value === "0" || forceReset) { 
+                selEstacao.add(new Option(t[tipo === 'origem' ? 'selEstOr' : 'selEstDest'], "0", true, true)); 
+                selEstacao.disabled = true; 
+                return; 
+            }
+            
+            selEstacao.disabled = false; 
+            selEstacao.add(new Option(t.selEstAtivo, "0", true, true)); 
+            selEstacao.options[0].disabled = true;
+            
+            let estacoesLinha = Object.keys(AppData.estacoes).filter(id => AppData.estacoes[id].linha == selLinha.value);
+            if (selLinha.value == 1 && AppData.ordemL1) estacoesLinha.sort((a, b) => AppData.ordemL1.indexOf(a) - AppData.ordemL1.indexOf(b));
+            if (selLinha.value == 3 && AppData.ordemL3) estacoesLinha.sort((a, b) => AppData.ordemL3.indexOf(a) - AppData.ordemL3.indexOf(b));
+
+            if (tipo === 'origem') {
+                let freqs = {};
+                try { freqs = JSON.parse(localStorage.getItem('pc_freq_origem')) || {}; } catch(e) {}
+
+                let estacoesFreq = estacoesLinha.filter(id => freqs[id] > 0).sort((a, b) => freqs[b] - freqs[a]).slice(0, 3);
+                
+                if (estacoesFreq.length > 0) {
+                    let groupFreq = document.createElement('optgroup');
+                    groupFreq.label = t.freqUsadas || "Mais Usadas";
+                    estacoesFreq.forEach(id => {
+                        let node = AppData.estacoes[id];
+                        let isOrigemBloqueada = !node.mapeada;
+                        let opt = new Option(node.nome + (isOrigemBloqueada ? ` ${t.emBreve}` : ""), id);
+                        if (isOrigemBloqueada) opt.disabled = true;
+                        groupFreq.appendChild(opt);
+                    });
+                    selEstacao.appendChild(groupFreq);
+                    
+                    let groupAll = document.createElement('optgroup');
+                    groupAll.label = t.freqTodas || "Todas as Estações";
+                    estacoesLinha.forEach(id => {
+                        let node = AppData.estacoes[id];
+                        let isOrigemBloqueada = !node.mapeada;
+                        let opt = new Option(node.nome + (isOrigemBloqueada ? ` ${t.emBreve}` : ""), id);
+                        if (isOrigemBloqueada) opt.disabled = true;
+                        groupAll.appendChild(opt);
+                    });
+                    selEstacao.appendChild(groupAll);
+                } else {
+                    estacoesLinha.forEach(id => {
+                        let node = AppData.estacoes[id];
+                        let isOrigemBloqueada = !node.mapeada;
+                        let opt = new Option(node.nome + (isOrigemBloqueada ? ` ${t.emBreve}` : ""), id);
+                        if (isOrigemBloqueada) opt.disabled = true;
+                        selEstacao.add(opt);
+                    });
+                }
+            } else {
+                estacoesLinha.forEach(id => {
+                    let node = AppData.estacoes[id];
+                    selEstacao.add(new Option(node.nome, id));
+                });
+            }
+            document.getElementById('resultado-box').style.display = 'none';
+        },
+
+        changeLanguage: function(langCode) {
+            let isResultVisible = document.getElementById('resultado-box').style.display === 'block';
+            AppData.currentLang = langCode; const t = AppData.dicionario[langCode];
+            if(!t) return;
+            document.body.setAttribute('dir', langCode === 'ar' ? 'rtl' : 'ltr');
+            document.querySelectorAll('.lang-flag').forEach(el => el.classList.remove('active'));
+            let flagEl = document.getElementById('flag-' + langCode);
+            if(flagEl) flagEl.classList.add('active');
+
+            document.getElementById('mod-title').innerText = t.modTitle; document.getElementById('btn-modal').innerText = t.btnCalc; 
+            document.getElementById('btn-calcular').innerText = t.btnCalc; document.getElementById('lbl-pref').innerText = t.lblPref;
+            document.getElementById('opt-elevador').innerText = t.optElevador; document.getElementById('opt-rolante').innerText = t.optRolante;
+            document.getElementById('opt-fixa').innerText = t.optFixa; document.getElementById('title-origem').innerText = t.titleOrigem;
+            document.getElementById('title-destino').innerText = t.titleDestino; document.getElementById('list-title').innerText = t.listTitle;
+            document.getElementById('list-desc').innerText = t.listDesc; 
+            
+            document.getElementById('btn-voltar-settings').innerText = t.btnVoltarApp;
+            document.getElementById('btn-voltar-map').innerText = t.btnVoltarApp; 
+            document.getElementById('btn-voltar-tut').innerText = t.btnVoltarApp;
+            document.getElementById('btn-entrar-splash').innerText = t.btnEntrarSplash;
+            
+            document.getElementById('settings-title').innerText = t.configTitle;
+            document.getElementById('lbl-set-tut').innerText = t.setTut;
+            document.getElementById('lbl-set-map').innerText = t.setMap;
+            document.getElementById('lbl-set-font').innerText = t.setFont;
+            document.getElementById('lbl-set-lang').innerText = t.setLang;
+            this.updateThemeUI(); 
+            
+            document.getElementById('mod-acc-title').innerText = t.accTitle; 
+            document.getElementById('mod-acc-btn-fala').innerText = t.accBtnFala; document.getElementById('mod-acc-btn-close').innerText = t.accBtnClose;
+            document.getElementById('btn-gps').innerText = t.gpsBtn;
+
+            const valLO = document.getElementById('linha-origem').value; const valEO = document.getElementById('estacao-origem').value;
+            const valLD = document.getElementById('linha-destino').value; const valED = document.getElementById('estacao-destino').value;
+            this.init();
+            document.getElementById('linha-origem').value = valLO; if(valLO != "0") this.atualizarEstacoes('origem'); document.getElementById('estacao-origem').value = valEO;
+            document.getElementById('linha-destino').value = valLD; if(valLD != "0") this.atualizarEstacoes('destino'); document.getElementById('estacao-destino').value = valED;
+            if(isResultVisible) this.iniciarCalculo();
+        },
+
+        toggleFontSize: function() { AppData.isLargeFont = !AppData.isLargeFont; document.body.classList.toggle('large-font', AppData.isLargeFont); },
+        liberarModal: function() { document.getElementById('btn-modal').disabled = !document.getElementById('check-ciencia').checked; },
+        abrirModalAcessibilidade: function() { document.getElementById('acessibilidade-modal').style.display = 'flex'; },
+        fecharModalAcessibilidade: function() { document.getElementById('acessibilidade-modal').style.display = 'none'; },
+
+        popularListaMapeadas: function() {
+            const ulL1 = document.getElementById('ul-mapeadas-l1'); 
+            const ulL3 = document.getElementById('ul-mapeadas-l3'); 
+            if(ulL1) ulL1.innerHTML = "";
+            if(ulL3) ulL3.innerHTML = "";
+
+            for (let id in AppData.estacoes) {
+                if (AppData.estacoes[id].mapeada) {
+                    let li = document.createElement('li'); li.innerText = AppData.estacoes[id].nome;
+                    if(AppData.estacoes[id].linha == 1 && ulL1) ulL1.appendChild(li);
+                    if(AppData.estacoes[id].linha == 3 && ulL3) ulL3.appendChild(li);
+                }
+            }
+        },
+
+        gerarTremHtml: function(linhaId, parsed, sentidoCalculado) {
+            let corVar = `var(--l${linhaId})`;
+            let vTarget = parsed ? parsed.v : 0;
+            let pTarget = parsed ? parsed.p : 0;
+            let sTarget = parsed ? parsed.side : null;
+
+            let html = `<div class="t-topdown-container" style="border-color: ${corVar}">`;
+            
+            html += `<div class="t-direction" style="color: ${corVar}">`;
+            // Ajuste visual do sentido da seta
+            if (sentidoCalculado === "S1") { html += `◀ SENTIDO DA VIAGEM`; } 
+            else { html += `SENTIDO DA VIAGEM ▶`; }
+            html += `</div>`;
+
+            html += `<div class="t-track-topdown">`;
+            html += `<div class="t-wrapper-topdown">`;
+            
+            for(let v=1; v<=6; v++) {
+                let isCab = (sentidoCalculado === "S1" && v === 1) || (sentidoCalculado === "S2" && v === 6);
+                
+                html += `<div class="t-car-topdown" style="border-color: ${corVar};">`;
+                
+                // LADO A (Topo da tela)
+                html += `<div class="car-row top">`;
+                for(let p=1; p<=4; p++) {
+                    let isTarget = (v === vTarget && p === pTarget && (sTarget === 'A' || sTarget === null));
+                    html += `<div class="t-door-topdown top ${isTarget ? 'target' : ''}"></div>`;
+                }
+                html += `</div>`;
+
+                // RÓTULO CENTRAL
+                html += `<div class="car-center-label">C${v}</div>`;
+
+                // LADO B (Base da tela)
+                html += `<div class="car-row bottom">`;
+                for(let p=1; p<=4; p++) {
+                    let isTarget = (v === vTarget && p === pTarget && (sTarget === 'B' || sTarget === null));
+                    html += `<div class="t-door-topdown bottom ${isTarget ? 'target' : ''}"></div>`;
+                }
+                html += `</div>`;
+
+                // INDICADOR DA CABINE (Frente do trem)
+                if (isCab) {
+                    let cabClass = sentidoCalculado === "S1" ? "cab-left" : "cab-right";
+                    html += `<div class="t-cab ${cabClass}" style="background-color: ${corVar}"></div>`;
+                }
+
+                html += `</div>`; 
+            }
+            html += `</div></div></div>`;
+            return html;
+        },
+
+        iniciarCalculo: function() {
+            const estOr = document.getElementById('estacao-origem').value; const estDest = document.getElementById('estacao-destino').value;
+            const pref = document.getElementById('preferencia').value; const box = document.getElementById('resultado-box');
+            const t = AppData.dicionario[AppData.currentLang] || AppData.dicionario['pt'];
+
+            if (estOr == "0" || estDest == "0") { 
+                box.innerHTML = `<div class="alert-warning" style="text-align:center; color:#FFC107; border-color:rgba(255, 193, 7, 0.3); border: 1px solid;">⚠️ Por favor, escolha a estação de <b>Origem</b> e de <b>Destino</b>.</div>`; 
+                box.style.display = 'block'; 
+                return; 
+            }
+            
+            try {
+                let freqs = JSON.parse(localStorage.getItem('pc_freq_origem')) || {};
+                freqs[estOr] = (freqs[estOr] || 0) + 1;
+                localStorage.setItem('pc_freq_origem', JSON.stringify(freqs));
+            } catch(e) {}
+
+            if (estOr === estDest) { box.innerHTML = `<div class="info-text" style="text-align:center;">${t.mesmaEstacao}</div>`; box.style.display = 'block'; return; }
+
+            const origem = AppData.estacoes[estOr]; const destino = AppData.estacoes[estDest];
+            
+            // Bloqueio multi-linha temporário
+            if(origem.linha !== destino.linha) {
+                box.innerHTML = `<div class="alert-warning">⚠️ No momento, o cálculo foca em estações da mesma linha. Escolha Origem e Destino na mesma Linha.</div>`; 
+                box.style.display = 'block'; 
+                return; 
+            }
+
+            let lAtual = origem.linha;
+            let corVar = `var(--l${lAtual})`;
+            
+            let htmlFinal = "";
+            let ativouFaltaAcessibilidade = false;
+            
+            htmlFinal += `<div class="route-step" style="border-color: ${corVar}; --step-color: ${corVar};">`;
+            htmlFinal += `<div class="step-title" style="color: ${corVar};">📍 Rota: Linha ${lAtual}</div>`;
+
+            let sentidoCalculado = Router.calcularSentido(estOr, estDest, lAtual);
+            
+            let nomeSentido = "";
+            if(lAtual == 1) nomeSentido = sentidoCalculado === 'S1' ? 'Tucuruvi' : 'Jabaquara';
+            if(lAtual == 3) nomeSentido = sentidoCalculado === 'S1' ? 'Itaquera' : 'Barra Funda';
+
+            let ladoEmbOrigem = sentidoCalculado === 'S1' ? origem.embS1 : origem.embS2;
+            let ladoDesDestino = sentidoCalculado === 'S1' ? destino.desS1 : destino.desS2;
+
+            let portasBrutas = [];
+            if (destino.dbS1 !== undefined || destino.dbStr !== undefined) {
+                portasBrutas = Router.extrairPortasAlvo(destino, sentidoCalculado, pref);
+            }
+
+            if (portasBrutas.length === 0) ativouFaltaAcessibilidade = true;
+
+            htmlFinal += `<div class="info-text">Em <b>${origem.nome}</b> (Sentido ${nomeSentido}), posicione-se na:</div>`;
+            
+            if (portasBrutas.length === 0) {
+                htmlFinal += `<div class="alert-warning" style="color:#FF3B30; border-color:#FF3B30;">🚫 Equipamento Inexistente nesta estação (Sentido ${nomeSentido}).</div>`;
+            } else {
+                let resultadosFormatados = [];
+                let objParsedPrincipal = null;
+
+                portasBrutas.forEach((portaStr, index) => {
+                    let formated = Formatter.formatarPorta(portaStr, sentidoCalculado);
+                    resultadosFormatados.push(formated.split('(')[0].trim()); 
+                    
+                    if (index === 0) {
+                        objParsedPrincipal = Router.parseVagaoPorta(portaStr, sentidoCalculado);
+                    }
+                });
+
+                htmlFinal += `<div class="result-door" style="color:${corVar};">${resultadosFormatados.join(' ou ')}</div>`;
+                
+                // Exibe o subtexto base e desenha o trem
+                if (objParsedPrincipal) {
+                    htmlFinal += `<div class="info-text" style="font-size:0.9rem;">(Vagão ${objParsedPrincipal.v})</div>`;
+                    
+                    // Alerta de inversão de lado, se os dados existirem para a linha
+                    if (ladoEmbOrigem && ladoDesDestino && (ladoEmbOrigem !== ladoDesDestino)) {
+                        htmlFinal += `<div class="info-text" style="font-size: 0.85rem; color: #ffcc00; margin-bottom: 10px;">⚠️ Atenção: No destino, as portas abrirão do lado oposto.</div>`;
+                    }
+                    
+                    htmlFinal += UI.gerarTremHtml(lAtual, objParsedPrincipal, sentidoCalculado);
+                }
+            }
+
+            let tipoPrefTexto = pref === 'elevador' ? t.tipoElevador : (pref === 'rolante' ? t.tipoRolante : t.tipoFixa);
+            htmlFinal += `<div class="info-text" style="margin-top:15px; border-top: 1px dashed #333; padding-top: 10px;">No destino (<b>${destino.nome}</b>), você sairá de frente para a ${tipoPrefTexto}.</div>`;
+            
+            htmlFinal += `</div>`;
+
+            box.innerHTML = htmlFinal;
+            box.style.display = 'block';
+
+            if (ativouFaltaAcessibilidade) {
+                setTimeout(() => { UI.abrirModalAcessibilidade(); }, 300);
+            } else {
+                setTimeout(() => {
+                    document.querySelectorAll('.t-wrapper-topdown').forEach(wrapper => {
+                        let target = wrapper.querySelector('.t-door-topdown.target');
+                        if(target) {
+                            let container = wrapper.parentElement;
+                            let cWidth = container.offsetWidth;
+                            let tOffset = target.getBoundingClientRect().left - wrapper.getBoundingClientRect().left;
+                            let tWidth = target.offsetWidth;
+                            let translateX = (cWidth / 2) - tOffset - (tWidth / 2);
+                            wrapper.style.transform = `translateX(${translateX}px)`;
+                        }
+                    });
+                }, 50);
+            }
+        }
+    };
+
+    const GeoLocation = {
+        findNearest: function() {
+            const btn = document.getElementById('btn-gps');
+            const t = AppData.dicionario[AppData.currentLang] || AppData.dicionario['pt'];
+            
+            if (!navigator.geolocation) {
+                btn.innerText = t.gpsErro || 'Erro';
+                setTimeout(() => { btn.innerText = t.gpsBtn || 'GPS'; }, 2000);
+                return;
+            }
+
+            btn.innerText = t.gpsBusca || 'Buscando...';
+            
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    let userLat = position.coords.latitude;
+                    let userLng = position.coords.longitude;
+                    
+                    let closest = null;
+                    let minDist = Infinity;
+                    let RAIO_MAXIMO_KM = 8; 
+
+                    for (let id in AppData.estacoes) {
+                        let st = AppData.estacoes[id];
+                        if (st.lat && st.lng && st.mapeada) {
+                            let dist = GeoLocation.haversine(userLat, userLng, st.lat, st.lng);
+                            if (dist < minDist) {
+                                minDist = dist;
+                                closest = { id: id, linha: st.linha };
+                            }
+                        }
+                    }
+
+                    if (closest && minDist <= RAIO_MAXIMO_KM) {
+                        document.getElementById('linha-origem').value = closest.linha;
+                        UI.atualizarEstacoes('origem');
+                        document.getElementById('estacao-origem').value = closest.id;
+                        btn.innerText = t.gpsFeito || 'Feito!';
+                        setTimeout(() => { btn.innerText = t.gpsBtn || 'GPS'; }, 2000);
+                    } else {
+                        btn.innerText = t.gpsErro || 'Erro';
+                        setTimeout(() => { btn.innerText = t.gpsBtn || 'GPS'; }, 2000);
+                    }
+                },
+                (error) => {
+                    btn.innerText = t.gpsErro || 'Erro';
+                    setTimeout(() => { btn.innerText = t.gpsBtn || 'GPS'; }, 2000);
+                },
+                { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+            );
+        },
+
+        haversine: function(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+    };
+
+    window.onload = function() {
+        UI.init();
+    };
+    </script>
 </body>
 </html>
-
