@@ -189,7 +189,7 @@ const AppData = {
         },
         "TAT":{
             linha:3, mapeada:true, nome:"Tatuapé", lat:-23.5398, lng:-46.5768,
-            embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd', // Plataforma Espanhola
+            embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd',
             dbS1: "TATS1F35,TATS1F18,TATS1R55-I,TATS1R45-I,TATS1R15-I,TATS1R63-O,TATS1R34-O", dbS2: "TATS2F11,TATS2F44,TATS2R53-I,TATS2R33-I,TATS2R14-I,TATS2R66-O,TATS2R35-O"
         },
         "BEL":{
@@ -204,17 +204,17 @@ const AppData = {
         },
         "BAS":{
             linha:3, mapeada:true, nome:"Brás", lat:-23.5471, lng:-46.6164,
-            embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd', // Plataforma Espanhola
+            embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd',
             dbS1: "BASS1F44,BASS1R48-O,BASS1R28-I,BASS1R12-O", dbS2: "BASS2F31,BASS2R21-O,BASS2R31-I,BASS2R41-I,BASS2R63-O"
         },
         "PDS":{
             linha:3, mapeada:true, nome:"Pedro II", lat:-23.5498, lng:-46.6258,
             embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd',
-            dbS1: "PDS1F61", dbS2: "PDS2E32,PDS2F61,PDS2R14-O" // -O no S2 inferido por padronização
+            dbS1: "PDS1F61", dbS2: "PDS2E32,PDS2F61,PDS2R14-O"
         },
         "PSE":{
             linha:3, mapeada:true, nome:"Sé", lat:-23.5492, lng:-46.6334,
-            embS1: 'e', desS1: 'd', embS2: 'd', desS2: 'e', // Espanhola Central (Cruza L1)
+            embS1: 'e', desS1: 'd', embS2: 'd', desS2: 'e',
             dbS1: "PSES1E33,PSES1F52,PSES1R52-O", dbS2: "PSES2E25,PSES2F57,PSES2R57-O"
         },
         "GBU":{
@@ -224,7 +224,7 @@ const AppData = {
         },
         "REP":{
             linha:3, mapeada:true, nome:"República", lat:-23.5439, lng:-46.6425,
-            embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd', // Espanhola sem porta do meio
+            embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd',
             dbS1: "REPS1E55,REPS1F62,REPS1R54-O,REPS1R41-O,REPS1E11,REPS1R14-O", dbS2: "REPS2E68,REPS2F42,REPS2R53-O,REPS2R44-O,REPS2R32-O,REPS2R61-O"
         },
         "CEC":{
@@ -234,7 +234,7 @@ const AppData = {
         },
         "DEO":{
             linha:3, mapeada:true, nome:"Marechal Deodoro", lat:-23.5328, lng:-46.6558,
-            embS1: 'e', desS1: 'e', embS2: 'd', desS2: 'd', // Sobreposta Lateral
+            embS1: 'e', desS1: 'e', embS2: 'd', desS2: 'd',
             dbS1: "DEOS1E37,DEOS1F28,DEOS1F45,DEOS1R28-O,DEOS1R45-I", dbS2: "DEOS2E37,DEOS2F36,DEOS2R36-O"
         },
         "BFU":{
@@ -242,7 +242,6 @@ const AppData = {
             embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e',
             dbS1: "BFUS1E44,BFUS1F61,BFUS1R34-O", dbS2: ""
         }
-    },
 
     dicionario: {
         'pt': { modTitle: 'Aviso: Acessibilidade e Direitos', btnEntrarSplash: 'Entrar no Guia', btnVoltarApp: '⬅ Voltar para PORTA CERTA SP', lblPref: 'Sua preferência de saída no destino final:', optElevador: 'Elevador', optRolante: 'Escada Rolante', optFixa: 'Escada Fixa', titleOrigem: '📍 PONTO DE PARTIDA', titleDestino: '🏁 DESTINO FINAL', selLinhaOr: 'Escolha a Linha', selLinhaDest: 'Escolha a Linha', selEstOr: 'Primeiro, escolha a linha', selEstDest: 'Primeiro, escolha a linha', selEstAtivo: 'Agora, escolha a estação', listTitle: 'Estações Mapeadas', listDesc: 'A precisão de portas já funciona nestas estações:', mesmaEstacao: 'Você já está na estação de destino.', trecho: 'Trecho', emBreve: '(Em breve)', l1: 'L1-Azul', l2: 'L2-Verde', l3: 'L3-Vermelha', l4: 'L4-Amarela', l5: 'L5-Lilás', l7: 'L7-Rubi', l8: 'L8-Diamante', l9: 'L9-Esmeralda', l10: 'L10-Turquesa', l11: 'L11-Coral', l12: 'L12-Safira', l13: 'L13-Jade', l15: 'L15-Prata', embTrecho: 'Em {est} (Sentido {sentido}), posicione-se na:', transfTrecho: 'Desembarque em {est} e faça transferência para a {linha}.', saidaFinal: 'No destino (<b>{est}</b>), você sairá de frente para a {tipo}.', tipoElevador: 'porta do elevador', tipoRolante: 'escada rolante', tipoFixa: 'escada fixa', pendente: 'A estação selecionada ainda não foi mapeada.', txtPorta: 'Porta', txtVagao: 'Vagão', accTitle: 'Direito à Acessibilidade', accBtnFala: 'Registrar Cobrança no FALA.SP', accBtnClose: 'Entendi', txtInexistente: 'Equipamento inexistente nesta estação.', gpsBtn: '🎯 Perto de mim', gpsBusca: '⏳ Buscando...', gpsFeito: '🎯 Feito!', gpsErro: '❌ Sem estações', freqUsadas: 'Mais Usadas', freqTodas: 'Todas as Estações', avisoRota: 'Sobre esta rota', avisoRotaTexto: 'O foco deste trajeto é garantir sua acessibilidade nas estações. Pode não ser o caminho mais rápido.', btnCalc: 'Qual é a Porta Certa?', configTitle: 'Configurações', setTut: 'Como usar o Guia', setMap: 'Estações Mapeadas', setFont: 'Tamanho da Letra', modoClaro: 'Modo Claro', modoEscuro: 'Modo Escuro', setLang: 'Idioma / Language' }
