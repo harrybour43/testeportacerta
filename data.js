@@ -13,7 +13,7 @@ const AppData = {
     isLightMode: false,
     linhas: [1, 2, 3, 4, 5, 15, 7, 8, 9, 10, 11, 12, 13],
     
-    // Matriz de transferência para quando a funcionalidade multi-linha for ativada
+    // Matriz de transferência
     transferencias: {
         1: { 2: 'Paraíso', 3: 'Sé', 4: 'Luz', 5: 'Santa Cruz', 10: 'Luz', 11: 'Luz' },
         2: { 1: 'Paraíso', 4: 'Consolação', 5: 'Chácara Klabin', 10: 'Tamanduateí', 15: 'Vila Prudente' },
@@ -126,7 +126,7 @@ const AppData = {
         "SCZ": { 
             linha: 1, mapeada: true, nome: "Santa Cruz", lat: -23.5989, lng: -46.6366,
             embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', 
-            dbS1: "SCZS1E31,SCZS1E14-T5,SCZS1F44,SCZS1F22,SCZS1R44-I,SCZS1R41-I,SCZS1R11-I,SCZS1R41-O,SCZS1R22-O,SCZS1R12-O", dbS2: "SCZS2E38,SCZS2F45,SCZS2F28,SCZS2R28-I,SCZS2R45-O,SCZS2R17-T5" 
+            dbS1: "SCZS1E31-O,SCZS1E14-T5,SCZS1F44,SCZS1F22,SCZS1R44-I,SCZS1R41-I,SCZS1R11-I,SCZS1R41-O,SCZS1R22-O,SCZS1R12-O", dbS2: "SCZS2E38-O,SCZS2F45,SCZS2F28,SCZS2R28-I,SCZS2R45-O,SCZS2R17-T5" 
         },
         "ARV": { 
             linha: 1, mapeada: true, nome: "Praça da Árvore", lat: -23.6106, lng: -46.6378,
@@ -167,40 +167,81 @@ const AppData = {
             embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd',
             dbS1: "PCAS1E11,PCAS1F44,PCAS1R34-I,PCAS1R34-O,PCAS1R31-I,PCAS1R31-O", dbS2: "PCAS2E18,PCAS2F45,PCAS2R35-I,PCAS2R35-O,PCAS2R38-I,PCAS2R38-O"
         },
-        "VPA":{linha:3, nome:"Guilhermina-Esperança", lat:-23.5293, lng:-46.5168},
-        "VTD":{linha:3, nome:"Vila Matilde", lat:-23.5317, lng:-46.5309},
-        "PEN":{linha:3, nome:"Penha-Lojas Besni", lat:-23.5332, lng:-46.5398},
-        "CAR":{linha:3, nome:"Carrão-Assaí Atacadista", lat:-23.5350, lng:-46.5641},
+        "VPA":{
+            linha:3, mapeada:true, nome:"Guilhermina-Esperança", lat:-23.5293, lng:-46.5168,
+            embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd',
+            dbS1: "VPAS1E12,VPAS1F51,VPAS1R33-O", dbS2: "VPAS2E17,VPAS2F58,VPAS2R36-O"
+        },
+        "VTD":{
+            linha:3, mapeada:true, nome:"Vila Matilde", lat:-23.5317, lng:-46.5309,
+            embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e',
+            dbS1: "VTDS1E64,VTDS1F24,VTDS1R42-O", dbS2: "VTDS2E66,VTDS2F25,VTDS2R47-O"
+        },
+        "PEN":{
+            linha:3, mapeada:true, nome:"Penha-Lojas Besni", lat:-23.5332, lng:-46.5398,
+            embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd',
+            dbS1: "PENS1E11,PENS1F42,PENS1R33-O", dbS2: "PENS2E18,PENS2F47,PENS2R36-O"
+        },
+        "CAR":{
+            linha:3, mapeada:true, nome:"Carrão-Assaí Atacadista", lat:-23.5350, lng:-46.5641,
+            embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd',
+            dbS1: "CARS1E11,CARS1F51,CARS1R33-O", dbS2: "CARS2E18,CARS2F58,CARS2R36-O"
+        },
         "TAT":{
-            linha:3, mapeada:true, nome:"Tatuapé (Espanhola)", lat:-23.5398, lng:-46.5768,
-            embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd',
-            dbS1: "TATS1F35,TATS1F18,TATS1R55-I,TATS1R45-I,TATS1R15-I", dbS2: "TATS2F11,TATS2F44,TATS2R53-I,TATS2R33-I,TATS2R14-I"
+            linha:3, mapeada:true, nome:"Tatuapé", lat:-23.5398, lng:-46.5768,
+            embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd', // Plataforma Espanhola
+            dbS1: "TATS1F35,TATS1F18,TATS1R55-I,TATS1R45-I,TATS1R15-I,TATS1R63-O,TATS1R34-O", dbS2: "TATS2F11,TATS2F44,TATS2R53-I,TATS2R33-I,TATS2R14-I,TATS2R66-O,TATS2R35-O"
         },
-        "BEL":{linha:3, nome:"Belém", lat:-23.5431, lng:-46.5898},
-        "BRE":{linha:3, nome:"Bresser-Mooca", lat:-23.5463, lng:-46.6067},
+        "BEL":{
+            linha:3, mapeada:true, nome:"Belém", lat:-23.5431, lng:-46.5898,
+            embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e',
+            dbS1: "BELS1E63,BELS1F32,BELS1R42-O", dbS2: "BELS2E65,BELS2F37,BELS2R47-O"
+        },
+        "BRE":{
+            linha:3, mapeada:true, nome:"Bresser-Mooca", lat:-23.5463, lng:-46.6067,
+            embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e',
+            dbS1: "BRES1E63,BRES1F32,BRES1R42-O", dbS2: "BRES2E65,BRES2F37,BRES2R47-O"
+        },
         "BAS":{
-            linha:3, mapeada:true, nome:"Brás (Espanhola)", lat:-23.5471, lng:-46.6164,
-            embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd',
-            dbS1: "BASS1F44,BASS1R48-O,BASS1R28-I", dbS2: "BASS2F31,BASS2R21-O,BASS2R31-I,BASS2R41-I"
+            linha:3, mapeada:true, nome:"Brás", lat:-23.5471, lng:-46.6164,
+            embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd', // Plataforma Espanhola
+            dbS1: "BASS1F44,BASS1R48-O,BASS1R28-I,BASS1R12-O", dbS2: "BASS2F31,BASS2R21-O,BASS2R31-I,BASS2R41-I,BASS2R63-O"
         },
-        "PDS":{linha:3, nome:"Pedro II", lat:-23.5498, lng:-46.6258},
-        "GBU":{linha:3, nome:"Anhangabaú", lat:-23.5478, lng:-46.6385},
+        "PDS":{
+            linha:3, mapeada:true, nome:"Pedro II", lat:-23.5498, lng:-46.6258,
+            embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd',
+            dbS1: "PDS1F61", dbS2: "PDS2E32,PDS2F61,PDS2R14-O" // -O no S2 inferido por padronização
+        },
+        "PSE":{
+            linha:3, mapeada:true, nome:"Sé", lat:-23.5492, lng:-46.6334,
+            embS1: 'e', desS1: 'd', embS2: 'd', desS2: 'e', // Espanhola Central (Cruza L1)
+            dbS1: "PSES1E33,PSES1F52,PSES1R52-O", dbS2: "PSES2E25,PSES2F57,PSES2R57-O"
+        },
+        "GBU":{
+            linha:3, mapeada:true, nome:"Anhangabaú", lat:-23.5478, lng:-46.6385,
+            embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e',
+            dbS1: "GBUS1E11,GBUS1F64,GBUS1R64-O", dbS2: "GBUS2E64,GBUS2F11,GBUS2R11-O"
+        },
         "REP":{
             linha:3, mapeada:true, nome:"República", lat:-23.5439, lng:-46.6425,
-            embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd',
-            dbS1: "REPS1E55,REPS1F62,REPS1R54-O,REPS1R41-O", dbS2: "REPS2E68,REPS2F42,REPS2R53-O,REPS2R44-O,REPS2R32-O"
+            embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd', // Espanhola sem porta do meio
+            dbS1: "REPS1E55,REPS1F62,REPS1R54-O,REPS1R41-O,REPS1E11,REPS1R14-O", dbS2: "REPS2E68,REPS2F42,REPS2R53-O,REPS2R44-O,REPS2R32-O,REPS2R61-O"
         },
         "CEC":{
             linha:3, mapeada:true, nome:"Santa Cecília", lat:-23.5384, lng:-46.6492,
             embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd',
-            dbS1: "CECS1E48,CECS1F58,CECS1F38", dbS2: ""
+            dbS1: "CECS1E48,CECS1F58,CECS1F38", dbS2: "CECS2E45,CECS2F33"
         },
         "DEO":{
             linha:3, mapeada:true, nome:"Marechal Deodoro", lat:-23.5328, lng:-46.6558,
-            embS1: 'e', desS1: 'e', embS2: 'd', desS2: 'd',
-            dbS1: "DEOS1E37,DEOS1F28,DEOS1F45,DEOS1R28-O,DEOS1R45-I", dbS2: ""
+            embS1: 'e', desS1: 'e', embS2: 'd', desS2: 'd', // Sobreposta Lateral
+            dbS1: "DEOS1E37,DEOS1F28,DEOS1F45,DEOS1R28-O,DEOS1R45-I", dbS2: "DEOS2E37,DEOS2F36,DEOS2R36-O"
         },
-        "BFU":{linha:3, nome:"Palmeiras-Barra Funda", lat:-23.5256, lng:-46.6640}
+        "BFU":{
+            linha:3, mapeada:true, nome:"Palmeiras-Barra Funda", lat:-23.5256, lng:-46.6640,
+            embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e',
+            dbS1: "BFUS1E44,BFUS1F61,BFUS1R34-O", dbS2: ""
+        }
     },
 
     dicionario: {
