@@ -11,24 +11,21 @@
         * { box-sizing: border-box; }
 
         :root {
-            /* Cores das Linhas do Metrô/CPTM */
             --l1: #00539B; --l2: #008061; --l3: #EE3E34; --l4: #F0D200; --l5: #A52182;
             --l7: #A0184B; --l8: #9E9E93; --l9: #00A88E; --l10: #007C8F; --l11: #F04D22;
             --l12: #033F88; --l13: #00B352; --l15: #8D8D8D;
             
-            /* Cores Temáticas Base (Modo Escuro Padrão) */
             --bg-color: #000000; 
             --card-bg: #1A1A1A; 
             --text-main: #FFFFFF;
             --text-muted: #CCCCCC; 
             --border-color: #444444; 
-            --btn-color: #00539B; /* Cor L1 como destaque atual */
+            --btn-color: #00539B; 
             --input-bg: #000000; 
             --group-bg: #111111; 
             --train-bg: #050505;
         }
 
-        /* OVERRIDES: MODO CLARO */
         body.light-mode {
             --bg-color: #F0F2F5; 
             --card-bg: #FFFFFF; 
@@ -40,41 +37,18 @@
             --train-bg: #EAEAEA;
         }
 
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            background-color: var(--bg-color); 
-            color: var(--text-main); 
-            margin: 0; 
-            padding: 15px; 
-            display: flex; 
-            justify-content: center; 
-            align-items: flex-start; 
-            min-height: 100vh; 
-            transition: background-color 0.3s ease, color 0.3s ease; 
-            direction: ltr; 
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 15px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; transition: background-color 0.3s ease, color 0.3s ease; direction: ltr; }
 
-        /* SISTEMA DE TELAS (SPA) */
         .app-view { display: none; width: 100%; max-width: 420px; flex-direction: column; animation: fadeInView 0.3s ease; }
         .app-view.active { display: flex; }
         @keyframes fadeInView { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .container { 
-            background-color: var(--card-bg); 
-            border-radius: 12px; 
-            padding: 24px; 
-            width: 100%; 
-            box-shadow: 0 8px 16px rgba(0,0,0,0.8); 
-            border-top: 6px solid var(--l1); 
-            border: 1px solid var(--border-color); 
-            transition: all 0.3s ease; 
-        }
+        .container { background-color: var(--card-bg); border-radius: 12px; padding: 24px; width: 100%; box-shadow: 0 8px 16px rgba(0,0,0,0.8); border-top: 6px solid var(--l1); border: 1px solid var(--border-color); transition: all 0.3s ease; }
         body.light-mode .container { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
 
         .container-header { display: flex; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
         .container-header h2 { margin: 0; font-size: 1.4rem; color: var(--text-main); line-height: 1.2; }
 
-        /* SPLASH SCREEN */
         #view-splash { justify-content: center; align-items: center; min-height: 90vh; text-align: center; }
         .splash-train { width: 180px; height: auto; animation: trainDriveIn 1s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
         @keyframes trainDriveIn { 0% { transform: translateX(-150vw); } 100% { transform: translateX(0); } }
@@ -82,7 +56,6 @@
         .fade-in-delayed { opacity: 0; animation: fadeIn 0.8s ease forwards 1s; }
         @keyframes fadeIn { to { opacity: 1; } }
 
-        /* MODAL DE EMERGÊNCIA */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: var(--card-bg); border: 1px solid var(--border-color); border-top: 5px solid #FF3B30; padding: 25px; border-radius: 12px; max-width: 380px; width: 100%; text-align: left; box-shadow: 0 10px 25px rgba(0,0,0,0.5); color: var(--text-main); }
         .modal-content h2 { margin-top: 0; font-size: 1.4rem; color: #FF3B30; line-height: 1.2;}
@@ -97,7 +70,6 @@
         body.light-mode .action-btn:hover { background: #E5E5E5; }
         h1 { font-size: 1.45rem; margin: 0; color: var(--text-main); line-height: 1.1; letter-spacing: -0.5px; }
 
-        /* HERO HEADER (TELA PRINCIPAL) */
         .hero-header-main { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); }
         .hero-settings { position: absolute; top: 0; right: 0; }
         .hero-logo-svg { height: 45px; width: auto; margin-bottom: 12px; }
@@ -109,7 +81,6 @@
         .hero-title { font-size: 2.2rem; font-weight: 800; margin: 0; color: var(--text-main); letter-spacing: -1px; line-height: 1; }
         body.large-font .hero-title { font-size: 2.8rem; }
 
-        /* FORMS E SELEÇÕES */
         .selection-group { background-color: var(--group-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 15px; }
         .selection-title { font-size: 1.05rem; font-weight: bold; color: var(--text-main); margin-bottom: 10px; border-left: 4px solid var(--border-color); padding-left: 8px; }
         .selection-title.origem { border-color: #4CAF50; }
@@ -120,7 +91,6 @@
         select:disabled { opacity: 0.5; cursor: not-allowed; }
         optgroup { font-weight: bold; color: var(--text-muted); background: var(--group-bg); font-style: normal; }
 
-        /* HUB DE CONFIGURAÇÕES (BOTÕES) */
         .settings-list { display: flex; flex-direction: column; gap: 10px; }
         .settings-btn { display: flex; align-items: center; background: var(--group-bg); border: 1px solid var(--border-color); color: var(--text-main); padding: 15px; border-radius: 8px; cursor: pointer; font-size: 1.05rem; font-weight: bold; transition: background 0.2s; text-align: left; }
         .settings-btn:hover { background: #333; }
@@ -134,7 +104,6 @@
         .btn-gps { background: var(--group-bg); color: #4CAF50; border: 1px solid #4CAF50; border-radius: 6px; padding: 4px 10px; cursor: pointer; font-weight: bold; font-size: 0.85rem; transition: all 0.2s; }
         .btn-gps:hover { background: #4CAF50; color: #FFF; }
 
-        /* CAIXA DE RESULTADOS */
         .result-box { background-color: var(--group-bg); border-radius: 8px; padding: 20px; margin-top: 15px; border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; }
         .route-step { border-left: 4px solid var(--border-color); padding-left: 15px; margin-bottom: 25px; position: relative; }
         .route-step:last-child { margin-bottom: 0; }
@@ -152,154 +121,30 @@
         /* ========================================== */
         /* MOTOR GRÁFICO: TREM TOP-DOWN (DUPLA FACE)  */
         /* ========================================== */
-
-        /* Container Principal do Trem */
-        .t-topdown-container { 
-            width: 100%; 
-            height: 120px; 
-            background-color: var(--train-bg); 
-            border-radius: 8px; 
-            position: relative; 
-            overflow: hidden; 
-            margin: 15px 0; 
-            border: 1px solid var(--border-color); 
-            display: flex; 
-            flex-direction: column; 
-        }
-
-        /* Faixa de Sentido da Viagem */
-        .t-direction { 
-            width: 100%; 
-            text-align: center; 
-            font-size: 0.75rem; 
-            font-weight: bold; 
-            letter-spacing: 1px; 
-            padding: 6px 0; 
-            background: rgba(0,0,0,0.4); 
-            z-index: 2; 
-        }
-
-        body.light-mode .t-direction {
-            background: rgba(255,255,255,0.6);
-        }
-
-        /* Trilho ao fundo */
-        .t-track-topdown { 
-            position: relative; 
-            height: 100%; 
-            width: 100%; 
-            background: repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(255,255,255,0.05) 20px, rgba(255,255,255,0.05) 25px); 
-            display: flex; 
-            align-items: center; 
-        }
-
-        body.light-mode .t-track-topdown {
-            background: repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(0,0,0,0.05) 20px, rgba(0,0,0,0.05) 25px);
-        }
-
-        /* Wrapper que movimenta o trem para centralizar a porta */
-        .t-wrapper-topdown { 
-            position: absolute; 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; /* Espaço entre os vagões */
-            padding: 0 20px; 
-            height: 65px; 
-            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); 
-            z-index: 1; 
-        }
-
-        /* Vagão */
-        .t-car-topdown { 
-            width: 90px; 
-            height: 100%; 
-            border: 2px solid; 
-            background: var(--card-bg); 
-            border-radius: 4px; 
-            position: relative; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between; 
-        }
-
-        /* Label Central do Vagão (Ex: C1, C2) */
-        .car-center-label { 
-            position: absolute; 
-            top: 50%; 
-            left: 50%; 
-            transform: translate(-50%, -50%); 
-            font-size: 0.8rem; 
-            color: var(--text-muted); 
-            font-weight: bold; 
-        }
-
-        /* Linha das portas (Face A e Face B) */
-        .car-row { 
-            display: flex; 
-            justify-content: space-evenly; 
-            width: 100%; 
-            padding: 0 2px; 
-        }
-
-        /* Portas Individuais */
-        .t-door-topdown { 
-            width: 12px; 
-            height: 8px; 
-            background: var(--group-bg); 
-            border: 1px solid var(--border-color); 
-        }
+        .t-topdown-container { width: 100%; height: 120px; background-color: var(--train-bg); border-radius: 8px; position: relative; overflow: hidden; margin: 15px 0; border: 1px solid var(--border-color); display: flex; flex-direction: column; }
+        .t-direction { width: 100%; text-align: center; font-size: 0.75rem; font-weight: bold; letter-spacing: 1px; padding: 6px 0; background: rgba(0,0,0,0.4); z-index: 2; }
+        body.light-mode .t-direction { background: rgba(255,255,255,0.6); }
+        .t-track-topdown { position: relative; height: 100%; width: 100%; background: repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(255,255,255,0.05) 20px, rgba(255,255,255,0.05) 25px); display: flex; align-items: center; }
+        body.light-mode .t-track-topdown { background: repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(0,0,0,0.05) 20px, rgba(0,0,0,0.05) 25px); }
+        .t-wrapper-topdown { position: absolute; display: flex; align-items: center; gap: 12px; padding: 0 20px; height: 65px; transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); z-index: 1; }
+        .t-car-topdown { width: 90px; height: 100%; border: 2px solid; background: var(--card-bg); border-radius: 4px; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+        .car-center-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.8rem; color: var(--text-muted); font-weight: bold; }
+        .car-row { display: flex; justify-content: space-evenly; width: 100%; padding: 0 2px; }
+        .t-door-topdown { width: 12px; height: 8px; background: var(--group-bg); border: 1px solid var(--border-color); }
         .t-door-topdown.top { border-radius: 0 0 4px 4px; border-top: none; }
         .t-door-topdown.bottom { border-radius: 4px 4px 0 0; border-bottom: none; }
-
-        /* Porta Alvo (Seta Verde e Brilho) */
-        .t-door-topdown.target { 
-            background: #4CAF50; 
-            border-color: #FFF; 
-            box-shadow: 0 0 10px #4CAF50; 
-            position: relative; 
-            z-index: 5; 
-        }
-        .t-door-topdown.target::before { 
-            content: '▼'; 
-            position: absolute; 
-            left: 50%; 
-            font-size: 14px; 
-            color: #4CAF50; 
-            animation: bounce 1s infinite; 
-            text-shadow: 0 0 5px rgba(0,0,0,0.8); 
-        }
-        body.light-mode .t-door-topdown.target::before {
-            text-shadow: 0 0 3px rgba(255,255,255,0.8);
-        }
+        .t-door-topdown.target { background: #4CAF50; border-color: #FFF; box-shadow: 0 0 10px #4CAF50; position: relative; z-index: 5; }
+        .t-door-topdown.target::before { content: '▼'; position: absolute; left: 50%; font-size: 14px; color: #4CAF50; animation: bounce 1s infinite; text-shadow: 0 0 5px rgba(0,0,0,0.8); }
+        body.light-mode .t-door-topdown.target::before { text-shadow: 0 0 3px rgba(255,255,255,0.8); }
         .t-door-topdown.top.target::before { top: -20px; transform: translateX(-50%); }
         .t-door-topdown.bottom.target::before { bottom: -20px; transform: translateX(-50%) rotate(180deg); }
 
-        /* Animação da Seta */
-        @keyframes bounce { 
-            0%, 100% { transform: translateX(-50%) translateY(0); } 
-            50% { transform: translateX(-50%) translateY(-4px); } 
-        }
+        @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-4px); } }
 
-        /* Cabine (Frente/Trás do Trem) */
-        .t-cab { 
-            position: absolute; 
-            top: 50%; 
-            transform: translateY(-50%); 
-            width: 12px; 
-            height: 80%; 
-        }
-        .t-cab.cab-left { 
-            left: -14px; 
-            border-top-left-radius: 12px; 
-            border-bottom-left-radius: 12px; 
-        }
-        .t-cab.cab-right { 
-            right: -14px; 
-            border-top-right-radius: 12px; 
-            border-bottom-right-radius: 12px; 
-        }
+        .t-cab { position: absolute; top: 50%; transform: translateY(-50%); width: 12px; height: 80%; }
+        .t-cab.cab-left { left: -14px; border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
+        .t-cab.cab-right { right: -14px; border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
 
-        /* RODAPÉ & IDIOMAS & ACESSIBILIDADE */
         .footer { margin-top: 25px; text-align: center; border-top: 1px solid var(--border-color); padding-top: 20px; }
         .lang-footer-container { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 15px; }
         .lang-flag { font-size: 2rem; cursor: pointer; user-select: none; opacity: 0.4; filter: grayscale(50%); transition: all 0.3s ease; }
@@ -320,7 +165,6 @@
         .help-text ul { padding-left: 20px; margin-top: 0; color: var(--text-muted); font-size: 1rem; line-height: 1.4; }
         .help-text li { margin-bottom: 12px; }
 
-        /* LARGE FONT (A+) */
         body.large-font h1 { font-size: 2.2rem; }
         body.large-font .selection-title { font-size: 1.2rem; }
         body.large-font label { font-size: 1.1rem; }
@@ -348,7 +192,7 @@
         <p class="fade-in-delayed" style="color:var(--text-muted); margin-top:0; margin-bottom: 40px;">Precisão e Autonomia</p>
         
         <button class="btn-action fade-in-delayed" id="btn-entrar-splash" onclick="UI.showView('view-warning')" style="max-width: 250px;">Entrar no Guia</button>
-        <div class="fade-in-delayed" style="margin-top: 30px; font-weight: bold; color: #666;">v5.1.0 - Supercódigo Monolítico</div>
+        <div class="fade-in-delayed" style="margin-top: 30px; font-weight: bold; color: #666;">v5.2.0 - Integração de Linhas</div>
     </div>
 
     <div id="view-warning" class="app-view">
@@ -382,7 +226,7 @@
                 </svg>
                 
                 <h1 id="app-title" class="hero-title">PORTA CERTA SP</h1>
-                <p style="color: var(--l1); margin-top: 5px; font-size: 0.9rem; font-weight: bold;">Módulo Inteligente L1 / L3</p>
+                <p style="color: var(--l1); margin-top: 5px; font-size: 0.9rem; font-weight: bold;">Integração L1 / L3 Ativada</p>
             </div>
 
             <label for="preferencia" id="lbl-pref">Sua preferência de saída no destino final:</label>
@@ -476,14 +320,6 @@
             <p>Clique no botão <strong>Qual é a Porta Certa?</strong>. O sistema mostrará o trajeto completo passo a passo. Ele dirá onde você deve embarcar. Exemplo: <strong>Porta 41 ou 22</strong>.</p>
             <p>Basta procurar o adesivo no chão ou no alto da porta de vidro. Nosso mapa dinâmico mostrará em qual vagão você deve entrar.</p>
 
-            <h3 style="margin-top: 30px;">Recursos importantes:</h3>
-            <ul>
-                <li><strong>Acessibilidade visual (A+):</strong> Aumenta o tamanho de todas as letras da tela.</li>
-                <li><strong>Modo Claro (☀️):</strong> Troca o fundo preto por um fundo claro para melhor leitura de dia.</li>
-                <li><strong>Estações mapeadas (📋):</strong> Mostra a lista de estações que já funcionam com precisão.</li>
-                <li><strong>Direito ao acesso (FALA.SP):</strong> Se a estação destino não tiver o equipamento que você precisa, o app gera um alerta com um atalho direto para a Ouvidoria do Estado. Cobre seus direitos.</li>
-            </ul>
-
             <button class="btn-action btn-secondary" onclick="UI.showView('view-settings')" style="margin-top: 30px;" id="btn-voltar-tut">⬅ Voltar</button>
         </div>
     </div>
@@ -507,7 +343,7 @@
     <div id="acessibilidade-modal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <h2 id="mod-acc-title">Direito à Acessibilidade</h2>
-            <p id="mod-acc-text">A estação selecionada não possui o equipamento de acessibilidade escolhido ou o dado está pendente. O acesso pleno ao transporte público é um direito seu. Exerça sua cidadania e cobre melhorias directamente na Ouvidoria do Governo de São Paulo.</p>
+            <p id="mod-acc-text">A estação selecionada não possui o equipamento de acessibilidade escolhido ou o dado está pendente. O acesso pleno ao transporte público é um direito seu. Exerça sua cidadania e cobre melhorias diretamente na Ouvidoria do Governo de São Paulo.</p>
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <a href="https://fala.sp.gov.br/" target="_blank" class="btn-action" style="background-color: #FF3B30; text-decoration: none;" id="mod-acc-btn-fala">Registrar Cobrança no FALA.SP</a>
                 <button class="btn-action btn-secondary" onclick="UI.fecharModalAcessibilidade()" id="mod-acc-btn-close">Entendi</button>
@@ -538,56 +374,57 @@
             15: { 2: 'Vila Prudente' }
         },
 
-        ordemL1: ["TUC", "PIG", "JPA", "SAN", "CDU", "TTE", "PPQ", "TRD", "LUZ", "BTO", "PSE", "LIB", "JQM", "VGO", "PSO", "ANR", "VMN", "SCZ", "ARV", "SAU", "JUD", "CON", "JAB"],
-        ordemL3: ["ITQ", "ART", "PCA", "VPA", "VTD", "PEN", "CAR", "TAT", "BEL", "BRE", "BAS", "PDS", "PSE", "GBU", "REP", "CEC", "DEO", "BFU"],
+        // Usamos ID1 e ID3 para evitar que estações de transferência se sobrescrevam no objeto
+        ordemL1: ["TUC1", "PIG1", "JPA1", "SAN1", "CDU1", "TTE1", "PPQ1", "TRD1", "LUZ1", "BTO1", "PSE1", "LIB1", "JQM1", "VGO1", "PSO1", "ANR1", "VMN1", "SCZ1", "ARV1", "SAU1", "JUD1", "CON1", "JAB1"],
+        ordemL3: ["ITQ3", "ART3", "PCA3", "VPA3", "VTD3", "PEN3", "CAR3", "TAT3", "BEL3", "BRE3", "BAS3", "PDS3", "PSE3", "GBU3", "REP3", "CEC3", "DEO3", "BFU3"],
 
         estacoes: {
             /* === L1 AZUL === */
-            "TUC": { linha: 1, mapeada: true, nome: "Tucuruvi", lat: -23.4804, lng: -46.6038, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "TUCS1E43,TUCS1F23,TUCS1F34,TUCS1F52", dbS2: "" },
-            "PIG": { linha: 1, mapeada: true, nome: "Parada Inglesa", lat: -23.4877, lng: -46.6080, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "PIGS1E41,PIGS1F51", dbS2: "PIGS2E48,PIGS2F58" },
-            "JPA": { linha: 1, mapeada: true, nome: "Jardim São Paulo", lat: -23.4922, lng: -46.6166, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "JPAS1E35,JPAS1F37,JPAS1F45,JPAS1R45-I,JPAS1R45-O", dbS2: "JPAS2E34,JPAS2F44,JPAS2F32,JPAS2R44-I,JPAS2R44-O" },
-            "SAN": { linha: 1, mapeada: true, nome: "Santana", lat: -23.5026, lng: -46.6250, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "SANS1E34,SANS1F32,SANS1F44,SANS1R32-I,SANS1R44-I,SANS1R32-O,SANS1R44-O", dbS2: "SANS2E48,SANS2F37,SANS2F45,SANS2R37-I,SANS2R45-I,SANS2R37-O,SANS2R45-O" },
-            "CDU": { linha: 1, mapeada: true, nome: "Carandiru", lat: -23.5096, lng: -46.6249, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "CDUS1E33,CDUS1F33,CDUS1R33-I,CDUS1R33-O", dbS2: "CDUS2E36,CDUS2F36,CDUS2R36-I,CDUS2R36-O" },
-            "TTE": { linha: 1, mapeada: true, nome: "Portuguesa-Tietê", lat: -23.5165, lng: -46.6251, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "TTES1E43,TTES1F43,TTES1R43-I,TTES1R43-O", dbS2: "TTES2E46,TTES2F46,TTES2R46-I,TTES2R46-O" },
-            "PPQ": { linha: 1, mapeada: true, nome: "Armênia", lat: -23.5254, lng: -46.6261, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "PPQS1E63,PPQS1F64,PPQS1F11", dbS2: "PPQS2E66,PPQS2F18,PPQS2F65" },
-            "TRD": { linha: 1, mapeada: true, nome: "Tiradentes", lat: -23.5312, lng: -46.6315, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "TRDS1E47,TRDS1F68,TRDS1F15,TRDS1R68-I,TRDS1R47-O,TRDS1R15-O", dbS2: "TRDS2E42,TRDS2F14,TRDS2F61,TRDS2R61-I,TRDS2R14-O,TRDS2R42-O" },
-            "LUZ": { linha: 1, mapeada: true, nome: "Luz", lat: -23.5385, lng: -46.6360, embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd', dbS1: "", dbS2: "LUZS2F46,LUZS2F25,LUZS2R57-O,LUZS2R25-O,LUZS2R28-O" }, 
-            "BTO": { linha: 1, mapeada: true, nome: "São Bento", lat: -23.5434, lng: -46.6333, embS1: 'e', desS1: 'e', embS2: 'd', desS2: 'd', dbS1: "BTOS1E38,BTOS1F45,BTOS1R68-I,BTOS1R38-I,BTOS1R55-O,BTOS1R38-O", dbS2: "BTOS2E36,BTOS2F37,BTOS2R37-I,BTOS2R37-O" },
-            "PSE": { linha: 1, mapeada: true, nome: "Sé", lat: -23.5492, lng: -46.6334, embS1: 'd', desS1: 'e', embS2: 'd', desS2: 'e', dbS1: "PSES1F16-T3,PSES1R27-T3", dbS2: "PSES2F13-T3,PSES2R22-T3" },
-            "LIB": { linha: 1, mapeada: true, nome: "Japão-Liberdade", lat: -23.5555, lng: -46.6359, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "LIBS1E31,LIBS1F23,LIBS1R52-I,LIBS1R23-O,LIBS1R52-O", dbS2: "LIBS2E38,LIBS2F57,LIBS2R26-I,LIBS2R57-O,LIBS2R26-O" },
-            "JQM": { linha: 1, mapeada: true, nome: "São Joaquim", lat: -23.5618, lng: -46.6388, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "JQMS1E31,JQMS1F51,JQMS1R51-I,JQMS1R21-O", dbS2: "JQMS2E38,JQMS2F45,JQMS2R28-O" },
-            "VGO": { linha: 1, mapeada: true, nome: "Vergueiro", lat: -23.5689, lng: -46.6397, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "VGOS1E42,VGOS1F23,VGOS1F52,VGOS1R52-I,VGOS1R23-O", dbS2: "VGOS2E47,VGOS2F57,VGOS2F26,VGOS2R26-I,VGOS2R57-O" },
-            "PSO": { linha: 1, mapeada: true, nome: "Paraíso", lat: -23.5759, lng: -46.6414, embS1: 'e', desS1: 'e', embS2: 'd', desS2: 'd', dbS1: "PSOS1E35,PSOS1F47,PSOS1F55,PSOS1F67-T2,PSOS1F58,PSOS1F38,PSOS1R55-I,PSOS1R58-I,PSOS1R47-I,PSOS1R38-I,PSOS1R58-O,PSOS1R47-O,PSOS1R37-T2", dbS2: "" },
-            "ANR": { linha: 1, mapeada: true, nome: "Ana Rosa", lat: -23.5813, lng: -46.6383, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "ANRS1E48,ANRS1F45,ANRS1F15,ANRS1R26-I,ANRS1R45-O,ANRS1R36-O", dbS2: "ANRS2E41,ANRS2F14,ANRS2F44,ANRS2R23-I,ANRS2R33-O,ANRS2R44-O" },
-            "VMN": { linha: 1, mapeada: true, nome: "Vila Mariana", lat: -23.5894, lng: -46.6346, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "VMNS1E33,VMNS1F23,VMNS1F52,VMNS1R52-I,VMNS1R23-O", dbS2: "VMNS2E36,VMNS2F26,VMNS2F57,VMNS2R26-I,VMNS2R57-O" },
-            "SCZ": { linha: 1, mapeada: true, nome: "Santa Cruz", lat: -23.5989, lng: -46.6366, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "SCZS1E31-O,SCZS1E14-T5,SCZS1F44,SCZS1F22,SCZS1R44-I,SCZS1R41-I,SCZS1R11-I,SCZS1R41-O,SCZS1R22-O,SCZS1R12-O", dbS2: "SCZS2E38-O,SCZS2F45,SCZS2F28,SCZS2R28-I,SCZS2R45-O,SCZS2R17-T5" },
-            "ARV": { linha: 1, mapeada: true, nome: "Praça da Árvore", lat: -23.6106, lng: -46.6378, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "ARVS1F52", dbS2: "" },
-            "SAU": { linha: 1, mapeada: true, nome: "Saúde", lat: -23.6172, lng: -46.6343, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "SAUS1E51,SAUS1F53", dbS2: "SAUS2E58,SAUS2F56,SAUS2R56-O" },
-            "JUD": { linha: 1, nome: "São Judas", lat: -23.6253, lng: -46.6394, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "", dbS2: "" },
-            "CON": { linha: 1, nome: "Conceição", lat: -23.6362, lng: -46.6411, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "", dbS2: "" },
-            "JAB": { linha: 1, nome: "Jabaquara", lat: -23.6470, lng: -46.6395, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "", dbS2: "" },
+            "TUC1": { linha: 1, mapeada: true, nome: "Tucuruvi", lat: -23.4804, lng: -46.6038, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "TUC1S1E43,TUC1S1F23,TUC1S1F34,TUC1S1F52", dbS2: "" },
+            "PIG1": { linha: 1, mapeada: true, nome: "Parada Inglesa", lat: -23.4877, lng: -46.6080, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "PIG1S1E41,PIG1S1F51", dbS2: "PIG1S2E48,PIG1S2F58" },
+            "JPA1": { linha: 1, mapeada: true, nome: "Jardim São Paulo", lat: -23.4922, lng: -46.6166, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "JPA1S1E35,JPA1S1F37,JPA1S1F45,JPA1S1R45-I,JPA1S1R45-O", dbS2: "JPA1S2E34,JPA1S2F44,JPA1S2F32,JPA1S2R44-I,JPA1S2R44-O" },
+            "SAN1": { linha: 1, mapeada: true, nome: "Santana", lat: -23.5026, lng: -46.6250, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "SAN1S1E34,SAN1S1F32,SAN1S1F44,SAN1S1R32-I,SAN1S1R44-I,SAN1S1R32-O,SAN1S1R44-O", dbS2: "SAN1S2E48,SAN1S2F37,SAN1S2F45,SAN1S2R37-I,SAN1S2R45-I,SAN1S2R37-O,SAN1S2R45-O" },
+            "CDU1": { linha: 1, mapeada: true, nome: "Carandiru", lat: -23.5096, lng: -46.6249, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "CDU1S1E33,CDU1S1F33,CDU1S1R33-I,CDU1S1R33-O", dbS2: "CDU1S2E36,CDU1S2F36,CDU1S2R36-I,CDU1S2R36-O" },
+            "TTE1": { linha: 1, mapeada: true, nome: "Portuguesa-Tietê", lat: -23.5165, lng: -46.6251, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "TTE1S1E43,TTE1S1F43,TTE1S1R43-I,TTE1S1R43-O", dbS2: "TTE1S2E46,TTE1S2F46,TTE1S2R46-I,TTE1S2R46-O" },
+            "PPQ1": { linha: 1, mapeada: true, nome: "Armênia", lat: -23.5254, lng: -46.6261, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "PPQ1S1E63,PPQ1S1F64,PPQ1S1F11", dbS2: "PPQ1S2E66,PPQ1S2F18,PPQ1S2F65" },
+            "TRD1": { linha: 1, mapeada: true, nome: "Tiradentes", lat: -23.5312, lng: -46.6315, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "TRD1S1E47,TRD1S1F68,TRD1S1F15,TRD1S1R68-I,TRD1S1R47-O,TRD1S1R15-O", dbS2: "TRD1S2E42,TRD1S2F14,TRD1S2F61,TRD1S2R61-I,TRD1S2R14-O,TRD1S2R42-O" },
+            "LUZ1": { linha: 1, mapeada: true, nome: "Luz", lat: -23.5385, lng: -46.6360, embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd', dbS1: "", dbS2: "LUZ1S2F46,LUZ1S2F25,LUZ1S2R57-O,LUZ1S2R25-O,LUZ1S2R28-O" }, 
+            "BTO1": { linha: 1, mapeada: true, nome: "São Bento", lat: -23.5434, lng: -46.6333, embS1: 'e', desS1: 'e', embS2: 'd', desS2: 'd', dbS1: "BTO1S1E38,BTO1S1F45,BTO1S1R68-I,BTO1S1R38-I,BTO1S1R55-O,BTO1S1R38-O", dbS2: "BTO1S2E36,BTO1S2F37,BTO1S2R37-I,BTO1S2R37-O" },
+            "PSE1": { linha: 1, mapeada: true, nome: "Sé", lat: -23.5492, lng: -46.6334, embS1: 'd', desS1: 'e', embS2: 'd', desS2: 'e', dbS1: "PSE1S1F16-T3,PSE1S1R27-T3", dbS2: "PSE1S2F13-T3,PSE1S2R22-T3" },
+            "LIB1": { linha: 1, mapeada: true, nome: "Japão-Liberdade", lat: -23.5555, lng: -46.6359, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "LIB1S1E31,LIB1S1F23,LIB1S1R52-I,LIB1S1R23-O,LIB1S1R52-O", dbS2: "LIB1S2E38,LIB1S2F57,LIB1S2R26-I,LIB1S2R57-O,LIB1S2R26-O" },
+            "JQM1": { linha: 1, mapeada: true, nome: "São Joaquim", lat: -23.5618, lng: -46.6388, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "JQM1S1E31,JQM1S1F51,JQM1S1R51-I,JQM1S1R21-O", dbS2: "JQM1S2E38,JQM1S2F45,JQM1S2R28-O" },
+            "VGO1": { linha: 1, mapeada: true, nome: "Vergueiro", lat: -23.5689, lng: -46.6397, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "VGO1S1E42,VGO1S1F23,VGO1S1F52,VGO1S1R52-I,VGO1S1R23-O", dbS2: "VGO1S2E47,VGO1S2F57,VGO1S2F26,VGO1S2R26-I,VGO1S2R57-O" },
+            "PSO1": { linha: 1, mapeada: true, nome: "Paraíso", lat: -23.5759, lng: -46.6414, embS1: 'e', desS1: 'e', embS2: 'd', desS2: 'd', dbS1: "PSO1S1E35,PSO1S1F47,PSO1S1F55,PSO1S1F67-T2,PSO1S1F58,PSO1S1F38,PSO1S1R55-I,PSO1S1R58-I,PSO1S1R47-I,PSO1S1R38-I,PSO1S1R58-O,PSO1S1R47-O,PSO1S1R37-T2", dbS2: "" },
+            "ANR1": { linha: 1, mapeada: true, nome: "Ana Rosa", lat: -23.5813, lng: -46.6383, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "ANR1S1E48,ANR1S1F45,ANR1S1F15,ANR1S1R26-I,ANR1S1R45-O,ANR1S1R36-O", dbS2: "ANR1S2E41,ANR1S2F14,ANR1S2F44,ANR1S2R23-I,ANR1S2R33-O,ANR1S2R44-O" },
+            "VMN1": { linha: 1, mapeada: true, nome: "Vila Mariana", lat: -23.5894, lng: -46.6346, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "VMN1S1E33,VMN1S1F23,VMN1S1F52,VMN1S1R52-I,VMN1S1R23-O", dbS2: "VMN1S2E36,VMN1S2F26,VMN1S2F57,VMN1S2R26-I,VMN1S2R57-O" },
+            "SCZ1": { linha: 1, mapeada: true, nome: "Santa Cruz", lat: -23.5989, lng: -46.6366, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "SCZ1S1E31-O,SCZ1S1E14-T5,SCZ1S1F44,SCZ1S1F22,SCZ1S1R44-I,SCZ1S1R41-I,SCZ1S1R11-I,SCZ1S1R41-O,SCZ1S1R22-O,SCZ1S1R12-O", dbS2: "SCZ1S2E38-O,SCZ1S2F45,SCZ1S2F28,SCZ1S2R28-I,SCZ1S2R45-O,SCZ1S2R17-T5" },
+            "ARV1": { linha: 1, mapeada: true, nome: "Praça da Árvore", lat: -23.6106, lng: -46.6378, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "ARV1S1F52", dbS2: "" },
+            "SAU1": { linha: 1, mapeada: true, nome: "Saúde", lat: -23.6172, lng: -46.6343, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "SAU1S1E51,SAU1S1F53", dbS2: "SAU1S2E58,SAU1S2F56,SAU1S2R56-O" },
+            "JUD1": { linha: 1, nome: "São Judas", lat: -23.6253, lng: -46.6394, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "", dbS2: "" },
+            "CON1": { linha: 1, nome: "Conceição", lat: -23.6362, lng: -46.6411, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "", dbS2: "" },
+            "JAB1": { linha: 1, nome: "Jabaquara", lat: -23.6470, lng: -46.6395, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "", dbS2: "" },
 
             /* === L3 VERMELHA === */
-            "ITQ":{ linha:3, mapeada:true, nome:"Corinthians-Itaquera", lat:-23.5424, lng:-46.4735, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "", dbS2: "ITQS2E11,ITQS2F44,ITQS2F31,ITQS2R44-I,ITQS2R54-I,ITQS2R31-O,ITQS2R21-I,ITQS2R21-O" },
-            "ART":{ linha:3, mapeada:true, nome:"Artur Alvim", lat:-23.5404, lng:-46.4845, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "ARTS1E64,ARTS1F24,ARTS1F33,ARTS1R24-O,ARTS1R33-I,ARTS1R43-O", dbS2: "ARTS2E65,ARTS2F25,ARTS2F36,ARTS2R25-O,ARTS2R36-I,ARTS2R47-O" },
-            "PCA":{ linha:3, mapeada:true, nome:"Patriarca", lat:-23.5311, lng:-46.5015, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "PCAS1E11,PCAS1F44,PCAS1R34-I,PCAS1R34-O,PCAS1R31-I,PCAS1R31-O", dbS2: "PCAS2E18,PCAS2F45,PCAS2R35-I,PCAS2R35-O,PCAS2R38-I,PCAS2R38-O" },
-            "VPA":{ linha:3, mapeada:true, nome:"Guilhermina", lat:-23.5293, lng:-46.5168, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "VPAS1E12,VPAS1F51,VPAS1R33-O", dbS2: "VPAS2E17,VPAS2F58,VPAS2R36-O" },
-            "VTD":{ linha:3, mapeada:true, nome:"Vila Matilde", lat:-23.5317, lng:-46.5309, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "VTDS1E64,VTDS1F24,VTDS1R42-O", dbS2: "VTDS2E66,VTDS2F25,VTDS2R47-O" },
-            "PEN":{ linha:3, mapeada:true, nome:"Penha", lat:-23.5332, lng:-46.5398, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "PENS1E11,PENS1F42,PENS1R33-O", dbS2: "PENS2E18,PENS2F47,PENS2R36-O" },
-            "CAR":{ linha:3, mapeada:true, nome:"Carrão", lat:-23.5350, lng:-46.5641, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "CARS1E11,CARS1F51,CARS1R33-O", dbS2: "CARS2E18,CARS2F58,CARS2R36-O" },
-            "TAT":{ linha:3, mapeada:true, nome:"Tatuapé", lat:-23.5398, lng:-46.5768, embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd', dbS1: "TATS1F35,TATS1F18,TATS1R55-I,TATS1R45-I,TATS1R15-I,TATS1R63-O,TATS1R34-O", dbS2: "TATS2F11,TATS2F44,TATS2R53-I,TATS2R33-I,TATS2R14-I,TATS2R66-O,TATS2R35-O" },
-            "BEL":{ linha:3, mapeada:true, nome:"Belém", lat:-23.5431, lng:-46.5898, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "BELS1E63,BELS1F32,BELS1R42-O", dbS2: "BELS2E65,BELS2F37,BELS2R47-O" },
-            "BRE":{ linha:3, mapeada:true, nome:"Bresser-Mooca", lat:-23.5463, lng:-46.6067, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "BRES1E63,BRES1F32,BRES1R42-O", dbS2: "BRES2E65,BRES2F37,BRES2R47-O" },
-            "BAS":{ linha:3, mapeada:true, nome:"Brás", lat:-23.5471, lng:-46.6164, embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd', dbS1: "BASS1F44,BASS1R48-O,BASS1R28-I,BASS1R12-O", dbS2: "BASS2F31,BASS2R21-O,BASS2R31-I,BASS2R41-I,BASS2R63-O" },
-            "PDS":{ linha:3, mapeada:true, nome:"Pedro II", lat:-23.5498, lng:-46.6258, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "PDS1F61", dbS2: "PDS2E32,PDS2F61,PDS2R14-O" },
-            "PSE":{ linha:3, mapeada:true, nome:"Sé", lat:-23.5492, lng:-46.6334, embS1: 'e', desS1: 'd', embS2: 'd', desS2: 'e', dbS1: "PSES1E33,PSES1F52,PSES1R52-O", dbS2: "PSES2E25,PSES2F57,PSES2R57-O" },
-            "GBU":{ linha:3, mapeada:true, nome:"Anhangabaú", lat:-23.5478, lng:-46.6385, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "GBUS1E11,GBUS1F64,GBUS1R64-O", dbS2: "GBUS2E64,GBUS2F11,GBUS2R11-O" },
-            "REP":{ linha:3, mapeada:true, nome:"República", lat:-23.5439, lng:-46.6425, embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd', dbS1: "REPS1E55,REPS1F62,REPS1R54-O,REPS1R41-O,REPS1E11,REPS1R14-O", dbS2: "REPS2E68,REPS2F42,REPS2R53-O,REPS2R44-O,REPS2R32-O,REPS2R61-O" },
-            "CEC":{ linha:3, mapeada:true, nome:"Santa Cecília", lat:-23.5384, lng:-46.6492, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "CECS1E48,CECS1F58,CECS1F38", dbS2: "CECS2E45,CECS2F33" },
-            "DEO":{ linha:3, mapeada:true, nome:"Marechal Deodoro", lat:-23.5328, lng:-46.6558, embS1: 'e', desS1: 'e', embS2: 'd', desS2: 'd', dbS1: "DEOS1E37,DEOS1F28,DEOS1F45,DEOS1R28-O,DEOS1R45-I", dbS2: "DEOS2E37,DEOS2F36,DEOS2R36-O" },
-            "BFU":{ linha:3, mapeada:true, nome:"Barra Funda", lat:-23.5256, lng:-46.6640, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "BFUS1E44,BFUS1F61,BFUS1R34-O", dbS2: "" },
+            "ITQ3":{ linha:3, mapeada:true, nome:"Corinthians-Itaquera", lat:-23.5424, lng:-46.4735, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "", dbS2: "ITQ3S2E11,ITQ3S2F44,ITQ3S2F31,ITQ3S2R44-I,ITQ3S2R54-I,ITQ3S2R31-O,ITQ3S2R21-I,ITQ3S2R21-O" },
+            "ART3":{ linha:3, mapeada:true, nome:"Artur Alvim", lat:-23.5404, lng:-46.4845, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "ART3S1E64,ART3S1F24,ART3S1F33,ART3S1R24-O,ART3S1R33-I,ART3S1R43-O", dbS2: "ART3S2E65,ART3S2F25,ART3S2F36,ART3S2R25-O,ART3S2R36-I,ART3S2R47-O" },
+            "PCA3":{ linha:3, mapeada:true, nome:"Patriarca", lat:-23.5311, lng:-46.5015, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "PCA3S1E11,PCA3S1F44,PCA3S1R34-I,PCA3S1R34-O,PCA3S1R31-I,PCA3S1R31-O", dbS2: "PCA3S2E18,PCA3S2F45,PCA3S2R35-I,PCA3S2R35-O,PCA3S2R38-I,PCA3S2R38-O" },
+            "VPA3":{ linha:3, mapeada:true, nome:"Guilhermina", lat:-23.5293, lng:-46.5168, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "VPA3S1E12,VPA3S1F51,VPA3S1R33-O", dbS2: "VPA3S2E17,VPA3S2F58,VPA3S2R36-O" },
+            "VTD3":{ linha:3, mapeada:true, nome:"Vila Matilde", lat:-23.5317, lng:-46.5309, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "VTD3S1E64,VTD3S1F24,VTD3S1R42-O", dbS2: "VTD3S2E66,VTD3S2F25,VTD3S2R47-O" },
+            "PEN3":{ linha:3, mapeada:true, nome:"Penha", lat:-23.5332, lng:-46.5398, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "PEN3S1E11,PEN3S1F42,PEN3S1R33-O", dbS2: "PEN3S2E18,PEN3S2F47,PEN3S2R36-O" },
+            "CAR3":{ linha:3, mapeada:true, nome:"Carrão", lat:-23.5350, lng:-46.5641, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "CAR3S1E11,CAR3S1F51,CAR3S1R33-O", dbS2: "CAR3S2E18,CAR3S2F58,CAR3S2R36-O" },
+            "TAT3":{ linha:3, mapeada:true, nome:"Tatuapé", lat:-23.5398, lng:-46.5768, embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd', dbS1: "TAT3S1F35,TAT3S1F18,TAT3S1R55-I,TAT3S1R45-I,TAT3S1R15-I,TAT3S1R63-O,TAT3S1R34-O", dbS2: "TAT3S2F11,TAT3S2F44,TAT3S2R53-I,TAT3S2R33-I,TAT3S2R14-I,TAT3S2R66-O,TAT3S2R35-O" },
+            "BEL3":{ linha:3, mapeada:true, nome:"Belém", lat:-23.5431, lng:-46.5898, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "BEL3S1E63,BEL3S1F32,BEL3S1R42-O", dbS2: "BEL3S2E65,BEL3S2F37,BEL3S2R47-O" },
+            "BRE3":{ linha:3, mapeada:true, nome:"Bresser-Mooca", lat:-23.5463, lng:-46.6067, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "BRE3S1E63,BRE3S1F32,BRE3S1R42-O", dbS2: "BRE3S2E65,BRE3S2F37,BRE3S2R47-O" },
+            "BAS3":{ linha:3, mapeada:true, nome:"Brás", lat:-23.5471, lng:-46.6164, embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd', dbS1: "BAS3S1F44,BAS3S1R48-O,BAS3S1R28-I,BAS3S1R12-O", dbS2: "BAS3S2F31,BAS3S2R21-O,BAS3S2R31-I,BAS3S2R41-I,BAS3S2R63-O" },
+            "PDS3":{ linha:3, mapeada:true, nome:"Pedro II", lat:-23.5498, lng:-46.6258, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "PDS3S1F61", dbS2: "PDS3S2E32,PDS3S2F61,PDS3S2R14-O" },
+            "PSE3":{ linha:3, mapeada:true, nome:"Sé", lat:-23.5492, lng:-46.6334, embS1: 'e', desS1: 'd', embS2: 'd', desS2: 'e', dbS1: "PSE3S1E33,PSE3S1F52,PSE3S1R52-O", dbS2: "PSE3S2E25,PSE3S2F57,PSE3S2R57-O" },
+            "GBU3":{ linha:3, mapeada:true, nome:"Anhangabaú", lat:-23.5478, lng:-46.6385, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "GBU3S1E11,GBU3S1F64,GBU3S1R64-O", dbS2: "GBU3S2E64,GBU3S2F11,GBU3S2R11-O" },
+            "REP3":{ linha:3, mapeada:true, nome:"República", lat:-23.5439, lng:-46.6425, embS1: 'd', desS1: 'e', embS2: 'e', desS2: 'd', dbS1: "REP3S1E55,REP3S1F62,REP3S1R54-O,REP3S1R41-O,REP3S1E11,REP3S1R14-O", dbS2: "REP3S2E68,REP3S2F42,REP3S2R53-O,REP3S2R44-O,REP3S2R32-O,REP3S2R61-O" },
+            "CEC3":{ linha:3, mapeada:true, nome:"Santa Cecília", lat:-23.5384, lng:-46.6492, embS1: 'd', desS1: 'd', embS2: 'd', desS2: 'd', dbS1: "CEC3S1E48,CEC3S1F58,CEC3S1F38", dbS2: "CEC3S2E45,CEC3S2F33" },
+            "DEO3":{ linha:3, mapeada:true, nome:"Marechal Deodoro", lat:-23.5328, lng:-46.6558, embS1: 'e', desS1: 'e', embS2: 'd', desS2: 'd', dbS1: "DEO3S1E37,DEO3S1F28,DEO3S1F45,DEO3S1R28-O,DEO3S1R45-I", dbS2: "DEO3S2E37,DEO3S2F36,DEO3S2R36-O" },
+            "BFU3":{ linha:3, mapeada:true, nome:"Barra Funda", lat:-23.5256, lng:-46.6640, embS1: 'e', desS1: 'e', embS2: 'e', desS2: 'e', dbS1: "BFU3S1E44,BFU3S1F61,BFU3S1R34-O", dbS2: "" },
 
-            // Outras linhas (Esqueleto)
+            // Linhas 4 e 5 genéricas para roteamento
             401:{linha:4,nome:"Luz"}, 402:{linha:4,nome:"República"}, 404:{linha:4,nome:"Paulista"}, 408:{linha:4,nome:"Pinheiros"},
             505:{linha:5,nome:"Santo Amaro"}, 516:{linha:5,nome:"Santa Cruz"}, 517:{linha:5,nome:"Chácara Klabin"}
         },
@@ -662,7 +499,7 @@
             return parseInt(idOrigem) < parseInt(idDestino) ? "S2" : "S1"; 
         },
         
-        extrairPortasAlvo: function(nodeDestino, sentido, prefSaida) {
+        extrairPortasAlvo: function(nodeDestino, sentido, prefSaida, isTransfer, nextLine) {
             let dbStr = sentido === "S1" ? nodeDestino.dbS1 : nodeDestino.dbS2;
             if (!dbStr && nodeDestino.dbStr) dbStr = nodeDestino.dbStr;
             if (!dbStr) return [];
@@ -670,24 +507,41 @@
             let tipo = prefSaida === 'elevador' ? 'E' : (prefSaida === 'rolante' ? 'R' : 'F');
             let tokens = dbStr.split(',');
             
-            let prefixoEstacao = typeof nodeDestino.nome === 'string' && (AppData.ordemL1.includes(idDestinoParaLetras(nodeDestino)) || AppData.ordemL3.includes(idDestinoParaLetras(nodeDestino))) 
-                ? idDestinoParaLetras(nodeDestino) 
-                : dbStr.substring(0,3);
+            let idKey = Object.keys(AppData.estacoes).find(k => AppData.estacoes[k] === nodeDestino);
+            let prefixoEstacao = idKey ? idKey.substring(0,4) : dbStr.substring(0,4); // TUC1, ITQ3
 
-            let prefixoBusca = `${prefixoEstacao}${sentido}${tipo}`; 
+            let prefixoBusca = `${prefixoEstacao}S${sentido.charAt(1)}${tipo}`; 
             let matches = [];
+            
+            let targetSuffix = isTransfer ? `-T${nextLine}` : '-O';
 
             tokens.forEach(t => {
                 if (t.startsWith(prefixoBusca)) {
                     if (tipo === 'R') {
-                        if (t.endsWith('-O') || t.includes('-T')) matches.push(t);
-                        else if (!t.includes('-')) matches.push(t); 
+                        if (isTransfer && t.includes(targetSuffix)) {
+                            matches.push(t);
+                        } else if (!isTransfer && t.endsWith('-O')) {
+                            matches.push(t);
+                        }
                     } else {
                         matches.push(t); 
                     }
                 }
             });
-            return matches;
+            
+            if (tipo === 'R' && matches.length === 0) {
+                tokens.forEach(t => {
+                    if (t.startsWith(prefixoBusca)) {
+                        if (t.endsWith('-O') || t.includes('-T')) matches.push(t);
+                        else if (!t.includes('-')) matches.push(t);
+                    }
+                });
+            }
+
+            return matches.map(m => {
+                let num = m.match(/\d{2}/);
+                return num ? num[0] : null;
+            }).filter(n => n !== null);
         },
 
         parseVagaoPorta: function(raw, sentido) {
@@ -705,12 +559,20 @@
             let side = (d2 <= 4) ? 'A' : 'B'; 
             
             return (v >= 1 && v <= 6 && p >= 1 && p <= 4) ? {v, p, side} : null;
+        },
+        
+        calcularFaces: function(numStr) {
+            let d1 = parseInt(numStr.charAt(0)); 
+            let d2 = parseInt(numStr.charAt(1)); 
+            let isFaceA = (d2 >= 1 && d2 <= 4);
+            
+            let faceA, faceB;
+            if (isFaceA) { faceA = d2; faceB = 9 - d2; } 
+            else { faceB = d2; faceA = 9 - d2; }
+            
+            return { v: d1, numFaceA: parseInt(`${d1}${faceA}`), numFaceB: parseInt(`${d1}${faceB}`) };
         }
     };
-
-    function idDestinoParaLetras(node) {
-        return Object.keys(AppData.estacoes).find(k => AppData.estacoes[k] === node);
-    }
 
     const UI = {
         init: function() {
@@ -722,7 +584,7 @@
             AppData.linhas.forEach(l => { selLO.add(new Option(t['l'+l] || `Linha ${l}`, l)); selLD.add(new Option(t['l'+l] || `Linha ${l}`, l)); });
             
             selLO.value = "1";
-            selLD.value = "1";
+            selLD.value = "3";
             
             this.atualizarEstacoes('origem', false); this.atualizarEstacoes('destino', false);
             this.popularListaMapeadas();
@@ -777,7 +639,6 @@
             const t = AppData.dicionario[AppData.currentLang];
             selLinha.style.borderColor = (selLinha.value != "0") ? `var(--l${selLinha.value})` : '';
             
-            // Troca a cor do botão principal para combinar com a linha de origem
             if (tipo === 'origem' && selLinha.value != "0") {
                 document.documentElement.style.setProperty('--btn-color', `var(--l${selLinha.value})`);
                 document.querySelector('.container').style.borderTopColor = `var(--l${selLinha.value})`;
@@ -914,7 +775,6 @@
             let html = `<div class="t-topdown-container" style="border-color: ${corVar}">`;
             
             html += `<div class="t-direction" style="color: ${corVar}">`;
-            // Ajuste visual do sentido da seta
             if (sentidoCalculado === "S1") { html += `◀ SENTIDO DA VIAGEM`; } 
             else { html += `SENTIDO DA VIAGEM ▶`; }
             html += `</div>`;
@@ -930,7 +790,12 @@
                 // LADO A (Topo da tela)
                 html += `<div class="car-row top">`;
                 for(let p=1; p<=4; p++) {
-                    let isTarget = (v === vTarget && p === pTarget && (sTarget === 'A' || sTarget === null));
+                    let isTarget = false;
+                    if (linhaId == 1 || linhaId == 3) {
+                        isTarget = (v === parsed.v && parsed.alvoB !== null && (9 - parsed.alvoB) === p);
+                    } else {
+                        isTarget = (v === vTarget && p === pTarget && (sTarget === 'A' || sTarget === null));
+                    }
                     html += `<div class="t-door-topdown top ${isTarget ? 'target' : ''}"></div>`;
                 }
                 html += `</div>`;
@@ -941,12 +806,16 @@
                 // LADO B (Base da tela)
                 html += `<div class="car-row bottom">`;
                 for(let p=1; p<=4; p++) {
-                    let isTarget = (v === vTarget && p === pTarget && (sTarget === 'B' || sTarget === null));
+                    let isTarget = false;
+                    if (linhaId == 1 || linhaId == 3) {
+                        isTarget = (v === parsed.v && parsed.alvoA !== null && parsed.alvoA === p);
+                    } else {
+                        isTarget = (v === vTarget && p === pTarget && (sTarget === 'B' || sTarget === null));
+                    }
                     html += `<div class="t-door-topdown bottom ${isTarget ? 'target' : ''}"></div>`;
                 }
                 html += `</div>`;
 
-                // INDICADOR DA CABINE (Frente do trem)
                 if (isCab) {
                     let cabClass = sentidoCalculado === "S1" ? "cab-left" : "cab-right";
                     html += `<div class="t-cab ${cabClass}" style="background-color: ${corVar}"></div>`;
@@ -969,84 +838,119 @@
                 return; 
             }
             
-            try {
-                let freqs = JSON.parse(localStorage.getItem('pc_freq_origem')) || {};
-                freqs[estOr] = (freqs[estOr] || 0) + 1;
-                localStorage.setItem('pc_freq_origem', JSON.stringify(freqs));
-            } catch(e) {}
-
             if (estOr === estDest) { box.innerHTML = `<div class="info-text" style="text-align:center;">${t.mesmaEstacao}</div>`; box.style.display = 'block'; return; }
 
             const origem = AppData.estacoes[estOr]; const destino = AppData.estacoes[estDest];
-            
-            // Bloqueio multi-linha temporário
-            if(origem.linha !== destino.linha) {
-                box.innerHTML = `<div class="alert-warning">⚠️ No momento, o cálculo foca em estações da mesma linha. Escolha Origem e Destino na mesma Linha.</div>`; 
-                box.style.display = 'block'; 
-                return; 
-            }
-
-            let lAtual = origem.linha;
-            let corVar = `var(--l${lAtual})`;
+            const caminho = Router.encontrarCaminhoLinhas(origem.linha, destino.linha);
+            const tipoPrefTexto = pref === 'elevador' ? t.tipoElevador : (pref === 'rolante' ? t.tipoRolante : t.tipoFixa);
             
             let htmlFinal = "";
             let ativouFaltaAcessibilidade = false;
-            
-            htmlFinal += `<div class="route-step" style="border-color: ${corVar}; --step-color: ${corVar};">`;
-            htmlFinal += `<div class="step-title" style="color: ${corVar};">📍 Rota: Linha ${lAtual}</div>`;
 
-            let sentidoCalculado = Router.calcularSentido(estOr, estDest, lAtual);
-            
-            let nomeSentido = "";
-            if(lAtual == 1) nomeSentido = sentidoCalculado === 'S1' ? 'Tucuruvi' : 'Jabaquara';
-            if(lAtual == 3) nomeSentido = sentidoCalculado === 'S1' ? 'Itaquera' : 'Barra Funda';
-
-            let ladoEmbOrigem = sentidoCalculado === 'S1' ? origem.embS1 : origem.embS2;
-            let ladoDesDestino = sentidoCalculado === 'S1' ? destino.desS1 : destino.desS2;
-
-            let portasBrutas = [];
-            if (destino.dbS1 !== undefined || destino.dbStr !== undefined) {
-                portasBrutas = Router.extrairPortasAlvo(destino, sentidoCalculado, pref);
+            if (caminho && caminho.length > 1) {
+                htmlFinal += `<div class="alert-warning alert-info">ℹ️ <b>${t.avisoRota || 'Atenção:'}</b><br>${t.avisoRotaTexto || 'Esta rota foca em acessibilidade e nas portas corretas.'}</div>`;
             }
-
-            if (portasBrutas.length === 0) ativouFaltaAcessibilidade = true;
-
-            htmlFinal += `<div class="info-text">Em <b>${origem.nome}</b> (Sentido ${nomeSentido}), posicione-se na:</div>`;
             
-            if (portasBrutas.length === 0) {
-                htmlFinal += `<div class="alert-warning" style="color:#FF3B30; border-color:#FF3B30;">🚫 Equipamento Inexistente nesta estação (Sentido ${nomeSentido}).</div>`;
-            } else {
-                let resultadosFormatados = [];
-                let objParsedPrincipal = null;
-
-                portasBrutas.forEach((portaStr, index) => {
-                    let formated = Formatter.formatarPorta(portaStr, sentidoCalculado);
-                    resultadosFormatados.push(formated.split('(')[0].trim()); 
-                    
-                    if (index === 0) {
-                        objParsedPrincipal = Router.parseVagaoPorta(portaStr, sentidoCalculado);
-                    }
-                });
-
-                htmlFinal += `<div class="result-door" style="color:${corVar};">${resultadosFormatados.join(' ou ')}</div>`;
+            for (let i = 0; i < (caminho ? caminho.length : 1); i++) {
+                let lAtual = caminho ? caminho[i] : origem.linha; 
+                let isFirst = (i === 0); 
+                let isLast = (caminho ? (i === caminho.length - 1) : true);
                 
-                // Exibe o subtexto base e desenha o trem
-                if (objParsedPrincipal) {
-                    htmlFinal += `<div class="info-text" style="font-size:0.9rem;">(Vagão ${objParsedPrincipal.v})</div>`;
-                    
-                    // Alerta de inversão de lado, se os dados existirem para a linha
-                    if (ladoEmbOrigem && ladoDesDestino && (ladoEmbOrigem !== ladoDesDestino)) {
-                        htmlFinal += `<div class="info-text" style="font-size: 0.85rem; color: #ffcc00; margin-bottom: 10px;">⚠️ Atenção: No destino, as portas abrirão do lado oposto.</div>`;
-                    }
-                    
-                    htmlFinal += UI.gerarTremHtml(lAtual, objParsedPrincipal, sentidoCalculado);
-                }
-            }
+                let estNomeEmbarque = isFirst ? origem.nome : AppData.transferencias[caminho[i-1]][lAtual];
+                let estNomeDesembarque = isLast ? destino.nome : AppData.transferencias[lAtual][caminho[i+1]];
+                
+                let nodeEmb = Object.values(AppData.estacoes).find(e => e.nome === estNomeEmbarque && e.linha == lAtual);
+                let nodeDes = Object.values(AppData.estacoes).find(e => e.nome === estNomeDesembarque && e.linha == lAtual);
 
-            let tipoPrefTexto = pref === 'elevador' ? t.tipoElevador : (pref === 'rolante' ? t.tipoRolante : t.tipoFixa);
-            htmlFinal += `<div class="info-text" style="margin-top:15px; border-top: 1px dashed #333; padding-top: 10px;">No destino (<b>${destino.nome}</b>), você sairá de frente para a ${tipoPrefTexto}.</div>`;
-            
-            htmlFinal += `</div>`;
+                if(!nodeEmb || !nodeDes) {
+                    htmlFinal += `<div class="alert-warning">Erro: Estação não encontrada na base de dados.</div>`;
+                    break;
+                }
+
+                let idEmb = Object.keys(AppData.estacoes).find(k => AppData.estacoes[k] === nodeEmb);
+                let idDes = Object.keys(AppData.estacoes).find(k => AppData.estacoes[k] === nodeDes);
+
+                let corVar = `var(--l${lAtual})`;
+                
+                htmlFinal += `<div class="route-step" style="border-color: ${corVar}; --step-color: ${corVar};">`;
+                htmlFinal += `<div class="step-title" style="color: ${corVar};">📍 ${t.trecho} ${i+1}: ${t['l'+lAtual] || `Linha ${lAtual}`}</div>`;
+
+                let sentidoCalculado = Router.calcularSentido(idEmb, idDes, lAtual);
+                
+                let nomeSentido = "";
+                if(lAtual == 1) nomeSentido = sentidoCalculado === 'S1' ? 'Tucuruvi' : 'Jabaquara';
+                else if(lAtual == 3) nomeSentido = sentidoCalculado === 'S1' ? 'Itaquera' : 'Barra Funda';
+                else nomeSentido = sentidoCalculado;
+
+                let ladoEmbOrigem = sentidoCalculado === 'S1' ? nodeEmb.embS1 : nodeEmb.embS2;
+                let ladoDesDestino = sentidoCalculado === 'S1' ? nodeDes.desS1 : nodeDes.desS2;
+
+                let prefSaida = isLast ? pref : 'rolante';
+                let isTransfer = !isLast;
+                let nextLine = isTransfer ? caminho[i+1] : null;
+
+                let portasBrutas = Router.extrairPortasAlvo(nodeDes, sentidoCalculado, prefSaida, isTransfer, nextLine);
+                
+                if (portasBrutas.length === 0) ativouFaltaAcessibilidade = true;
+
+                htmlFinal += `<div class="info-text">${t.embTrecho ? t.embTrecho.replace('{est}', `<b>${nodeEmb.nome}</b>`).replace('{sentido}', nomeSentido) : `Em <b>${nodeEmb.nome}</b>, posicione-se na:`}</div>`;
+                
+                if (portasBrutas.length === 0) {
+                    htmlFinal += `<div class="alert-warning" style="color:#FF3B30; border-color:#FF3B30;">🚫 ${t.txtInexistente ? t.txtInexistente.replace('{sentido}', nomeSentido) : 'Equipamento Inexistente'}</div>`;
+                } else {
+                    let resultadosFormatados = [];
+                    let objParsedPrincipal = null;
+                    let portasExibicaoUI = [];
+
+                    portasBrutas.forEach((portaStr, index) => {
+                        let parsedBase = Router.parseVagaoPorta(portaStr, sentidoCalculado);
+                        let faces = Router.calcularFaces(portaStr);
+                        
+                        let portaUsuarioVera = portaStr.match(/\d{2}/)[0];
+
+                        if (lAtual == 1 || lAtual == 3) {
+                            if (sentidoCalculado === 'S1') {
+                                portaUsuarioVera = (ladoEmbOrigem === 'd') ? faces.numFaceA : faces.numFaceB;
+                            } else { 
+                                portaUsuarioVera = (ladoEmbOrigem === 'e') ? faces.numFaceA : faces.numFaceB;
+                            }
+                        }
+                        
+                        portasExibicaoUI.push(portaUsuarioVera);
+
+                        if (index === 0) {
+                            objParsedPrincipal = {
+                                linha: lAtual,
+                                v: faces.v,
+                                alvoA: ((sentidoCalculado === 'S1' && ladoDesDestino === 'd') || (sentidoCalculado === 'S2' && ladoDesDestino === 'e')) ? faces.numFaceA % 10 : null,
+                                alvoB: ((sentidoCalculado === 'S1' && ladoDesDestino === 'e') || (sentidoCalculado === 'S2' && ladoDesDestino === 'd')) ? faces.numFaceB % 10 : null
+                            };
+                        }
+                    });
+
+                    let textoPortas = portasExibicaoUI.length > 1 ? portasExibicaoUI.join(" ou ") : portasExibicaoUI[0];
+                    htmlFinal += `<div class="result-door" style="color:${corVar};">Porta ${textoPortas}</div>`;
+                    
+                    if (objParsedPrincipal) {
+                        htmlFinal += `<div class="info-text" style="font-size:0.9rem;">(Vagão ${objParsedPrincipal.v})</div>`;
+                        
+                        if (ladoEmbOrigem && ladoDesDestino && (ladoEmbOrigem !== ladoDesDestino)) {
+                            htmlFinal += `<div class="info-text" style="font-size: 0.85rem; color: #ffcc00; margin-bottom: 10px;">⚠️ Atenção: No destino, as portas abrirão do lado oposto. O aplicativo já calculou a porta equivalente para o embarque.</div>`;
+                        }
+                        
+                        htmlFinal += UI.gerarTremHtml(lAtual, objParsedPrincipal, sentidoCalculado);
+                    }
+                }
+
+                if (isTransfer) {
+                    let proxLinhaNome = t['l'+nextLine] || `Linha ${nextLine}`;
+                    htmlFinal += `<div class="info-text" style="margin-top:15px; border-top: 1px dashed #333; padding-top: 10px;">Desembarque em <b>${nodeDes.nome}</b> e faça transferência para a <b>${proxLinhaNome}</b>.</div>`;
+                } else {
+                    htmlFinal += `<div class="info-text" style="margin-top:15px; border-top: 1px dashed #333; padding-top: 10px;">${t.saidaFinal ? t.saidaFinal.replace('{est}', `<b>${nodeDes.nome}</b>`).replace('{tipo}', `<b>${tipoPrefTexto}</b>`) : 'Saída.'}</div>`;
+                }
+                
+                htmlFinal += `</div>`;
+            }
 
             box.innerHTML = htmlFinal;
             box.style.display = 'block';
@@ -1075,69 +979,40 @@
         findNearest: function() {
             const btn = document.getElementById('btn-gps');
             const t = AppData.dicionario[AppData.currentLang] || AppData.dicionario['pt'];
-            
-            if (!navigator.geolocation) {
-                btn.innerText = t.gpsErro || 'Erro';
-                setTimeout(() => { btn.innerText = t.gpsBtn || 'GPS'; }, 2000);
-                return;
-            }
-
-            btn.innerText = t.gpsBusca || 'Buscando...';
-            
+            if (!navigator.geolocation) { btn.innerText = 'Erro'; setTimeout(() => { btn.innerText = t.gpsBtn; }, 2000); return; }
+            btn.innerText = 'Buscando...';
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    let userLat = position.coords.latitude;
-                    let userLng = position.coords.longitude;
-                    
-                    let closest = null;
-                    let minDist = Infinity;
-                    let RAIO_MAXIMO_KM = 8; 
-
+                    let userLat = position.coords.latitude; let userLng = position.coords.longitude;
+                    let closest = null; let minDist = Infinity; let RAIO_MAXIMO_KM = 8; 
                     for (let id in AppData.estacoes) {
                         let st = AppData.estacoes[id];
                         if (st.lat && st.lng && st.mapeada) {
                             let dist = GeoLocation.haversine(userLat, userLng, st.lat, st.lng);
-                            if (dist < minDist) {
-                                minDist = dist;
-                                closest = { id: id, linha: st.linha };
-                            }
+                            if (dist < minDist) { minDist = dist; closest = { id: id, linha: st.linha }; }
                         }
                     }
-
                     if (closest && minDist <= RAIO_MAXIMO_KM) {
                         document.getElementById('linha-origem').value = closest.linha;
                         UI.atualizarEstacoes('origem');
                         document.getElementById('estacao-origem').value = closest.id;
-                        btn.innerText = t.gpsFeito || 'Feito!';
-                        setTimeout(() => { btn.innerText = t.gpsBtn || 'GPS'; }, 2000);
+                        btn.innerText = 'Feito!'; setTimeout(() => { btn.innerText = t.gpsBtn; }, 2000);
                     } else {
-                        btn.innerText = t.gpsErro || 'Erro';
-                        setTimeout(() => { btn.innerText = t.gpsBtn || 'GPS'; }, 2000);
+                        btn.innerText = 'Erro'; setTimeout(() => { btn.innerText = t.gpsBtn; }, 2000);
                     }
                 },
-                (error) => {
-                    btn.innerText = t.gpsErro || 'Erro';
-                    setTimeout(() => { btn.innerText = t.gpsBtn || 'GPS'; }, 2000);
-                },
+                (error) => { btn.innerText = 'Erro'; setTimeout(() => { btn.innerText = t.gpsBtn; }, 2000); },
                 { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
             );
         },
-
         haversine: function(lat1, lon1, lat2, lon2) {
-            const R = 6371;
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                      Math.sin(dLon/2) * Math.sin(dLon/2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            return R * c;
+            const R = 6371; const dLat = (lat2 - lat1) * Math.PI / 180; const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         }
     };
 
-    window.onload = function() {
-        UI.init();
-    };
+    window.onload = function() { UI.init(); };
     </script>
 </body>
 </html>
