@@ -146,85 +146,153 @@ body.light-mode .alert-info { background-color: rgba(33, 150, 243, 0.05); color:
 body.light-mode .alert-pendente { color: #E65100; }
 
 /* ========================================== */
-/* MOTOR GRÁFICO: TREM VISTO DE CIMA          */
+/* MOTOR GRÁFICO: TREM TOP-DOWN (DUPLA FACE)  */
 /* ========================================== */
-.t-container { 
+
+/* Container Principal do Trem */
+.t-topdown-container { 
     width: 100%; 
-    height: 95px; 
-    background: var(--train-bg); 
+    height: 120px; 
+    background-color: var(--train-bg); 
     border-radius: 8px; 
     position: relative; 
     overflow: hidden; 
     margin: 15px 0; 
     border: 1px solid var(--border-color); 
+    display: flex; 
+    flex-direction: column; 
 }
-.t-track { 
-    position: absolute; 
+
+/* Faixa de Sentido da Viagem */
+.t-direction { 
+    width: 100%; 
+    text-align: center; 
+    font-size: 0.75rem; 
+    font-weight: bold; 
+    letter-spacing: 1px; 
+    padding: 6px 0; 
+    background: rgba(0,0,0,0.4); 
+    z-index: 2; 
+}
+
+body.light-mode .t-direction {
+    background: rgba(255,255,255,0.6);
+}
+
+/* Trilho ao fundo */
+.t-track-topdown { 
+    position: relative; 
     height: 100%; 
     width: 100%; 
-    background: repeating-linear-gradient(90deg, transparent, transparent 15px, rgba(255,255,255,0.05) 15px, rgba(255,255,255,0.05) 20px); 
-}
-body.light-mode .t-track { 
-    background: repeating-linear-gradient(90deg, transparent, transparent 15px, rgba(0,0,0,0.05) 15px, rgba(0,0,0,0.05) 20px); 
-}
-
-.t-wrapper { 
-    position: absolute; 
-    top: 15px; 
+    background: repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(255,255,255,0.05) 20px, rgba(255,255,255,0.05) 25px); 
     display: flex; 
     align-items: center; 
-    gap: 6px; 
-    padding: 0 10px; 
-    height: 65px; 
-    transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); 
-    z-index: 1;
 }
 
-.t-car { 
+body.light-mode .t-track-topdown {
+    background: repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(0,0,0,0.05) 20px, rgba(0,0,0,0.05) 25px);
+}
+
+/* Wrapper que movimenta o trem para centralizar a porta */
+.t-wrapper-topdown { 
+    position: absolute; 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; /* Espaço entre os vagões */
+    padding: 0 20px; 
+    height: 65px; 
+    transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); 
+    z-index: 1; 
+}
+
+/* Vagão */
+.t-car-topdown { 
     width: 90px; 
     height: 100%; 
     border: 2px solid; 
     background: var(--card-bg); 
-    border-radius: 6px; 
+    border-radius: 4px; 
     position: relative; 
     display: flex; 
     flex-direction: column; 
     justify-content: space-between; 
 }
-.t-car::after { 
-    content: attr(data-label); 
+
+/* Label Central do Vagão (Ex: C1, C2) */
+.car-center-label { 
     position: absolute; 
     top: 50%; 
     left: 50%; 
     transform: translate(-50%, -50%); 
-    font-size: 0.75rem; 
+    font-size: 0.8rem; 
     color: var(--text-muted); 
     font-weight: bold; 
 }
 
-.t-doors-side { display: flex; justify-content: space-evenly; width: 100%; padding: 0 2px; }
+/* Linha das portas (Face A e Face B) */
+.car-row { 
+    display: flex; 
+    justify-content: space-evenly; 
+    width: 100%; 
+    padding: 0 2px; 
+}
 
-.t-door { width: 10px; height: 8px; background: var(--group-bg); border: 1px solid var(--border-color); }
-.t-door.top { border-radius: 0 0 3px 3px; border-top: none; }
-.t-door.bottom { border-radius: 3px 3px 0 0; border-bottom: none; }
+/* Portas Individuais */
+.t-door-topdown { 
+    width: 12px; 
+    height: 8px; 
+    background: var(--group-bg); 
+    border: 1px solid var(--border-color); 
+}
+.t-door-topdown.top { border-radius: 0 0 4px 4px; border-top: none; }
+.t-door-topdown.bottom { border-radius: 4px 4px 0 0; border-bottom: none; }
 
-.t-door.target { background: #4CAF50; border-color: #FFF; box-shadow: 0 0 10px #4CAF50; z-index: 2; }
-.t-door.target::before { 
+/* Porta Alvo (Seta Verde e Brilho) */
+.t-door-topdown.target { 
+    background: #4CAF50; 
+    border-color: #FFF; 
+    box-shadow: 0 0 10px #4CAF50; 
+    position: relative; 
+    z-index: 5; 
+}
+.t-door-topdown.target::before { 
     content: '▼'; 
     position: absolute; 
     left: 50%; 
-    transform: translateX(-50%); 
     font-size: 14px; 
     color: #4CAF50; 
     animation: bounce 1s infinite; 
-    text-shadow: 0 0 5px rgba(0,0,0,0.5); 
+    text-shadow: 0 0 5px rgba(0,0,0,0.8); 
 }
-.t-door.top.target::before { top: -20px; }
-.t-door.bottom.target::before { bottom: -20px; transform: translateX(-50%) rotate(180deg); }
+body.light-mode .t-door-topdown.target::before {
+    text-shadow: 0 0 3px rgba(255,255,255,0.8);
+}
+.t-door-topdown.top.target::before { top: -20px; transform: translateX(-50%); }
+.t-door-topdown.bottom.target::before { bottom: -20px; transform: translateX(-50%) rotate(180deg); }
 
+/* Animação da Seta */
 @keyframes bounce { 
     0%, 100% { transform: translateX(-50%) translateY(0); } 
     50% { transform: translateX(-50%) translateY(-4px); } 
+}
+
+/* Cabine (Frente/Trás do Trem) */
+.t-cab { 
+    position: absolute; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    width: 12px; 
+    height: 80%; 
+}
+.t-cab.cab-left { 
+    left: -14px; 
+    border-top-left-radius: 12px; 
+    border-bottom-left-radius: 12px; 
+}
+.t-cab.cab-right { 
+    right: -14px; 
+    border-top-right-radius: 12px; 
+    border-bottom-right-radius: 12px; 
 }
 
 /* RODAPÉ & IDIOMAS & ACESSIBILIDADE */
