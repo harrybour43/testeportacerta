@@ -6,191 +6,194 @@
     <title>PORTA CERTA SP</title>
 
     <link rel="stylesheet" href="style.css">
-      
+    
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 40'><rect x='5' y='5' width='110' height='30' rx='4' fill='%231A1A1A' stroke='%23888' stroke-width='2'/><rect x='15' y='12' width='12' height='23' rx='1.5' fill='%23000' stroke='%23444' stroke-width='1.5'/><rect x='40' y='12' width='12' height='23' rx='1.5' fill='%23000' stroke='%23444' stroke-width='1.5'/><rect x='65' y='12' width='12' height='23' rx='1.5' fill='%234CAF50'/><rect x='90' y='12' width='12' height='23' rx='1.5' fill='%23000' stroke='%23444' stroke-width='1.5'/></svg>" type="image/svg+xml">
 </head>
 <body>
 
-<div id="view-splash" class="app-view">
-    <svg class="splash-train" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
-        <line x1="0" y1="38" x2="120" y2="38" stroke="#444" stroke-width="2" stroke-linecap="round"/>
-        <rect x="5" y="5" width="110" height="30" rx="4" fill="#1A1A1A" stroke="#888" stroke-width="2"/>
-        <rect x="15" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
-        <rect x="40" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
-        <rect x="65" y="12" width="12" height="23" rx="1.5" class="logo-door-target"/>
-        <rect x="90" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
-    </svg>
-    <h1 class="splash-title fade-in-delayed">PORTA CERTA SP</h1>
-    <p class="fade-in-delayed" style="color:var(--text-muted); margin-top:0; margin-bottom: 40px;">Precisão e Autonomia</p>
-    
-    <button class="btn-action fade-in-delayed" id="btn-entrar-splash" onclick="UI.showView('view-warning')" style="max-width: 250px;">Entrar no Guia</button>
-    <div class="fade-in-delayed" style="margin-top: 30px; font-weight: bold; color: #666;">v4.7.0</div>
-</div>
-
-<div id="view-warning" class="app-view">
-    <div class="container" style="border-top-color: var(--btn-color);">
-        <h2 id="mod-title" style="margin-top: 0;">Aviso: Acessibilidade</h2>
-        <p id="mod-text" style="font-size: 1.05rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 25px;">O Porta Certa SP é, antes de tudo, uma ferramenta de ativismo. Nosso principal objetivo é garantir autonomia para pessoas com mobilidade reduzida. Chegar mais rápido é um benefício secundário. O bom senso e a segurança vêm em primeiro lugar.</p>
-        <label class="checkbox-container">
-            <input type="checkbox" id="check-ciencia" onchange="UI.liberarModal()">
-            <span id="mod-check">Li e compreendi</span>
-        </label>
-        <button id="btn-modal" class="btn-action" disabled onclick="UI.finishIntro()">Acessar o Guia</button>
-    </div>
-</div>
-
-<div id="view-main" class="app-view">
-    <div class="container">
+    <div id="view-splash" class="app-view">
+        <svg class="splash-train" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="38" x2="120" y2="38" stroke="#444" stroke-width="2" stroke-linecap="round"/>
+            <rect x="5" y="5" width="110" height="30" rx="4" fill="#1A1A1A" stroke="#888" stroke-width="2"/>
+            <rect x="15" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
+            <rect x="40" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
+            <rect x="65" y="12" width="12" height="23" rx="1.5" class="logo-door-target"/>
+            <rect x="90" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
+        </svg>
+        <h1 class="splash-title fade-in-delayed">PORTA CERTA SP</h1>
+        <p class="fade-in-delayed" style="color:var(--text-muted); margin-top:0; margin-bottom: 40px;">Precisão e Autonomia</p>
         
-        <div class="hero-header-main">
-            <div class="hero-settings">
-                <span class="action-btn" onclick="UI.showView('view-settings')" title="Configurações">⚙️</span>
+        <button class="btn-action fade-in-delayed" id="btn-entrar-splash" onclick="UI.showView('view-warning')" style="max-width: 250px;">Entrar no Guia</button>
+        <div class="fade-in-delayed" style="margin-top: 30px; font-weight: bold; color: #666;">v5.0.0</div>
+    </div>
+
+    <div id="view-warning" class="app-view">
+        <div class="container" style="border-top-color: var(--btn-color);">
+            <h2 id="mod-title" style="margin-top: 0;">Aviso: Acessibilidade</h2>
+            <p id="mod-text" style="font-size: 1.05rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 25px;">
+                O Porta Certa SP é, antes de tudo, uma ferramenta de ativismo. Nosso principal objetivo é garantir autonomia para pessoas com mobilidade reduzida. Chegar mais rápido é um benefício secundário. O bom senso e a segurança vêm em primeiro lugar.
+            </p>
+            <label class="checkbox-container">
+                <input type="checkbox" id="check-ciencia" onchange="UI.liberarModal()">
+                <span id="mod-check">Li e compreendi</span>
+            </label>
+            <button id="btn-modal" class="btn-action" disabled onclick="UI.finishIntro()">Acessar o Guia</button>
+        </div>
+    </div>
+
+    <div id="view-main" class="app-view active">
+        <div class="container">
+            
+            <div class="hero-header-main">
+                <div class="hero-settings">
+                    <span class="action-btn" onclick="UI.showView('view-settings')" title="Configurações">⚙️</span>
+                </div>
+                
+                <svg class="hero-logo-svg" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="5" y="5" width="110" height="30" rx="4" fill="#1A1A1A" stroke="#888" stroke-width="2"/>
+                    <rect x="15" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
+                    <rect x="40" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
+                    <rect x="65" y="12" width="12" height="23" rx="1.5" class="logo-door-target"/>
+                    <rect x="90" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
+                </svg>
+                
+                <h1 id="app-title" class="hero-title">PORTA CERTA SP</h1>
+                <p style="color: var(--l1); margin-top: 5px; font-size: 0.9rem; font-weight: bold;">Módulo Inteligente</p>
+            </div>
+
+            <label for="preferencia" id="lbl-pref">Sua preferência de saída no destino final:</label>
+            <select id="preferencia">
+                <option value="elevador" id="opt-elevador">Elevador</option>
+                <option value="rolante" id="opt-rolante" selected>Escada Rolante</option>
+                <option value="fixa" id="opt-fixa">Escada Fixa</option>
+            </select>
+
+            <div class="selection-group">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <div class="selection-title origem" id="title-origem" style="margin-bottom: 0; border: none; padding-left: 0;">📍 PONTO DE PARTIDA</div>
+                    <button onclick="GeoLocation.findNearest()" class="btn-gps" id="btn-gps">🎯 Perto de mim</button>
+                </div>
+                <select id="linha-origem" onchange="UI.atualizarEstacoes('origem')"></select>
+                <select id="estacao-origem" disabled>
+                    <option value="0" disabled selected id="opt-default-est-origem">Primeiro, escolha a linha</option>
+                </select>
+            </div>
+
+            <div class="selection-group">
+                <div class="selection-title destino" id="title-destino">🏁 DESTINO FINAL</div>
+                <select id="linha-destino" onchange="UI.atualizarEstacoes('destino')"></select>
+                <select id="estacao-destino" disabled>
+                    <option value="0" disabled selected id="opt-default-est-destino">Primeiro, escolha a linha</option>
+                </select>
+            </div>
+
+            <button id="btn-calcular" class="btn-action" onclick="UI.iniciarCalculo()">Qual é a Porta Certa?</button>
+
+            <div class="result-box" id="resultado-box" style="display: none;"></div>
+
+            <div style="background-color: var(--group-bg); padding: 20px; border-radius: 8px; border: 1px dashed #4CAF50; margin-top: 25px; text-align: center;">
+                <h3 style="color: #4CAF50; margin-top: 0; font-size: 1.1rem; margin-bottom: 8px;">Conhece a porta certa?</h3>
+                <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 0; margin-bottom: 15px; line-height: 1.4;">Ajude a mapear a rede! Sua informação garante a autonomia de outras pessoas.</p>
+                <a href="https://forms.office.com/r/ByJS9dV1rP" target="_blank" class="btn-action" style="background-color: #4CAF50; color: #000; text-decoration: none;">
+                    🤝 Contribuir com o Mapa
+                </a>
+            </div>
+
+            <div class="footer">
+                <div class="slogan" id="slogan-text">Autonomia. Precisão no embarque. Distâncias menores.</div>
+                <div class="signature">Harry Bour | 2026</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-settings" class="app-view">
+        <div class="container">
+            <div class="container-header">
+                <h2 id="settings-title">Configurações</h2>
             </div>
             
-            <svg class="hero-logo-svg" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
-                <rect x="5" y="5" width="110" height="30" rx="4" fill="#1A1A1A" stroke="#888" stroke-width="2"/>
-                <rect x="15" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
-                <rect x="40" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
-                <rect x="65" y="12" width="12" height="23" rx="1.5" class="logo-door-target"/>
-                <rect x="90" y="12" width="12" height="23" rx="1.5" fill="#000" stroke="#444" stroke-width="1.5"/>
-            </svg>
+            <div class="settings-list">
+                <button class="settings-btn" onclick="UI.showView('view-tutorial')"><span class="icon">❓</span> <span id="lbl-set-tut">Como usar o Guia</span></button>
+                <button class="settings-btn" onclick="UI.showView('view-mapped')"><span class="icon">📋</span> <span id="lbl-set-map">Estações Mapeadas</span></button>
+                <button class="settings-btn" onclick="UI.toggleFontSize()"><span class="icon">A+</span> <span id="lbl-set-font">Tamanho da Letra</span></button>
+                <button class="settings-btn" id="btn-theme" onclick="UI.toggleTheme()"><span class="icon" id="theme-icon">☀️</span> <span id="theme-text">Modo Claro</span></button>
+            </div>
+
+            <div class="selection-group" style="margin-top: 20px;">
+                <div class="selection-title" id="lbl-set-lang" style="border-left: none; padding-left: 0; text-align: center; margin-bottom: 15px;">Idioma / Language</div>
+                <div class="lang-footer-container">
+                    <span class="lang-flag active" id="flag-pt" onclick="UI.changeLanguage('pt')">🇧🇷</span>
+                    <span class="lang-flag" id="flag-en" onclick="UI.changeLanguage('en')">🇺🇸</span>
+                    <span class="lang-flag" id="flag-es" onclick="UI.changeLanguage('es')">🇪🇸</span>
+                    <span class="lang-flag" id="flag-fr" onclick="UI.changeLanguage('fr')">🇫🇷</span>
+                    <span class="lang-flag" id="flag-zh" onclick="UI.changeLanguage('zh')">🇨🇳</span>
+                    <span class="lang-flag" id="flag-ja" onclick="UI.changeLanguage('ja')">🇯🇵</span>
+                    <span class="lang-flag" id="flag-ko" onclick="UI.changeLanguage('ko')">🇰🇷</span>
+                    <span class="lang-flag" id="flag-ar" onclick="UI.changeLanguage('ar')">🇸🇦</span>
+                </div>
+            </div>
+
+            <button class="btn-action btn-secondary" onclick="UI.showView('view-main')" style="margin-top: 25px;" id="btn-voltar-settings">⬅ Voltar para a PORTA CERTA SP</button>
+        </div>
+    </div>
+
+    <div id="view-tutorial" class="app-view">
+        <div class="container help-text">
+            <div class="container-header">
+                <h2 style="color: var(--l1);" id="tut-title">Como usar o Guia</h2>
+            </div>
             
-            <h1 id="app-title" class="hero-title">PORTA CERTA SP</h1>
-        </div>
-        
-        <label for="preferencia" id="lbl-pref">Sua preferência de saída no destino final:</label>
-        <select id="preferencia">
-            <option value="elevador" id="opt-elevador" selected>Elevador</option>
-            <option value="rolante" id="opt-rolante">Escada Rolante</option>
-            <option value="fixa" id="opt-fixa">Escada Fixa</option>
-        </select>
+            <p>O aplicativo calcula em qual porta do trem você deve entrar para sair exatamente de frente para a escada ou elevador que você precisa no destino.</p>
+            <h3>1. O que você precisa?</h3>
+            <p>No topo da tela, escolha a sua preferência para a saída no destino final: Elevador, Escada Rolante ou Escada Fixa.</p>
+            <h3>2. Origem e Destino</h3>
+            <p>Escolha a Linha e a Estação onde você vai embarcar. Você também pode usar o botão <strong>🎯 Perto de mim</strong> para achar a estação mais próxima pelo GPS. Depois, escolha a estação destino. <br><em style="font-size:0.9rem;">Nota: Estações com o aviso "(Em breve)" estão bloqueadas porque ainda não foram mapeadas.</em></p>
+            <h3>3. Calcule a rota</h3>
+            <p>Clique no botão <strong>Qual é a Porta Certa?</strong>. O sistema mostrará o trajeto completo. Ele indicará onde você deve embarcar. Exemplo: <strong>Porta 41 ou 22</strong>.</p>
+            <p>Basta procurar o adesivo no chão ou no alto da porta de vidro. Nosso mapa dinâmico mostrará em qual vagão você deve entrar e de que lado a porta abrirá no destino.</p>
 
-        <div class="selection-group">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <div class="selection-title origem" id="title-origem" style="margin-bottom: 0; border: none; padding-left: 0;">📍 PONTO DE PARTIDA</div>
-                <button onclick="GeoLocation.findNearest()" class="btn-gps" id="btn-gps">🎯 Perto de mim</button>
-            </div>
-            <select id="linha-origem" onchange="UI.atualizarEstacoes('origem')"></select>
-            <select id="estacao-origem" disabled>
-                <option value="0" disabled selected id="opt-default-est-origem">Primeiro, escolha a linha</option>
-            </select>
-        </div>
+            <h3 style="margin-top: 30px;">Recursos importantes:</h3>
+            <ul>
+                <li><strong>Acessibilidade visual (A+):</strong> Aumenta o tamanho de todas as letras da tela.</li>
+                <li><strong>Modo Claro (☀️):</strong> Troca o fundo preto por um fundo claro.</li>
+                <li><strong>Estações mapeadas (📋):</strong> Mostra a lista de estações que já funcionam com precisão.</li>
+                <li><strong>Direito ao acesso (FALA.SP):</strong> Se a estação destino não tiver o equipamento, o app gera um alerta para a Ouvidoria.</li>
+            </ul>
 
-        <div class="selection-group">
-            <div class="selection-title destino" id="title-destino">🏁 DESTINO FINAL</div>
-            <select id="linha-destino" onchange="UI.atualizarEstacoes('destino')"></select>
-            <select id="estacao-destino" disabled>
-                <option value="0" disabled selected id="opt-default-est-destino">Primeiro, escolha a linha</option>
-            </select>
-        </div>
-
-        <button id="btn-calcular" class="btn-action" onclick="UI.iniciarCalculo()">Qual é a Porta Certa?</button>
-
-        <div class="result-box" id="resultado-box" style="display: none;"></div>
-
-        <div style="background-color: var(--group-bg); padding: 20px; border-radius: 8px; border: 1px dashed #4CAF50; margin-top: 25px; text-align: center;">
-            <h3 style="color: #4CAF50; margin-top: 0; font-size: 1.1rem; margin-bottom: 8px;">Conhece a porta certa?</h3>
-            <p style="font-size: 0.95rem; color: var(--text-muted); margin-top: 0; margin-bottom: 15px; line-height: 1.4;">Ajude a mapear a rede! Sua informação garante a autonomia de outras pessoas.</p>
-            <a href="https://forms.office.com/r/ByJS9dV1rP" target="_blank" class="btn-action" style="background-color: #4CAF50; color: #000;">
-                🤝 Contribuir com o Mapa
-            </a>
-        </div>
-
-        <div class="footer">
-            <div class="slogan" id="slogan-text">Autonomia. Precisão no embarque. Distâncias menores.</div>
-            <div class="signature">Harry Bour | 2026</div>
+            <button class="btn-action btn-secondary" onclick="UI.showView('view-settings')" style="margin-top: 30px;" id="btn-voltar-tut">⬅ Voltar</button>
         </div>
     </div>
-</div>
 
-<div id="view-settings" class="app-view">
-    <div class="container">
-        <div class="container-header">
-            <h2 id="settings-title">Configurações</h2>
+    <div id="view-mapped" class="app-view">
+        <div class="container">
+            <div class="container-header">
+                <h2 id="list-title">Estações Mapeadas</h2>
+            </div>
+            <p id="list-desc" style="margin-bottom: 15px; color: var(--text-muted);">A precisão de portas já funciona nestas estações:</p>
+            <div style="background: var(--group-bg); padding: 15px; border-radius: 8px; margin-bottom: 20px; max-height: 400px; overflow-y: auto; border: 1px solid var(--border-color);">
+                <h3 style="color: var(--l1); margin-top: 0; font-size: 1.1rem;">■ Linha 1 - Azul</h3>
+                <ul class="mapped-list" id="ul-mapeadas-l1"></ul>
+                
+                <h3 style="color: var(--l3); margin-top: 20px; font-size: 1.1rem;">■ Linha 3 - Vermelha</h3>
+                <ul class="mapped-list" id="ul-mapeadas-l3"></ul>
+            </div>
+            <button class="btn-action btn-secondary" onclick="UI.showView('view-settings')" id="btn-voltar-map">⬅ Voltar</button>
         </div>
-        
-        <div class="settings-list">
-            <button class="settings-btn" onclick="UI.showView('view-tutorial')"><span class="icon">❓</span> <span id="lbl-set-tut">Como usar o Guia</span></button>
-            <button class="settings-btn" onclick="UI.showView('view-mapped')"><span class="icon">📋</span> <span id="lbl-set-map">Estações Mapeadas</span></button>
-            <button class="settings-btn" onclick="UI.toggleFontSize()"><span class="icon">A+</span> <span id="lbl-set-font">Tamanho da Letra</span></button>
-            <button class="settings-btn" id="btn-theme" onclick="UI.toggleTheme()"><span class="icon" id="theme-icon">☀️</span> <span id="theme-text">Modo Claro</span></button>
-        </div>
+    </div>
 
-        <div class="selection-group" style="margin-top: 20px;">
-            <div class="selection-title" id="lbl-set-lang" style="border-left: none; padding-left: 0; text-align: center; margin-bottom: 15px;">Idioma / Language</div>
-            <div class="lang-footer-container">
-                <span class="lang-flag active" id="flag-pt" onclick="UI.changeLanguage('pt')">🇧🇷</span>
-                <span class="lang-flag" id="flag-en" onclick="UI.changeLanguage('en')">🇺🇸</span>
-                <span class="lang-flag" id="flag-es" onclick="UI.changeLanguage('es')">🇪🇸</span>
-                <span class="lang-flag" id="flag-fr" onclick="UI.changeLanguage('fr')">🇫🇷</span>
-                <span class="lang-flag" id="flag-zh" onclick="UI.changeLanguage('zh')">🇨🇳</span>
-                <span class="lang-flag" id="flag-ja" onclick="UI.changeLanguage('ja')">🇯🇵</span>
-                <span class="lang-flag" id="flag-ko" onclick="UI.changeLanguage('ko')">🇰🇷</span>
-                <span class="lang-flag" id="flag-ar" onclick="UI.changeLanguage('ar')">🇸🇦</span>
+    <div id="acessibilidade-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2 id="mod-acc-title">Direito à Acessibilidade</h2>
+            <p id="mod-acc-text">A estação selecionada não possui o equipamento de acessibilidade escolhido ou o dado está pendente. O acesso pleno ao transporte público é um direito seu. Exerça sua cidadania e cobre melhorias diretamente na Ouvidoria do Governo de São Paulo.</p>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <a href="https://fala.sp.gov.br/" target="_blank" class="btn-action" style="background-color: #FF3B30; text-decoration: none;" id="mod-acc-btn-fala">Registrar Cobrança no FALA.SP</a>
+                <button class="btn-action btn-secondary" onclick="UI.fecharModalAcessibilidade()" id="mod-acc-btn-close">Entendi</button>
             </div>
         </div>
-
-        <button class="btn-action btn-secondary" onclick="UI.showView('view-main')" style="margin-top: 25px;" id="btn-voltar-settings">⬅ Voltar para a PORTA CERTA SP</button>
     </div>
-</div>
 
-<div id="view-tutorial" class="app-view">
-    <div class="container help-text">
-        <div class="container-header">
-            <h2 style="color: var(--l3);" id="tut-title">Como usar o Guia</h2>
-        </div>
-        
-        <p>O aplicativo calcula em qual porta do trem você deve entrar para sair exatamente de frente para a escada ou elevador que você precisa no destino.</p>
-        <h3>1. O que você precisa?</h3>
-        <p>No topo da tela, escolha a sua preferência para a saída no destino final: Elevador, Escada Rolante ou Escada Fixa.</p>
-        <h3>2. Origem e Destino</h3>
-        <p>Escolha a Linha e a Estação onde você vai embarcar. Você também pode usar o botão <strong>🎯 Perto de mim</strong> para achar a estação mais próxima pelo GPS. Depois, escolha a estação destino. <br><em style="font-size:0.9rem;">Nota: Estações com o aviso "(Em breve)" estão bloqueadas porque ainda não foram mapeadas na origem.</em></p>
-        <h3>3. Calcule a rota</h3>
-        <p>Clique no botão <strong>Qual é a Porta Certa?</strong>. O sistema mostrará o trajeto completo passo a passo. Ele dirá onde você deve embarcar. Exemplo: <strong>Porta 47 (Vagão 4, Porta 2)</strong>.</p>
-        <p>Basta procurar o adesivo 47 no chão ou no alto da porta de vidro. Se a estação não tiver marcação, nosso mapa dinâmico mostrará em qual vagão você deve entrar e em qual porta exata.</p>
-
-        <h3 style="margin-top: 30px;">Recursos importantes:</h3>
-        <ul>
-            <li><strong>Visão Top-Down:</strong> A interface agora exibe o vagão de cima. O ponto verde vai piscar no exato lado (esquerdo ou direito) onde a porta se abrirá.</li>
-            <li><strong>Acessibilidade visual (A+):</strong> Aumenta o tamanho de todas as letras da tela.</li>
-            <li><strong>Modo Claro (☀️):</strong> Troca o fundo preto por um fundo claro para melhor leitura de dia.</li>
-            <li><strong>Estações mapeadas (📋):</strong> Mostra a lista de estações que já funcionam com precisão.</li>
-            <li><strong>Direito ao acesso (FALA.SP):</strong> Se a estação destino não tiver o equipamento que você precisa, o app gera um alerta com um atalho direto para a Ouvidoria do Estado. Cobre seus direitos.</li>
-            <li><strong>Ajude a mapear:</strong> Descobriu a porta exata de uma estação nova? Vá até a tela principal e clique em "Contribuir com o Mapa" para nos enviar a informação.</li>
-        </ul>
-
-        <button class="btn-action btn-secondary" onclick="UI.showView('view-settings')" style="margin-top: 30px;" id="btn-voltar-tut">⬅ Voltar</button>
-    </div>
-</div>
-
-<div id="view-mapped" class="app-view">
-    <div class="container">
-        <div class="container-header">
-            <h2 id="list-title">Estações Mapeadas</h2>
-        </div>
-        <p id="list-desc" style="margin-bottom: 15px; color: var(--text-muted);">A precisão de portas já funciona nestas estações:</p>
-        <div style="background: var(--group-bg); padding: 15px; border-radius: 8px; margin-bottom: 20px; max-height: 400px; overflow-y: auto; border: 1px solid var(--border-color);">
-            <h3 style="color: var(--l3); margin-top: 0; font-size: 1.1rem;">■ Linha 3 - Vermelha</h3>
-            <ul class="mapped-list" id="ul-mapeadas"></ul>
-        </div>
-        <button class="btn-action btn-secondary" onclick="UI.showView('view-settings')" id="btn-voltar-map">⬅ Voltar</button>
-    </div>
-</div>
-
-<div id="acessibilidade-modal" class="modal-overlay" style="display: none;">
-    <div class="modal-content">
-        <h2 id="mod-acc-title">Direito à Acessibilidade</h2>
-        <p id="mod-acc-text">A estação selecionada não possui o equipamento de acessibilidade escolhido. O acesso pleno ao transporte público é um direito seu. Exerça sua cidadania e cobre melhorias diretamente na Ouvidoria do Governo de São Paulo.</p>
-        <div style="display: flex; flex-direction: column; gap: 10px;">
-            <a href="https://fala.sp.gov.br/" target="_blank" class="btn-action" style="background-color: #FF3B30;" id="mod-acc-btn-fala">Registrar Cobrança no FALA.SP</a>
-            <button class="btn-action btn-secondary" onclick="UI.fecharModalAcessibilidade()" id="mod-acc-btn-close">Entendi</button>
-        </div>
-    </div>
-</div>
-
-<script src="data.js"></script>
-<script src="app.js"></script>
+    <script src="data.js"></script> 
+    <script src="app.js"></script>
 
 </body>
 </html>
-
