@@ -18,7 +18,7 @@
     --text-main: #FFFFFF;
     --text-muted: #CCCCCC; 
     --border-color: #444444; 
-    --btn-color: #00539B; /* Cor L1 como destaque */
+    --btn-color: #00539B; 
     --input-bg: #000000; 
     --group-bg: #111111; 
     --train-bg: #050505;
@@ -51,6 +51,7 @@ body {
 }
 
 /* SISTEMA DE TELAS (SPA) */
+/* ESTA É A PARTE QUE FAZ A MÁGICA DE ESCONDER AS TELAS */
 .app-view { display: none; width: 100%; max-width: 420px; flex-direction: column; animation: fadeInView 0.3s ease; }
 .app-view.active { display: flex; }
 @keyframes fadeInView { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
